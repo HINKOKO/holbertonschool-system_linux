@@ -6,6 +6,8 @@
 
 /**
 * main - sample `ls` command
+* @argc: number of arguments passed to program
+* @argv: array of strings-arguments
 * Return: 0 for success, 1 for error
 */
 
