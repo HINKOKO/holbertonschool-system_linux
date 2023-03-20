@@ -10,22 +10,20 @@
 */
 
 
-int main(void)
+int main(int argc, char *argv[] __attribute__((unused)))
 {
 	struct dirent *entry;
-	DIR *dir = opendir(".");
+	DIR *dir;
 
-	if (dir == NULL)
+	if (argc == 1)
 	{
-		printf("Error opening directory\n");
-		return (1);
-	}
-
-	while ((entry = readdir(dir)) != NULL)
-	{
-		if (entry->d_name[0] == '.')
-			continue;
-		printf("%s\n", entry->d_name);
+		dir = opendir(".");
+		while ((entry = readdir(dir)) != NULL)
+		{
+			if (entry->d_name[0] == '.')
+				continue;
+			printf("%s\n", entry->d_name);
+		}
 	}
 
 	closedir(dir);
