@@ -15,35 +15,24 @@
 
 int main(int argc, char *argv[])
 {
+	(void) argc;
+	(void) *argv;
 	DIR *dir;
 	struct dirent *dp;
-
-	if (argc < 2)
-	{
-		/* no directory specified, use the current one*/
-		dir = opendir(".");
-	}
-	else
-	{
-		/* use the specified directory */
-		dir = opendir(argv[1]);
-	}
-
+	/* no directory specified, use the current one*/
+	dir = opendir(".");
 	if (dir == NULL)
 	{
 		/* unable to open dir  */
-		perror("opendir");
-		return (1);
+		printf("Error, unable to open the directory!");
+		exit(1);
 	}
-
 	while ((dp = readdir(dir)) != NULL)
 	{
-		/* continue if hidden files */
-		if (dp->d_name[0] == '.')
-			continue;
-		printf("%s\n", dp->d_name);
+		if (dp->d_name[0] != '.')
+			printf("%s\t", dp->d_name);
 	}
+	printf("\n");
 	closedir(dir);
-
 	return (0);
 }
