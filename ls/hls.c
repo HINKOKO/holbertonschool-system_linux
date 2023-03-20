@@ -6,28 +6,22 @@
 
 /**
 * main - sample `ls` command
-* @argc: integer, number of command line arguments
-* @argv: array of strings, contains command line arguments
-* passed to the program
 * Return: 0 for success, 1 for error
 */
 
 
-int main(int argc, char *argv[])
+int main(void)
 {
-	(void) argc;
-	(void) *argv;
-	DIR *dir;
 	struct dirent *dp;
-	/* no directory specified, use the current one*/
-	dir = opendir(".");
+	DIR *dir = opendir(".");
+
 	if (dir == NULL)
 	{
-		/* unable to open dir  */
+		perror("");
 		printf("Error, unable to open the directory!");
-		exit(1);
+		return (1);
 	}
-	while ((dp = readdir(dir)) != NULL)
+	while ((dp = readdir(dir)))
 	{
 		if (dp->d_name[0] != '.')
 			printf("%s\t", dp->d_name);
