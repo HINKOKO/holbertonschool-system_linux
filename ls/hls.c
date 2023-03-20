@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <stddef.h>
+#include <errno.h>
+#include <stdlib.h>
 
 /**
 * main - sample `ls` command
@@ -35,8 +37,12 @@ int main(int argc, char *argv[])
 	}
 
 	while ((dp = readdir(dir)) != NULL)
+	{
+		/* continue if hidden files */
+		if (dp->d_name[0] == '.')
+			continue;
 		printf("%s\n", dp->d_name);
-
+	}
 	closedir(dir);
 
 	return (0);
