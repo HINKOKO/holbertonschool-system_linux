@@ -38,7 +38,7 @@ void list_dir(const char *dirname, const char *path, int display_dirname)
 			printf("%s\t", entry->d_name);
 		}
 	}
-	printf("\n");
+	printf("\n\n");
 	closedir(dir);
 }
 
