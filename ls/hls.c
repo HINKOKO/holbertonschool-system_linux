@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 {
 	struct dirent *dp;
 	DIR *dir;
+	int i;
 
 	if (argc < 2)
 	{
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
 	} else
 	{
 	/* print contents of directories and files given as arguments */
-		for (int i = 1; i < argc; i++)
+		for (i = 1; i < argc; i++)
 		{
 			dir = opendir(argv[i]);
 			if (dir == NULL)
