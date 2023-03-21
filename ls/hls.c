@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
 #include <stddef.h>
@@ -45,17 +46,24 @@ void list_dir(const char *path, int display_dirname)
 int main(int argc, char *argv[])
 {
 	int i;
+	struct stat st;
 
 	for (i = 1; i < argc; i++)
 	{
-		list_dir(argv[i], argc > 2);
-		printf("\n");
+		if (lstat(argv[i], &st) == -1)
+		{
+			perror(argv[i]);
+			continue;
+		}
+		if (S_ISDIR(st.st_mode))
+			list_dir(argv[i], argc > 2);
+		else
+			printf("%s\t", argv[i]);
 	}
 
 	if (argc == 1)
-	{
 		list_dir(".", 0);
-	}
+
 	return (0);
 }
 
