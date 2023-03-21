@@ -51,22 +51,27 @@ int main(int argc, char *argv[])
 	int i;
 	struct stat st;
 
-	for (i = 1; i < argc; i++)
-	{
-		if (lstat(argv[i], &st) == -1)
-		{
-			fprintf(stderr, "./hls_01: cannot access %s: %s\n", argv[i],
-			strerror(errno));
-			continue;
-		}
-		if (S_ISDIR(st.st_mode))
-			list_dir(argv[i], argv[i], 1);
-		else
-			printf("%s\t", argv[i]);
-	}
-
 	if (argc == 1)
 		list_dir(".", ".", 0);
+	else if (argc == 2)
+		list_dir(argv[1], argv[1], 0);
+	else
+	{
+
+		for (i = 1; i < argc; i++)
+		{
+			if (lstat(argv[i], &st) == -1)
+			{
+				fprintf(stderr, "./hls_01: cannot access %s: %s\n", argv[i],
+				strerror(errno));
+				continue;
+			}
+			if (S_ISDIR(st.st_mode))
+				list_dir(argv[i], argv[i], 1);
+			else
+				printf("%s\t", argv[i]);
+		}
+	}
 
 	return (0);
 }
