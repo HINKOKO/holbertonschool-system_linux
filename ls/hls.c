@@ -10,9 +10,10 @@
 * list_dir - function utility for listing directory
 * @path: path to the directory / or file to display
 * @display_dirname: flag for hidding directory name in the output
+* @dirname: parameter to handle directory names if present
 */
 
-void list_dir(const char *path, int display_dirname)
+void list_dir(const char *dirname, const char *path, int display_dirname)
 {
 	struct dirent *entry;
 	DIR *dir = opendir(path);
@@ -22,12 +23,14 @@ void list_dir(const char *path, int display_dirname)
 		fprintf(stderr, "./hls_01: cannot access %s: %s\n", path, strerror(errno));
 		return;
 	}
+	if (display_dirname)
+		printf("%s:\n", dirname);
 	while ((entry = readdir(dir)))
 	{
 		if (entry->d_name[0] != '.')
 		{
-			if (display_dirname)
-				printf("%s", path);
+			/* if (display_dirname) */
+			/* printf("%s", path); */
 			printf("%s\t", entry->d_name);
 		}
 	}
@@ -57,13 +60,13 @@ int main(int argc, char *argv[])
 			continue;
 		}
 		if (S_ISDIR(st.st_mode))
-			list_dir(argv[i], argc > 2);
+			list_dir(argv[i], argv[i], 1);
 		else
 			printf("%s\t", argv[i]);
 	}
 
 	if (argc == 1)
-		list_dir(".", 0);
+		list_dir(".", ".", 0);
 
 	return (0);
 }
