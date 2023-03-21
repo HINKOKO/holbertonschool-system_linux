@@ -6,27 +6,49 @@
 
 /**
 * main - sample `ls` command
+* @argc: number of arguments passed to program
+* @argv: array of strings of args
 * Return: 0 for success, 1 for error
 */
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	struct dirent *dp;
-	DIR *dir = opendir(".");
+	DIR *dir;
 
-	if (dir == NULL)
+	if (argc < 2)
 	{
-		perror("");
-		printf("Error, unable to open the directory!");
-		return (1);
-	}
-	while ((dp = readdir(dir)))
+	/* no arguments provided, open current directory */
+		dir = opendir(".");
+		while ((dp = readdir(dir)) != NULL)
+		{
+			if (dp->d_name[0] != '.')
+				printf("%s\n", dp->d_name);
+		}
+	} else
 	{
-		if (dp->d_name[0] != '.')
-			printf("%s\t", dp->d_name);
+	/* print contents of directories and files given as arguments */
+		for (int i = 1; i < argc; i++)
+		{
+			dir = opendir(argv[i]);
+			if (dir == NULL)
+			{
+				/* argument is a file, print its name */
+				printf("%s\n", argv[i]);
+			} else
+			{
+				/* argument is a directory, print its contents */
+				printf("%s:\n", argv[i]);
+				while ((dp = readdir(dir)) != NULL)
+				{
+					if (dp->d_name[0] != '.')
+						printf("%s\n", dp->d_name);
+				}
+				closedir(dir);
+			}
+		}
 	}
-	printf("\n");
-	closedir(dir);
 	return (0);
 }
+
