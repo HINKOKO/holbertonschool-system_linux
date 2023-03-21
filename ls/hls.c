@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 		while ((dp = readdir(dir)) != NULL)
 		{
 			if (dp->d_name[0] != '.')
-				printf("%s\n", dp->d_name);
+				printf("%s\t", dp->d_name);
 		}
 	} else
 	{
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 				while ((dp = readdir(dir)) != NULL)
 				{
 					if (dp->d_name[0] != '.')
-						printf("%s\n", dp->d_name);
+						printf("%s\t", dp->d_name);
 				}
 				closedir(dir);
 			}
