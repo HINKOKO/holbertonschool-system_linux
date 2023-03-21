@@ -20,8 +20,7 @@ void list_dir(const char *dirname, const char *path, int display_dirname)
 
 	if (dir == NULL)
 	{
-		fprintf(stderr, "./hls_01: cannot access %s: %s", path, "");
-		fflush(stderr);
+		fprintf(stderr, "./hls_01: cannot access %s: ", path);
 		perror("");
 		return;
 	}
@@ -64,8 +63,7 @@ int main(int argc, char *argv[])
 		{
 			if (lstat(argv[i], &st) == -1)
 			{
-				fprintf(stderr, "./hls_01: cannot access %s: %s", argv[i], "");
-				fflush(stderr);
+				fprintf(stderr, "./hls_01: cannot access %s: ", argv[i]);
 				perror("");
 				continue;
 			}
