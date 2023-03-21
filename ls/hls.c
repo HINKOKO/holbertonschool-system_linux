@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		{
 			if (lstat(argv[i], &st) == -1)
 			{
-				fprintf(stderr, "./hls_01: cannot open %s: ", argv[i]);
+				fprintf(stderr, "./hls_01: cannot open directory %s: ", argv[i]);
 				perror("");
 				continue;
 			}
