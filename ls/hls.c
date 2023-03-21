@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <dirent.h>
+#include <string.h>
 #include <stddef.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -7,9 +8,10 @@
 /**
 * list_dir - function utility for listing directory
 * @path: path to the directory / or file to display
+* @display_dirname: flag for hidding directory name in the output
 */
 
-void list_dir(const char *path)
+void list_dir(const char *path, int display_dirname)
 {
 	struct dirent *entry;
 	DIR *dir = opendir(path);
@@ -22,7 +24,11 @@ void list_dir(const char *path)
 	while ((entry = readdir(dir)))
 	{
 		if (entry->d_name[0] != '.')
+		{
+			if (display_dirname)
+				printf("%s", path);
 			printf("%s\t", entry->d_name);
+		}
 	}
 	printf("\n");
 	closedir(dir);
@@ -40,17 +46,15 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	if (argc < 2)
-		list_dir(".");
-
-	for (i = 0; i < argc; i++)
+	for (i = 1; i < argc; i++)
 	{
-		if (i > 0)
-		{
-		printf("%s:\t", argv[i]);
-		list_dir(argv[i]);
+		list_dir(argv[i], argc > 2);
 		printf("\n");
-		}
+	}
+
+	if (argc == 1)
+	{
+		list_dir(".", 0);
 	}
 	return (0);
 }
