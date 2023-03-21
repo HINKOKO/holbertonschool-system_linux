@@ -5,13 +5,15 @@
 #include <stdlib.h>
 
 /**
-*
-*
+* list_dir - function utility for listing directory
+* @path: path to the directory / or file to display
 */
 
-void list_dir(const char *path) {
+void list_dir(const char *path)
+{
 	struct dirent *entry;
 	DIR *dir = opendir(path);
+
 	if (dir == NULL)
 	{
 		perror("");
@@ -19,8 +21,10 @@ void list_dir(const char *path) {
 	}
 	while ((entry = readdir(dir)))
 	{
-		printf("%s\t", entry->d_name);
+		if (entry->d_name[0] != '.')
+			printf("%s\t", entry->d_name);
 	}
+	printf("\n");
 	closedir(dir);
 }
 
@@ -41,9 +45,12 @@ int main(int argc, char *argv[])
 
 	for (i = 0; i < argc; i++)
 	{
+		if (i > 0)
+		{
 		printf("%s:\t", argv[i]);
 		list_dir(argv[i]);
 		printf("\n");
+		}
 	}
 	return (0);
 }
