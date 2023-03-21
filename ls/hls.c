@@ -21,7 +21,7 @@ void list_dir(const char *dirname, const char *path, int display_dirname)
 	if (dir == NULL)
 	{
 		if (errno == ENOENT)
-			fprintf(stderr, "./hls_01: cannot access directory %s: ", path);
+			fprintf(stderr, "./hls_01: cannot access %s: ", path);
 		else if (errno == EACCES)
 			fprintf(stderr, "./hls_01: cannot open directory %s: ", path);
 		perror("");
