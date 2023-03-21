@@ -5,6 +5,26 @@
 #include <stdlib.h>
 
 /**
+*
+*
+*/
+
+void list_dir(const char *path) {
+	struct dirent *entry;
+	DIR *dir = opendir(path);
+	if (dir == NULL)
+	{
+		perror("");
+		return;
+	}
+	while ((entry = readdir(dir)))
+	{
+		printf("%s\t", entry->d_name);
+	}
+	closedir(dir);
+}
+
+/**
 * main - sample `ls` command
 * @argc: number of arguments passed to program
 * @argv: array of strings of args
@@ -14,42 +34,18 @@
 
 int main(int argc, char *argv[])
 {
-	struct dirent *dp;
-	DIR *dir;
 	int i;
 
 	if (argc < 2)
+		list_dir(".");
+
+	for (i = 0; i < argc; i++)
 	{
-	/* no arguments provided, open current directory */
-		dir = opendir(".");
-		while ((dp = readdir(dir)) != NULL)
-		{
-			if (dp->d_name[0] != '.')
-				printf("%s\t", dp->d_name);
-		}
-	} else
-	{
-	/* print contents of directories and files given as arguments */
-		for (i = 1; i < argc; i++)
-		{
-			dir = opendir(argv[i]);
-			if (dir == NULL)
-			{
-				/* argument is a file, print its name */
-				printf("%s\n", argv[i]);
-			} else
-			{
-				/* argument is a directory, print its contents */
-				printf("%s:\n", argv[i]);
-				while ((dp = readdir(dir)) != NULL)
-				{
-					if (dp->d_name[0] != '.')
-						printf("%s\t", dp->d_name);
-				}
-				closedir(dir);
-			}
-		}
+		printf("%s:\t", argv[i]);
+		list_dir(argv[i]);
+		printf("\n");
 	}
 	return (0);
 }
+
 
