@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
@@ -21,10 +22,17 @@ void list_dir(const char *dirname, const char *path, int display_dirname)
 	if (dir == NULL)
 	{
 		if (errno == ENOENT)
+		{
 			fprintf(stderr, "./hls_01: cannot access %s: ", path);
+			perror("");
+		}
 		else if (errno == EACCES)
+		{
 			fprintf(stderr, "./hls_01: cannot open directory %s: ", path);
-		perror("");
+			perror("");
+		}
+		else
+			printf("%s\t", path);
 		return;
 	}
 	if (display_dirname)
@@ -70,14 +78,15 @@ int main(int argc, char *argv[])
 				perror("");
 				continue;
 			}
-			if (S_ISDIR(st.st_mode))
-				list_dir(argv[i], argv[i], 1);
 			else
-				printf("%s\t", argv[i]);
+			{
+				if (S_ISDIR(st.st_mode))
+					list_dir(argv[i], argv[i], 1);
+				else
+					printf("%s\t", argv[i]);
+			}
 		}
 	}
-
 	return (0);
 }
-
 
