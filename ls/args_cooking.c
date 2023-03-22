@@ -14,6 +14,6 @@ void args_cooking(int argc, char *argv[], int *col)
 	for (i = 1; i < argc; i++)
 	{
 		if (_strcmp(argv[i], "-1") == 0)
-			col = 1;
+			*col = 1;
 	}
 }
