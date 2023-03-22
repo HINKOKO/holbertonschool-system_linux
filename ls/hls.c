@@ -12,9 +12,11 @@
 * @path: path to the directory / or file to display
 * @display_dirname: flag for hidding directory name in the output
 * @dirname: parameter to handle directory names if present
+* @col: flag to switch col/tabs if option inputed or not
 */
 
-void list_dir(const char *dirname, const char *path, int display_dirname)
+void list_dir(const char *dirname, const char *path, int display_dirname,
+int col)
 {
 	struct dirent *entry;
 	DIR *dir = opendir(path);
@@ -37,17 +39,40 @@ void list_dir(const char *dirname, const char *path, int display_dirname)
 	}
 	if (display_dirname)
 		printf("%s:\n", dirname);
+
 	while ((entry = readdir(dir)))
 	{
 		if (entry->d_name[0] != '.')
 		{
-			/* if (display_dirname) */
-			/* printf("%s", path); */
-			printf("%s\t", entry->d_name);
+			if (col)
+			{
+				printf("%s\n", entry->d_name);
+			}
+			else
+				printf("%s\t", entry->d_name);
 		}
 	}
+
 	printf("\n\n");
 	closedir(dir);
+}
+
+/**
+* args_cooking - helper function to handle option in command
+* @argc: number of arguments passed to program
+* @argv: array of strings of args
+* @col: flag to switch the display, col or tabs
+*/
+
+void args_cooking(int argc, char *argv[], int *col)
+{
+	int i;
+
+	for (i = 1; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-1") == 0)
+			*col = 1;
+	}
 }
 
 /**
@@ -62,16 +87,22 @@ int main(int argc, char *argv[])
 {
 	int i;
 	struct stat st;
+	int col = 0;
+
+	args_cooking(argc, argv, &col);
 
 	if (argc == 1)
-		list_dir(".", ".", 0);
+		list_dir(".", ".", 0, col);
 	else if (argc == 2)
-		list_dir(argv[1], argv[1], 0);
+		list_dir(argv[1], argv[1], 0, col);
 	else
 	{
 
 		for (i = 1; i < argc; i++)
 		{
+			if (strcmp(argv[i], "-1") == 0)
+				continue;
+
 			if (lstat(argv[i], &st) == -1)
 			{
 				fprintf(stderr, "./hls_01: cannot access %s: ", argv[i]);
@@ -81,7 +112,7 @@ int main(int argc, char *argv[])
 			else
 			{
 				if (S_ISDIR(st.st_mode))
-					list_dir(argv[i], argv[i], 1);
+					list_dir(argv[i], argv[i], 1, col);
 				else
 					printf("%s\t", argv[i]);
 			}
