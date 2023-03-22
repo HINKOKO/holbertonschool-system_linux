@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <string.h>
-#include <stddef.h>
-#include <errno.h>
-#include <stdlib.h>
+#include "hls.h"
 
 /**
 * list_dir - function utility for listing directory
@@ -70,7 +63,7 @@ void args_cooking(int argc, char *argv[], int *col)
 
 	for (i = 1; i < argc; i++)
 	{
-		if (strcmp(argv[i], "-1") == 0)
+		if (_strcmp(argv[i], "-1") == 0)
 			*col = 1;
 	}
 }
@@ -100,7 +93,7 @@ int main(int argc, char *argv[])
 
 		for (i = 1; i < argc; i++)
 		{
-			if (strcmp(argv[i], "-1") == 0)
+			if (_strcmp(argv[i], "-1") == 0)
 				continue;
 
 			if (lstat(argv[i], &st) == -1)
@@ -120,4 +113,23 @@ int main(int argc, char *argv[])
 	}
 	return (0);
 }
+
+/**
+* _strcmp - self strcmp to avoid not allowed function
+* @s1: string 1 to be compared
+* @s2: string 2 to be compared
+* Return: 0 success, 1 failure
+*/
+
+int _strcmp(char *s1, char *s2)
+{
+	int i = 0, j = 0;
+
+	while (s1[j] != '\0')
+		i++;
+	while (s1[i] == s2[i] && i < j)
+		j++;
+	return (s1[i] - s2[i]);
+}
+
 
