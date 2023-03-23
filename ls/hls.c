@@ -19,7 +19,9 @@ int col)
 	{
 		if (errno == ENOENT)
 		{
-			fprintf(stderr, "./hls_01: cannot access %s: ", path);
+			if (!col)
+				fprintf(stderr, "./hls_01: cannot access %s: ", path);
+			fprintf(stderr, "./hls_02: cannot access %s: ", path);
 			perror("");
 		}
 		else if (errno == EACCES)
@@ -42,9 +44,7 @@ int col)
 		if (entry->d_name[0] != '.')
 		{
 			if (col)
-			{
 				printf("%s\n", entry->d_name);
-			}
 			else
 				printf("%s\t", entry->d_name);
 		}
