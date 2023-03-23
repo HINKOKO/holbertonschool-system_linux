@@ -17,7 +17,7 @@ int col)
 
 	if (dir == NULL)
 	{
-		if (errno == ENOENT && col == 0)
+		if (errno == ENOENT)
 		{
 			fprintf(stderr, "./hls_01: cannot access %s: ", path);
 			perror("");
