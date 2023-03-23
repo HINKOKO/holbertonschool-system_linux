@@ -17,7 +17,6 @@ int main(int argc, char *argv[]);
 /* about strings functions */
 int _strcmp(char const *s1, char *s2);
 
-/* for arguments manipulation */
-char *opts_finder(int argc, char *argv[]);
+
 
 #endif

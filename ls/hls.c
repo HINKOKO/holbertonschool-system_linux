@@ -19,9 +19,7 @@ int col)
 	{
 		if (errno == ENOENT)
 		{
-			if (!col)
-				fprintf(stderr, "./hls_01: cannot access %s: ", path);
-			fprintf(stderr, "./hls_02: cannot access %s: ", path);
+			fprintf(stderr, "./hls_01: cannot access %s: ", path);
 			perror("");
 		}
 		else if (errno == EACCES)
@@ -30,11 +28,7 @@ int col)
 			perror("");
 		}
 		else
-		{
-			if (col == 0)
-				printf("%s\t", path);
-			printf("%s\n", path);
-		}
+			printf("%s\t", path);
 		return;
 	}
 	if (display_dirname)
@@ -44,12 +38,14 @@ int col)
 		if (entry->d_name[0] != '.')
 		{
 			if (col)
+			{
 				printf("%s\n", entry->d_name);
+			}
 			else
 				printf("%s\t", entry->d_name);
 		}
 	}
-	printf("\n");
+	printf("\n\n");
 	closedir(dir);
 }
 
@@ -66,27 +62,24 @@ int main(int argc, char *argv[])
 	int i;
 	struct stat st;
 	int col = 0;
-	char *options = NULL;
 
-	options = opts_finder(argc, argv);
+	if (argc > 1 && _strcmp(argv[1], "-1") == 0)
+	{
+		col = 1;
+		argc--;
+		argv++;
+	}
+
 	if (argc == 1)
 		list_dir(".", ".", 0, col);
-	else if (argc == 2 && _strcmp(argv[1], "-1") != 0)
+	else if (argc == 2)
 		list_dir(argv[1], argv[1], 0, col);
-	else if (argc == 2 && options)
-		list_dir(".", ".", 0, 1);
-	else if (argc == 3 && options)
-		list_dir(argv[1], argv[1], 0, 1);
 	else
 	{
-		if (options)
-		{
-			col = 1;
-			argc--;
-		}
+
 		for (i = 1; i < argc; i++)
 		{
-			if (lstat(argv[i], &st) == -1 && col == 0)
+			if (lstat(argv[i], &st) == -1)
 			{
 				fprintf(stderr, "./hls_01: cannot access %s: ", argv[i]);
 				perror("");
@@ -100,10 +93,8 @@ int main(int argc, char *argv[])
 					printf("%s\t", argv[i]);
 			}
 		}
-		}
-	free(options);
+	}
 	return (0);
 }
-
 
 
