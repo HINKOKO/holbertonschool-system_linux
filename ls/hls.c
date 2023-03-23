@@ -17,7 +17,7 @@ int col)
 
 	if (dir == NULL)
 	{
-		if (errno == ENOENT)
+		if (errno == ENOENT && col == 0)
 		{
 			fprintf(stderr, "./hls_01: cannot access %s: ", path);
 			perror("");
@@ -28,7 +28,11 @@ int col)
 			perror("");
 		}
 		else
-			printf("%s\t", path);
+		{
+			if (col == 0)
+				printf("%s\t", path);
+			printf("%s\n", path);
+		}
 		return;
 	}
 	if (display_dirname)
@@ -62,24 +66,26 @@ int main(int argc, char *argv[])
 	int i;
 	struct stat st;
 	int col = 0;
+	char *options = NULL;
 
-	if (argc > 1 && _strcmp(argv[1], "-1") == 0)
-	{
-		col = 1;
-		argc--;
-		argv++;
-	}
-
+	options = opts_finder(argc, argv);
 	if (argc == 1)
 		list_dir(".", ".", 0, col);
-	else if (argc == 2)
+	else if (argc == 2 && _strcmp(argv[1], "-1") != 0)
 		list_dir(argv[1], argv[1], 0, col);
+	else if (argc == 2 && options)
+		list_dir(".", ".", 0, 1);
 	else
 	{
-
+		if (options)
+		{
+			printf("banged!");
+			col = 1;
+			argc--;
+		}
 		for (i = 1; i < argc; i++)
 		{
-			if (lstat(argv[i], &st) == -1)
+			if (lstat(argv[i], &st) == -1 && col == 0)
 			{
 				fprintf(stderr, "./hls_01: cannot access %s: ", argv[i]);
 				perror("");
@@ -93,7 +99,7 @@ int main(int argc, char *argv[])
 					printf("%s\t", argv[i]);
 			}
 		}
-	}
+		}
 	return (0);
 }
 
