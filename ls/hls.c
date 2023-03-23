@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
 	{
 		if (options)
 		{
-			printf("banged!");
 			col = 1;
 			argc--;
 		}
