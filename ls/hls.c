@@ -49,7 +49,7 @@ int col)
 				printf("%s\t", entry->d_name);
 		}
 	}
-	printf("\n\n");
+	printf("\n");
 	closedir(dir);
 }
 
