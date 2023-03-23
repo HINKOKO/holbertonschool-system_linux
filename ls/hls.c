@@ -75,6 +75,8 @@ int main(int argc, char *argv[])
 		list_dir(argv[1], argv[1], 0, col);
 	else if (argc == 2 && options)
 		list_dir(".", ".", 0, 1);
+	else if (argc == 3 && options)
+		list_dir(argv[1], argv[1], 0, 1);
 	else
 	{
 		if (options)
@@ -99,6 +101,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		}
+	free(options);
 	return (0);
 }
 
