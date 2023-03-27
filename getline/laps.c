@@ -18,12 +18,15 @@ void race_state(int *id, size_t size)
 
 	if (!size)
 	{
-		/* free memory allocated properly */
+		/* free memory allocated properly step-by-step */
 		while (head)
 		{
-			head = head->next;
+			node = head->next;
 			free(head);
+			/* set the "new" head for the while to roll on */
+			head = node;
 		}
+		return;
 	}
 
 	for (i = 0; i < size; i++)
@@ -77,4 +80,3 @@ void newcar(car_t **head, int id)
 		printf("Car %d joined the race\n", id);
 	}
 }
-
