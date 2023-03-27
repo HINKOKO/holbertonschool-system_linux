@@ -62,6 +62,8 @@ void newcar(car_t **head, int id)
 		return;
 	}
 
+	free(new);
+
 	for (new = *head; new->next != NULL && new->next->id <= id; new = new->next)
 		;
 	/* semi-colon "trick" to execute the loop with empty body */
