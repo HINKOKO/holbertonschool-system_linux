@@ -12,7 +12,7 @@ char *_getline(const int fd)
 	static char buffer[READ_SIZE];
 	static char *p = buffer;
 	static int bytes_read;
-	char *line = NULL;
+	char *line, *tmp = NULL;
 	int bytes_used, end_of_line = 0;
 
 	while (!end_of_line)
