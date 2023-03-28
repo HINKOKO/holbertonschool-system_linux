@@ -33,7 +33,7 @@ char *_getline(const int fd)
 				bytes_used++;
 		}
 		/* allocate memory for line and copy buffer content */
-		char *tmp = realloc(line, bytes_used + 1);
+		*tmp = realloc(line, bytes_used + 1);
 
 		if (!tmp)
 		{
