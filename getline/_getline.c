@@ -43,8 +43,8 @@ char *_getline(const int fd)
 			return (NULL);
 		}
 		line = tmp;
-		strncpy(line + strlen(line), p, bytes_used);
-		line[bytes_used + strlen(line)] = '\0';
+		strncpy(line + _strlen(line), p, bytes_used);
+		line[bytes_used + _strlen(line)] = '\0';
 
 		/* Update buffer pointer and bytes being read */
 		p += bytes_used + 1;
