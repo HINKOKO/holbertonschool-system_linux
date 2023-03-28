@@ -12,8 +12,10 @@ char *_getline(const int fd)
 	static char buffer[READ_SIZE];
 	static char *p = buffer;
 	static int bytes_read;
-	char *line, *tmp = NULL;
-	int bytes_used, end_of_line = 0;
+	char *line = NULL;
+	char *tmp = NULL;
+	int bytes_used = 0;
+	int end_of_line = 0;
 
 	while (!end_of_line)
 	{
@@ -33,7 +35,7 @@ char *_getline(const int fd)
 				bytes_used++;
 		}
 		/* allocate memory for line and copy buffer content */
-		*tmp = realloc(line, bytes_used + 1);
+		tmp = realloc(line, bytes_used + 1);
 
 		if (!tmp)
 		{
