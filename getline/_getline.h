@@ -11,6 +11,8 @@
 
 /* little custom getline */
 char *_getline(const int fd);
+int _strlen(const char *str);
+
 
 
 #endif /* __CUSTOMGETLINE__ */

@@ -53,3 +53,24 @@ char *_getline(const int fd)
 	}
 	return (line);
 }
+
+/**
+ * _strlen - custom strlen function
+ * @str: the string to computes length of
+ * Return: the length of str
+*/
+
+int _strlen(const char *str)
+{
+	int len = 0;
+
+	if (str)
+	{
+		while (*str != '\0')
+		{
+			str++;
+			len++;
+		}
+	}
+	return (len);
+}
