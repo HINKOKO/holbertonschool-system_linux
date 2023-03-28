@@ -9,27 +9,45 @@
 
 char *_getline(const int fd)
 {
-	char *buff = malloc(READ_SIZE + 1);
-	int bytes_read = 0;
+	static char buffer[READ_SIZE];
+	static char *p = buffer;
+	static int bytes_read;
+	char *line = NULL;
+	int bytes_used, end_of_line = 0;
 
-	while (1) 
+	while (!end_of_line)
 	{
-		int bytes = read(fd, buff + bytes_read, READ_SIZE);
-		if (bytes == -1 || bytes == 0)
+		if (bytes_read == 0)
 		{
-			break;
+			bytes_read = read(fd, buffer, READ_SIZE);
+			p = buffer;
+			if (bytes_read == 0)
+				return (NULL);
 		}
-
-		bytes_read += bytes;
-
-		if (buff[bytes_read - 1] == '\n')
+		/* search for end of line in buffer */
+		while (bytes_used < bytes_read && !end_of_line)
 		{
-			break;
+			if (p[bytes_used] == '\n')
+				end_of_line = 1;
+			else
+				bytes_used++;
 		}
+		/* allocate memory for line and copy buffer content */
+		char *tmp = realloc(line, bytes_used + 1);
 
-		buff = realloc(buff, bytes_read + READ_SIZE + 1);
+		if (!tmp)
+		{
+			free(line);
+			return (NULL);
+		}
+		line = tmp;
+		strncpy(line + strlen(line), p, bytes_used);
+		line[bytes_used + strlen(line)] = '\0';
+
+		/* Update buffer pointer and bytes being read */
+		p += bytes_used + 1;
+		bytes_read -= bytes_used + 1;
+		bytes_used = 0;
 	}
-
-	buff[bytes_read] = '\0';
-	return (buff);
+	return (line);
 }
