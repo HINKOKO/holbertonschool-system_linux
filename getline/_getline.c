@@ -43,7 +43,6 @@ char *_getline(const int fd)
 			return (NULL);
 		}
 		line = tmp;
-		// strcpy(line, p);
 		strncpy(line, p, bytes_used);
 		line[bytes_used] = '\0';
 
