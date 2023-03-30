@@ -23,8 +23,11 @@ char *_getline(const int fd)
 		{
 			bytes_read = read(fd, buffer, READ_SIZE);
 			p = buffer;
-			if (bytes_read == 0)
-				return (NULL);
+			if (bytes_read == -1)
+			{
+				fprintf(stderr, "Nothing was read\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 		/* search for end of line in buffer */
 		while (bytes_used < bytes_read && !end_of_line)
