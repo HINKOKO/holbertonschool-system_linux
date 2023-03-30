@@ -23,7 +23,7 @@ char *_getline(const int fd)
 		{
 			bytes_read = read(fd, buffer, READ_SIZE);
 			p = buffer;
-			if (bytes_read == -1)
+			if (bytes_read == 0)
 				return (NULL);
 		}
 		/* search for end of line in buffer */
@@ -53,7 +53,6 @@ char *_getline(const int fd)
 	}
 	return (line);
 }
-
 /**
  * _strlen - custom strlen function
  * @str: the string to computes length of
