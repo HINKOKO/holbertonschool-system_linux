@@ -10,14 +10,7 @@
 
 #define READ_SIZE 1024
 
-/**
- * struct line_s - struct for storing lines/bytes read
- * on a given file descriptor
- * @fd: file descriptor to open/read
- * @buffer: buffer for storing lines being read
- * @bytes: line read in bytes
- * @next: pointer to the next node/struct
-*/
+
 
 
 /* function for our homemade getline */
