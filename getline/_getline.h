@@ -18,13 +18,7 @@
  * @bytes: line read in bytes
  * @next: pointer to the next node/struct
 */
-// typedef struct line_s
-// {
-// 	int fd;
-// 	char *buffer;
-// 	int bytes;
-// 	struct line_s *next;
-// } line_t;
+
 
 /* function for our homemade getline */
 char *_getline(const int fd);
