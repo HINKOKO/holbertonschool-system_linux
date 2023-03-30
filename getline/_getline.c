@@ -23,8 +23,9 @@ char *_getline(const int fd)
 		{
 			bytes_read = read(fd, buffer, READ_SIZE);
 			p = buffer;
-			if (bytes_read == 0)
+			if (bytes_read == 0 || bytes_read == -1)
 				return (NULL);
+				
 		}
 		/* search for end of line in buffer */
 		while (bytes_used < bytes_read && !end_of_line)
@@ -52,24 +53,4 @@ char *_getline(const int fd)
 		bytes_used = 0;
 	}
 	return (line);
-}
-/**
- * _strlen - custom strlen function
- * @str: the string to computes length of
- * Return: the length of str
-*/
-
-int _strlen(const char *str)
-{
-	int len = 0;
-
-	if (str)
-	{
-		while (*str != '\0')
-		{
-			str++;
-			len++;
-		}
-	}
-	return (len);
 }
