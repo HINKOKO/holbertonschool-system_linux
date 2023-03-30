@@ -1,12 +1,5 @@
 #include "_getline.h"
 
-/**
- * _getline - reads an entire line from a file descriptor
- * @fd: file descriptor, unique id to represent file
- * or I/O stream to read from (or write to)
- * Return: null-terminated string // newline character not included
-*/
-
 char *_getline(const int fd)
 {
 	static char buffer[READ_SIZE];
@@ -16,27 +9,42 @@ char *_getline(const int fd)
 	char *tmp = NULL;
 	int bytes_used = 0;
 	int end_of_line = 0;
+	int file_pos = 0;
+	int line_start = 0;
 
 	while (!end_of_line)
 	{
 		if (bytes_read == 0)
 		{
-			bytes_read = read(fd, buffer, READ_SIZE);
+			bytes_read = read(fd, buffer, READ_SIZE); 
 			p = buffer;
 			if (bytes_read == 0 || bytes_read == -1)
-				return (NULL);
-				
+			{
+				if (line)
+				{
+					free(line);
+					line = NULL;
+				}
+				return (line);
+			}
 		}
+
 		/* search for end of line in buffer */
 		while (bytes_used < bytes_read && !end_of_line)
 		{
 			if (p[bytes_used] == '\n')
+			{
 				end_of_line = 1;
+				line_start = file_pos + bytes_used + 1;
+			}
 			else
+			{
 				bytes_used++;
+			}
 		}
+
 		/* allocate memory for line and copy buffer content */
-		tmp = realloc(line, bytes_used + 1);
+		tmp = realloc(line, file_pos + bytes_used + 1);
 
 		if (!tmp)
 		{
@@ -44,13 +52,38 @@ char *_getline(const int fd)
 			return (NULL);
 		}
 		line = tmp;
-		strncpy(line, p, bytes_used);
-		line[bytes_used] = '\0';
+		strncpy(line + file_pos, p, bytes_used);
+		file_pos += bytes_used;
+		line[file_pos] = '\0';
 
 		/* Update buffer pointer and bytes being read */
-		p += bytes_used + 1;
-		bytes_read -= bytes_used + 1;
-		bytes_used = 0;
+		if (end_of_line)
+		{
+			p += bytes_used + 1;
+			bytes_read -= bytes_used + 1;
+			bytes_used = 0;
+		}
+		else
+		{
+			int line_length = file_pos - line_start; 
+			lseek(fd, line_start, SEEK_SET);
+			bytes_read = read(fd, buffer, READ_SIZE);
+			p = buffer;
+			bytes_used = 0;
+			file_pos = line_start;
+			if (bytes_read == 0 || bytes_read == -1)
+			{
+				end_of_line = 1;
+			}
+			else
+			{
+				/* Append the rest of the line to the buffer */
+				while (bytes_used < line_length && bytes_used < bytes_read)
+				{
+					line[file_pos++] = buffer[bytes_used++];
+				}
+			}
+		}
 	}
 	return (line);
 }
