@@ -1,72 +1,91 @@
 #include "_getline.h"
 
 /**
- * init_buffer - init a new buffer for storing chunks read
- * Return: struct defined in header
-*/
-
-t_buffer *init_buffer(void)
-{
-	static t_buffer buffer = { {0}, 0, buffer.buffer };
-
-	return (&buffer);
-}
-
-/**
- * read_line - read lines from file descritor/handle newlines
+ * _getline - reads entire lines from fd
  * @fd: file descriptor to read from
- * Return: pointer to characters line
-*/
-
-char *read_line(int fd)
-{
-	t_buffer *buffer = init_buffer();
-	char *line = NULL;
-	char *tmp = NULL;
-	int bytes_used = 0, end_of_line = 0;
-
-	while (!end_of_line)
-	{
-		if (buffer->bytes_read <= 0)
-		{
-			buffer->bytes_read = read(fd, buffer->buffer, READ_SIZE);
-			buffer->p = buffer->buffer;
-			if (buffer->bytes_read <= 0 || buffer->bytes_read == -1)
-				return (NULL);
-		}
-		/* look for end of line in buffer */
-		while (bytes_used <= buffer->bytes_read && !end_of_line)
-		{
-			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\000')
-				end_of_line = 1;
-			else
-				bytes_used++;
-		}
-		/* then allocate memory for line and copy buffer content */
-		tmp = realloc(line, bytes_used + 1);
-		if (!tmp)
-		{
-			free(line);
-			return (NULL);
-		}
-		line = tmp;
-		strncpy(line, buffer->p, bytes_used);
-		line[bytes_used] = '\0';
-		/* Update buffer */
-		buffer->p += bytes_used + 1;
-		buffer->bytes_read -= bytes_used + 1;
-		bytes_used = 0;
-	}
-	return (line);
-}
-
-/**
- * _getline - 'main' function
- * @fd: file descriptor
- * Return: pointer to line of chars
+ * Return: pointer to strings chars
 */
 
 char *_getline(const int fd)
 {
-	return (read_line(fd));
+	static line_t *lines;
+	line_t *new_chunk;
+	char *draft;
+	int bytes_read;
+
+	new_chunk = lines;
+	while (new_chunk)
+	{
+		if (new_chunk->fd == fd)
+		{
+			if (new_chunk->bytes <= 0)
+				new_chunk->bytes = read(fd, new_chunk->buff, READ_SIZE);
+			return (cook_line(new_chunk));
+		}
+		new_chunk = new_chunk->next;
+	}
+	draft = malloc(sizeof(char) * READ_SIZE);
+	bytes_read = read(fd, draft, READ_SIZE);
+	if (bytes_read <= 0)
+	{
+		free(draft);
+		return (NULL);
+	}
+	new_chunk = malloc(sizeof(line_t));
+	if (!new_chunk)
+		return (NULL);
+	new_chunk->fd = fd;
+	new_chunk->bytes = bytes_read;
+	new_chunk->buff = draft;
+	new_chunk->next = lines;
+	lines = new_chunk;
+	return (cook_line(lines));
+}
+/**
+ * cook_line - to handle newline // chars remaining in buffer
+ * @lines: pointer to struct holding chunk of chars
+ * Return: pointer to start of line of chars being handled
+*/
+
+char *cook_line(line_t *lines)
+{
+	int i, j, size = 0, bytes_copy = 0;
+	char *line = NULL, *tmp;
+
+	while (lines->bytes > 0)
+	{
+		if (size < bytes_copy + lines->bytes + 1)
+		{
+			size += lines->bytes + 1;
+			tmp = malloc(sizeof(char) * size);
+			if (!tmp)
+			{
+				free(line);
+				return (NULL);
+			}
+			memcpy(tmp, line, bytes_copy);
+			memset(tmp + bytes_copy, '\0', size - bytes_copy);
+			free(line); /* free the empty line */
+			line = tmp; /* set new address */
+		}
+		for (i = 0; i < READ_SIZE; i++)
+			if (lines->buff[i] == '\n')
+			{
+				lines->buff[i++] = '\0';
+				lines->bytes -= i;
+				memcpy(line + bytes_copy, lines->buff, i);
+				/* don't loose remaining chars ==> move them */
+				for (j = 0; i < READ_SIZE; j++, i++)
+					lines->buff[j] = lines->buff[i];
+				/* continue loop */
+				for (; j < READ_SIZE; j++)
+					lines->buff[j] = '\0'; /* remaining buff properly set */
+				return (line);
+			}
+		/* if no newlines found just copy what's being read */
+		memcpy(line + bytes_copy, lines->buff, lines->bytes);
+		bytes_copy += lines->bytes;
+		lines->bytes = read(lines->fd, lines->buff, READ_SIZE);
+		}
+		return (line);
 }

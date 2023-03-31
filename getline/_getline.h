@@ -8,33 +8,29 @@
 #include <string.h>
 #include <errno.h>
 
-#define READ_SIZE 2568
+#define READ_SIZE 1024
 
 /**
- * struct s_buffer - struct for reading
- * and storing chunks of char/bytes/lines coming from the fd
- * @buffer: the buffer to store our chunks
- * @p: pointer to buffer
- * @bytes_read: the chars/data we will read
+ * struct line_s - struct of linked list to store our chunks
+ * of lines being read
+ * @fd: file descriptor to read from
+ * @bytes: bytes being read
+ * @buff: pointer to buff eating chars
+ * @next: pointer to next struct/node
 */
 
-typedef struct s_buffer
+typedef struct line_s
 {
-	char buffer[READ_SIZE];
-	int bytes_read;
-	char *p;
-} t_buffer;
+	int fd;
+	int bytes;
+	char *buff;
+	struct line_s *next;
+} line_t;
 
 
 /* function for our homemade getline */
 char *_getline(const int fd);
-char *read_line(int fd);
-t_buffer *init_buffer(void);
-
-
-
-
-
+char *cook_line(line_t *lines);
 
 
 #endif /* __CUSTOMGETLINE__ */
