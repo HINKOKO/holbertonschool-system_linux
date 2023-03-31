@@ -32,13 +32,13 @@ char *read_line(int fd)
 		{
 			buffer->bytes_read = read(fd, buffer->buffer, READ_SIZE);
 			buffer->p = buffer->buffer;
-			if (buffer->bytes_read == 0 || buffer->bytes_read == -1)
+			if (buffer->bytes_read <= 0 || buffer->bytes_read == -1)
 				return (NULL);
 		}
 		/* look for end of line in buffer */
 		while (bytes_used < buffer->bytes_read && !end_of_line)
 		{
-			if (buffer->p[bytes_used] == '\n')
+			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\000')
 				end_of_line = 1;
 			else
 				bytes_used++;
