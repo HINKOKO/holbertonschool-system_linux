@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define READ_SIZE 2056
+#define READ_SIZE 2568
 
 /**
  * struct s_buffer - struct for reading
