@@ -1,17 +1,26 @@
 #include "_getline.h"
 
 /**
- * _getline - reads an entire line from a file descriptor
- * @fd: file descriptor, unique id to represent file
- * or I/O stream to read from (or write to)
- * Return: null-terminated string // newline character not included
+ * init_buffer - init a new buffer for storing chunks read
+ * Return: struct defined in header
 */
 
-char *_getline(const int fd)
+t_buffer *init_buffer(void)
 {
-	static char buffer[READ_SIZE];
-	static char *p = buffer;
-	static int bytes_read;
+	static t_buffer buffer = { {0}, 0, buffer.buffer };
+
+	return (&buffer);
+}
+
+/**
+ * read_line - read lines from file descritor/handle newlines
+ * @fd: file descriptor to read from
+ * Return: pointer to characters line
+*/
+
+char *read_line(int fd)
+{
+	t_buffer *buffer = init_buffer();
 	char *line = NULL;
 	char *tmp = NULL;
 	int bytes_used = 0;
@@ -19,38 +28,46 @@ char *_getline(const int fd)
 
 	while (!end_of_line)
 	{
-		if (bytes_read == 0)
+		if (buffer->bytes_read == 0)
 		{
-			bytes_read = read(fd, buffer, READ_SIZE);
-			p = buffer;
-			if (bytes_read == 0 || bytes_read == -1)
+			buffer->bytes_read = read(fd, buffer->buffer, READ_SIZE);
+			buffer->p = buffer->buffer;
+			if (buffer->bytes_read == 0 || buffer->bytes_read == -1)
 				return (NULL);
-				
 		}
-		/* search for end of line in buffer */
-		while (bytes_used < bytes_read && !end_of_line)
+		/* look for end of line in buffer */
+		while (bytes_used < buffer->bytes_read && !end_of_line)
 		{
-			if (p[bytes_used] == '\n')
+			if (buffer->p[bytes_used] == '\n')
 				end_of_line = 1;
 			else
 				bytes_used++;
 		}
-		/* allocate memory for line and copy buffer content */
+		/* then allocate memory for line and copy buffer content */
 		tmp = realloc(line, bytes_used + 1);
-
 		if (!tmp)
 		{
 			free(line);
 			return (NULL);
 		}
 		line = tmp;
-		strncpy(line, p, bytes_used);
+		strncpy(line, buffer->p, bytes_used);
 		line[bytes_used] = '\0';
-
-		/* Update buffer pointer and bytes being read */
-		p += bytes_used + 1;
-		bytes_read -= bytes_used + 1;
+		/* Update buffer */
+		buffer->p += bytes_used + 1;
+		buffer->bytes_read -= bytes_used + 1;
 		bytes_used = 0;
 	}
 	return (line);
+}
+
+/**
+ * _getline - 'main' function
+ * @fd: file descriptor
+ * Return: pointer to line of chars
+*/
+
+char *_getline(const int fd)
+{
+	return (read_line(fd));
 }

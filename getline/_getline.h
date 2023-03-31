@@ -10,12 +10,31 @@
 
 #define READ_SIZE 1024
 
+/**
+ * struct s_buffer - struct for reading
+ * and storing chunks of char/bytes/lines coming from the fd
+ * @buffer: the buffer to store our chunks
+ * @p: pointer to buffer
+ * @bytes_read: the chars/data we will read
+*/
 
+typedef struct s_buffer
+{
+	char buffer[READ_SIZE];
+	int bytes_read;
+	char *p;
+} t_buffer;
 
 
 /* function for our homemade getline */
 char *_getline(const int fd);
-int _strlen(const char *str);
+char *read_line(int fd);
+t_buffer *init_buffer(void);
+
+
+
+
+
 
 
 
