@@ -33,11 +33,12 @@ char *read_line(int fd)
 			buffer->p = buffer->buffer;
 			if (buffer->bytes_read <= 0 || buffer->bytes_read == -1)
 				return (NULL);
+			// printf("%s", buffer->p);
 		}
 		/* look for end of line in buffer */
 		while (bytes_used <= buffer->bytes_read && !end_of_line)
 		{
-			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\0')
+			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\000')
 				end_of_line = 1;
 			else
 				bytes_used++;
@@ -56,8 +57,6 @@ char *read_line(int fd)
 		buffer->p += bytes_used + 1;
 		buffer->bytes_read -= bytes_used + 1;
 		bytes_used = 0;
-		if (buffer->bytes_read < READ_SIZE)
-			break;
 	}
 	return (line);
 }
