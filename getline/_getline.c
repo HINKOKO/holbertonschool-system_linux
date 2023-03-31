@@ -23,8 +23,7 @@ char *read_line(int fd)
 	t_buffer *buffer = init_buffer();
 	char *line = NULL;
 	char *tmp = NULL;
-	int bytes_used = 0;
-	int end_of_line = 0;
+	int bytes_used = 0, end_of_line = 0;
 
 	while (!end_of_line)
 	{
@@ -57,6 +56,8 @@ char *read_line(int fd)
 		buffer->p += bytes_used + 1;
 		buffer->bytes_read -= bytes_used + 1;
 		bytes_used = 0;
+		if (buffer->bytes_read < READ_SIZE)
+			break;
 	}
 	return (line);
 }
