@@ -11,10 +11,8 @@ void race_state(int *id, size_t size)
 {
 	size_t i;
 	static car_t *head, *node;
-	/* need `static` for the values of laps to persists */
-	/* between the function calls */
-	/* of `race_state` inside the main */
-	/* otherwise laps remain forever to 0 */
+	/* `static` needed in order to make persistent */
+	/* between the function calls of newcar() */
 	if (!size)
 	{
 		while (head)
@@ -52,6 +50,7 @@ void newcar(car_t **head, int id)
 	if (!new)
 		return;
 
+	/* second part of check to be sure it remains sorted */
 	if (*head == NULL || id < (*head)->id)
 	{
 		new->id = id;
