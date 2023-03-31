@@ -13,8 +13,16 @@ char *_getline(const int fd)
 	char *draft;
 	int bytes_read;
 
-	new_chunk = lines;
-	while (new_chunk)
+	if (fd == -1)
+	{
+		for (new_chunk = lines; new_chunk != NULL; new_chunk = new_chunk->next)
+		{
+			free(new_chunk->buff);
+			free(new_chunk);
+		}
+		return (NULL);
+	}
+	for (new_chunk = lines; new_chunk != NULL; new_chunk = new_chunk->next)
 	{
 		if (new_chunk->fd == fd)
 		{
@@ -22,7 +30,6 @@ char *_getline(const int fd)
 				new_chunk->bytes = read(fd, new_chunk->buff, READ_SIZE);
 			return (cook_line(new_chunk));
 		}
-		new_chunk = new_chunk->next;
 	}
 	draft = malloc(sizeof(char) * READ_SIZE);
 	bytes_read = read(fd, draft, READ_SIZE);
