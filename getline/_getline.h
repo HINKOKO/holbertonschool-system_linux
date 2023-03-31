@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define READ_SIZE 1024
+#define READ_SIZE 2056
 
 /**
  * struct s_buffer - struct for reading
@@ -30,7 +30,6 @@ typedef struct s_buffer
 char *_getline(const int fd);
 char *read_line(int fd);
 t_buffer *init_buffer(void);
-
 
 
 
