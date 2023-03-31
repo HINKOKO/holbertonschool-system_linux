@@ -38,7 +38,7 @@ char *read_line(int fd)
 		/* look for end of line in buffer */
 		while (bytes_used <= buffer->bytes_read && !end_of_line)
 		{
-			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\000')
+			if (buffer->p[bytes_used] == '\n' || buffer->p[bytes_used] == '\0')
 				end_of_line = 1;
 			else
 				bytes_used++;
