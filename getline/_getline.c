@@ -28,7 +28,7 @@ char *read_line(int fd)
 
 	while (!end_of_line)
 	{
-		if (buffer->bytes_read <= 0)
+		if (buffer->bytes_read == 0)
 		{
 			buffer->bytes_read = read(fd, buffer->buffer, READ_SIZE);
 			buffer->p = buffer->buffer;
