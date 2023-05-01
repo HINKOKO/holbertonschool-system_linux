@@ -2,7 +2,7 @@
 
 ## **Learnings**
 
-- What is the /proc filesystem <br>
+- **What is the /proc filesystem** <br>
 	The ***`proc filesystem`*** acts as an interface to internal data structures in the kernel. <br>
 	Therefore, it can be used to retrieve informations about the system, and also for changing certain kernel parameters at runtime (sysctl). <br>
 	So our ***`proc/ filesystem`*** provides a view of the current state of the kernel, processes, and system resources as a hierarchy of files and directoryes. <br>
@@ -16,7 +16,22 @@
 Note that some tools and utilities in Linux uses the `/proc` filesystem to gather infos, for example => the famous ***`ps`*** command reads information from `/proc` to display a list of running processes on the system, you can also think about ***`top`*** command which uses `/proc` also to display system resource usage in real time, Yay ! <br>
 ==> If you want to take a look at what proc filesystem contains, you may run > cat /proc/self/status (or replace self with a valid PID)
 
-- What is the /proc/maps file
+[Additional resource (IBM)](https://www.ibm.com/support/pages/purpose-proc-file-system#:~:text=The%20%2Fproc%20file%20system%20is,and%20thread%20in%20the%20system.)
+
+- **What is the /proc/maps file**
+	The ***`/proc/maps*** file contains the currently detailed view of mapped memory regions and their access permissions. Each line in the file represents a mmeory region that is currently mapped by a process, provides information about the start and end addresses of the region, permissions, the name of the file or library that the memory region is associated with.
+	The format of each line that file is as follows:
+	```
+	address       perms  offset  dev  inode      pathname
+	```
+	With:
+	- **address:** the start && end of memory region, in hexadecimal format.
+	- **perms:** set of permissions for memory region, combination of r-w-x-s-p for **r**ead, **w**rite, e**x**ecute, **s**hared, **p**rivate.
+	- **offset:** offset into the mapping.
+	- **dev:** device number [major:minor] that the file or library resides on.
+	- **inode:** the inode number. (0 indicates that no inode is associated with memory region, as the case would be with BSS - uninitialized data).
+	- **pathname:** show the name associated file for this mapping. If no association, if shows [heap], [stack], or [vdso] (virtual dynamic shared object, the kernel system call handler).
+
 - What is the /proc/mem file
 - What is the link between those two files
 - How does the virtual memory map into the RAM
