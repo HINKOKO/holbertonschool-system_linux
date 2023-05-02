@@ -96,7 +96,7 @@ for line in _maps:
 
     # write new truth about banana
     _mem.seek(addr_start + i)
-    _mem.write(bytes(write_string, "ASCII"))
+    _mem.write(bytes(write_string + "\0", "ASCII"))
 
     # close files and your house
     _maps.close()
