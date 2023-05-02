@@ -30,7 +30,7 @@ search_string = str(sys.argv[2])
 if search_string == "":
     print_err()
 write_string = str(sys.argv[3])
-if search_string == "":
+if write_string == "":
     print_err()
 
 # let's get the maps and mem files of the concerned process
