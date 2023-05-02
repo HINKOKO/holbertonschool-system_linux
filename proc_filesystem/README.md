@@ -32,6 +32,10 @@ Note that some tools and utilities in Linux uses the `/proc` filesystem to gathe
 	- **inode:** the inode number. (0 indicates that no inode is associated with memory region, as the case would be with BSS - uninitialized data).
 	- **pathname:** show the name associated file for this mapping. If no association, if shows [heap], [stack], or [vdso] (virtual dynamic shared object, the kernel system call handler).
 
-- What is the /proc/mem file
+- What is the /proc/[PID]/mem file
+	Simply put from the man " man proc " <em>This file can be used to access the **pages** of a process's memory via system calls like read(), open() , lseek() </em> <br>
+	Did you page ? what the hell is that ? wait for my blogpost :wink:
+- And what is the /proc/meminfo file?
+	The ***`/proc/meminfo`*** file provides informations about distribution and utilization of memory, running a > cat /proc/meminfo will give you infos about the system's memory usage, including total amount of memory, amount of free memory, amount of memory used by different types of data structures, such as kernel code, buffers and caches.
 - What is the link between those two files
 - How does the virtual memory map into the RAM
