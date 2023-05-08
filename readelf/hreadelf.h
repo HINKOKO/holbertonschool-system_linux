@@ -2,6 +2,8 @@
 #define __HELF__
 
 #include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <elf.h>
 
 
