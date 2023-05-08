@@ -13,13 +13,26 @@
 - **What kind of files are in the ELF format**
 
 - **What are the different parts that constitute an ELF file**
-	ELF file always starts with the **header** (mandatory part)
+	ELF file always starts with the **header**
 	besides the header, we've got these parts:
-	- Program headers or Segments
-	- Section headers or Sections
-	- Data
+	- Program headers or **Segments**
+	- Section headers or **Sections**
+	- **Data**
 
-- What information are present in the file header
-- What information are present in the sections header table
-- What information are present in the program header table
-- How to parse an ELF file using C structures
+- **What information are present in the file header**
+	Among the different fields we can find, here are some of interests:
+	- **Magic** => ELF starts with **`Magic`** What an intro ! This kind of "Magic" provides information about the file. The first 4 hexadecimals numbers are known as "the magic number", if we look at them carefully we got this: <br>
+	45 = E
+	4c = F
+	46 = F
+	Enigma cracked ! we got ELF for the ELF File header.
+	Good, and what about the " 7f " ? it represents the file formant and the architecture of the ELF Binary file, **" 7f "** is known as the **"ELF identification byte "** or **"EI_MAGO "**, its purpose is a file identification marker and is always set to the value **" 0x7f "** for ELF Files.
+	- **Class** => This value is for specifying the architecture of the file,
+	either **32-bit (=01)** or **64-bit (=02)** architecture.
+	- **Data** => Data field will get either 01 for **LSB** (Least Significant Bit, little-endian) or 02 for **MSB** (Most Significant Bit, big-endian).
+	This value is helpful to correctly interpret the remaining parts within the ELF file.
+
+- **What information are present in the sections header table**
+- **What information are present in the program header table**
+- **How to parse an ELF file using C structures**
+	The ``/usr/include/elf.h`` header file is a standard C header file which defines data structures, constants and macros used to parse and manipulate ELF files.
