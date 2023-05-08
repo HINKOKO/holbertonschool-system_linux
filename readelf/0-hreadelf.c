@@ -1,22 +1,6 @@
 #include "hreadelf.h"
 
 /**
- * print_helf - displays the elf header of file
- * @fp: file descriptor
- * @args: array with args for options
- * Return: 1 for success (continue), 0 otherwise
-*/
-
-// int print_helf(FILE *fp, char *args)
-// {
-// 	Elf32_Ehdr elf32;
-// 	Elf64_Ehdr elf64;
-
-
-
-// }
-
-/**
  * main - entry point
  * @argc: count of args
  * @argv: array of args
@@ -40,7 +24,8 @@ int main(int argc, char **argv)
 		printf("%02x ", header.e_ident[i]);
 	}
 	printf("\n");
-	printf("  Class:			%s\n", header.e_ident[EI_CLASS] == ELFCLASS32 ? "ELF32" : "ELF64");
+	printf("  Class:			%s\n", header.e_ident[EI_CLASS] ==
+	ELFCLASS32 ? "ELF32" : "ELF64");
 
 	close(fd);
 	return (0);
