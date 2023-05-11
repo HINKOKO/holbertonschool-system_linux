@@ -33,6 +33,12 @@
 	This value is helpful to correctly interpret the remaining parts within the ELF file.
 
 - **What information are present in the sections header table**
+	This "view" of the ELF file is used for linking and relocation, for the executable files, which we are working with in this project,
+	we find 4 main sections:
+	- `.text` contains executable code, loaded only once and packed into a segment (as it won't change)
+	- `.data` initialized data with read and write access rights
+	- `.rodata` initialized data with read only access rights
+	- `.bss` Uninitialiazed data, read and write access rights
 - **What information are present in the program header table**
 - **How to parse an ELF file using C structures**
 	The ``/usr/include/elf.h`` header file is a standard C header file which defines data structures, constants and macros used to parse and manipulate ELF files.
