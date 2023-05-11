@@ -47,7 +47,7 @@ void convert_elf32(Elf32_Ehdr elf32, int endian)
 }
 
 
-void convert_elf64(Elf32_Ehdr elf64, int endian)
+void convert_elf64(Elf64_Ehdr elf64, int endian)
 {
 	if (endian == LSB)
 	{

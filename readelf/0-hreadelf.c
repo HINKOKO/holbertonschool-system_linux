@@ -83,8 +83,7 @@ int print_helf(FILE *fd, char *args)
 		return (1);
 	if (is32 == 32)
 	{
-		convert_elf32(elf32, endian);
-		print_elf32(elf32);
+		printf("Not yet implemented the 32 bits!\n");
 	}
 	else
 	{
