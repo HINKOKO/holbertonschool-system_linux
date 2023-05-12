@@ -13,19 +13,41 @@
 - **What kind of files are in the ELF format**
 
 - **What are the different parts that constitute an ELF file**
-	ELF file always starts with the **header**
-	besides the header, we've got these parts:
+	Generally speaking, ELF files are composed of three main parts:
+	- ELF Header
 	- Program headers or **Segments**
 	- Section headers or **Sections**
-	- **Data**
 
 - **What information are present in the file header**
+	```
+	ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x400500
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          6808 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         9
+  Size of section headers:           64 (bytes)
+  Number of section headers:         31
+  Section header string table index: 28
+
+	```
 	Among the different fields we can find, here are some of interests:
-	- **Magic** => ELF starts with **`Magic`** What an intro ! This kind of "Magic" provides information about the file. The first 4 hexadecimals numbers are known as "the magic number", if we look at them carefully we got this: <br>
+	- **Magic** => ELF starts with **`Magic`** field,  What an intro ! This kind of "Magic" (who's Queen was singing about in 1986) provides information about the file. The first 4 hexadecimals numbers are known as **"the magic number"**, if we look at them carefully we got this: <br>
 	45 = E
 	4c = F
 	46 = F
-	Enigma cracked ! we got ELF for the ELF File header.
+	Enigma cracked ! we got "ELF" written in the ELF File header magic field.
 	Good, and what about the " 7f " ? it represents the file formant and the architecture of the ELF Binary file, **" 7f "** is known as the **"ELF identification byte "** or **"EI_MAGO "**, its purpose is a file identification marker and is always set to the value **" 0x7f "** for ELF Files.
 	- **Class** => This value is for specifying the architecture of the file,
 	either **32-bit (=01)** or **64-bit (=02)** architecture.
