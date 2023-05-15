@@ -44,6 +44,19 @@ void print_start_sections(Elf64_Ehdr starters);
 void print_flags(Elf64_Word elf_flag);
 void print_header_infos(Elf64_Ehdr header_infos);
 
+/* print 32 */
+void print_elf32(Elf32_Ehdr elf32);
+
+void print_OS_ABI_32(unsigned char *bytes);
+void print_type_32(Elf32_Half type);
+void print_architecture_32(Elf32_Half machine);
+void print_file_version_32(Elf32_Word version);
+void print_entrypt_32(Elf32_Addr entry_pt);
+void print_start_sections_32(Elf32_Ehdr starters);
+void print_flags_32(Elf32_Word elf_flag);
+void print_header_infos_32(Elf32_Ehdr header_infos);
+
+
 
 
 
@@ -55,6 +68,7 @@ void print_header_infos(Elf64_Ehdr header_infos);
 
 /* main printage taking care of the bunch of functions right above*/
 void print_infos(infos_t *infos, size_t size, Elf64_Half matching);
+void print_infos_32(infos_t *infos, size_t size, Elf32_Half matching);
 
 
 
