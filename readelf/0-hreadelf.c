@@ -71,8 +71,7 @@ int print_helf(FILE *fd, char *args)
 	/* SELFMAG Preprocessor declared to be '4' */
 	if (memcmp(elf64.e_ident, ELFMAG, SELFMAG) != 0)
 	{
-		fprintf(stderr, "readelf: Error: Not an ELF file");
-		fprintf(stderr, "- it has the wrong magic bytes at the start\n");
+		fprintf(stderr, "readelf: Error: Not an ELF file, Wrong Magic\n");
 		return (0);
 	}
 	puts("ELF Header:");
