@@ -38,7 +38,7 @@ void print_file_version_32(Elf32_Word version)
 		{EV_CURRENT, "0x1"},
 		{EV_NUM, "0x2"},
 	};
-	printf("%6s%-28c", "Version", ':');
+	printf("%6s%-28c%i", "Version", ':', EV_CURRENT);
 	print_infos(obj_version, 3, version);
 }
 /**
@@ -91,7 +91,7 @@ void print_OS_ABI_32(unsigned char *bytes)
 		{ELFOSABI_LINUX, "Unix - Linux"},
 		{ELFOSABI_SOLARIS, "Unix - Solaris"},
 	};
-	printf("%6s%-28c\n", "OS/ABI", ':');
+	printf("%6s%-28c", "OS/ABI", ':');
 	print_infos(osabi_array, 6, bytes[EI_OSABI]);
 	printf("%6s%-28c%d\n", "ABI Version", ':', bytes[EI_ABIVERSION]);
 }
