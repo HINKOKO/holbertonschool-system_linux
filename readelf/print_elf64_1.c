@@ -6,8 +6,8 @@
  * @infos: struct of infos
  * @size: size of that struct
  * @matching: code to find in the struct when parsing
- * 
 */
+
 void print_infos(infos_t *infos, size_t size, Elf64_Half matching)
 {
 	size_t i, found = 0;
@@ -74,8 +74,6 @@ void print_type(Elf64_Half type)
 	};
 	printf("%6s%-28c", "Type", ':');
 	print_infos(type_array, 5, type);
-
-	
 }
 
 /**
@@ -93,7 +91,7 @@ void print_OS_ABI(unsigned char *bytes)
 		{ELFOSABI_LINUX, "Unix - Linux"},
 		{ELFOSABI_SOLARIS, "Unix - Solaris"},
 	};
-	printf("%6s%-28c", "OS/ABI", ':');
+	printf("%6s%-28c\n", "OS/ABI", ':');
 	print_infos(osabi_array, 6, bytes[EI_OSABI]);
-	printf("%6s%-28c%d\n", "ABI Version", ':', bytes[EI_ABIVERSION]); 
+	printf("%6s%-28c%d\n", "ABI Version", ':', bytes[EI_ABIVERSION]);
 }

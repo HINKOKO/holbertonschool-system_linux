@@ -40,6 +40,16 @@ void print_type(Elf64_Half type);
 void print_architecture(Elf64_Half machine);
 void print_file_version(Elf64_Word version);
 void print_entrypt(Elf64_Addr entry_pt);
+void print_start_sections(Elf64_Ehdr starters);
+void print_flags(Elf64_Word elf_flag);
+void print_header_infos(Elf64_Ehdr header_infos);
+
+
+
+
+
+
+
 
 
 

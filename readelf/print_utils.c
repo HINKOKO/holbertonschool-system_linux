@@ -17,7 +17,7 @@ void print_magic(unsigned char *bytes)
 }
 
 /**
- * printclass - check what class is and prints accordingly
+ * print_class - check what class is and prints accordingly
  * @bytes: bytes array
  * @args: args inputed (to match from main)
  * Return: 0 on success, 1 error, 32 for 32 bits detected
@@ -40,6 +40,14 @@ int print_class(unsigned char *bytes, char *args)
 	return (0);
 }
 
+/**
+ * print_endian - decide how to display ELF File accordingly
+ * to its endianness
+ * @bytes: array of bytes
+ * @args: array of arguments
+ * Return: LSB or Msb
+*/
+
 int print_endian(unsigned char *bytes, char *args)
 {
 	if (bytes[EI_DATA] == ELFDATANONE)
@@ -56,6 +64,13 @@ int print_endian(unsigned char *bytes, char *args)
 		printf("%6s%-28c%s\n", "Data", ':', "2's complement, big endian");
 	return (MSB);
 }
+
+/**
+ * print_version - print the version (sugar)
+ * @bytes: bytes array
+ * @args: argument array
+ * Return: 1 error, 0 success
+*/
 
 int print_version(unsigned char *bytes, char *args)
 {

@@ -2,7 +2,8 @@
 
 /**
  * pick_fd - returns the fd
- * @bytes: chars array
+ * @filename: filename to find the fd
+ * Return: the file descriptor, NULL if invalid
 */
 
 FILE *pick_fd(char *filename)
@@ -47,9 +48,10 @@ int check_args(int argc, char **argv)
 }
 
 /**
- * 
- * 
- * 
+ * print_helf - first entry for starting to print the ELF file
+ * @fd: file descriptor
+ * @args: array of arguments
+ * Return: 0 success, 1 for errors
 */
 
 int print_helf(FILE *fd, char *args)
@@ -75,11 +77,14 @@ int print_helf(FILE *fd, char *args)
 	}
 	puts("ELF Header:");
 	print_magic(elf64.e_ident);
-	if ((is32 = print_class(elf64.e_ident, args)) == 1)
+	is32 = print_class(elf64.e_ident, args);
+	if (is32 == 1)
 		return (1);
-	if ((endian = print_endian(elf64.e_ident, args)) == 1)
+	endian = print_endian(elf64.e_ident, args);
+	if (endian == 1)
 		return (1);
-	if ((exit_status = print_version(elf64.e_ident, args)) == 1)
+	exit_status = print_version(elf64.e_ident, args);
+	if (exit_status == 1)
 		return (1);
 	if (is32 == 32)
 	{
@@ -105,7 +110,7 @@ int main(int argc, char **argv)
 {
 	int exit_status;
 	FILE *fp;
-	
+
 	if (check_args(argc, argv) == 0)
 		return (1);
 	fp = pick_fd(argv[1]);

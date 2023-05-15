@@ -22,8 +22,9 @@ void swap_endian(void *ptr, size_t size)
 }
 
 /**
- * 
- * convert_elf32 - 
+ * convert_elf32 - convert endianness 32//64 bits
+ * @elf32: Elf32_Ehdr struct to convert
+ * @endian: "flag" int to know which endian's is involved
 */
 
 void convert_elf32(Elf32_Ehdr elf32, int endian)
@@ -46,6 +47,11 @@ void convert_elf32(Elf32_Ehdr elf32, int endian)
 	}
 }
 
+/**
+ * convert_elf64 - convert endianness 32//64 bits
+ * @elf64: Elf64_Ehdr struct to convert
+ * @endian: "flag" int to know which endian's is involved
+*/
 
 void convert_elf64(Elf64_Ehdr elf64, int endian)
 {
