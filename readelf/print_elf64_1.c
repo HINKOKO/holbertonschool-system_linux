@@ -33,7 +33,8 @@ void print_infos(infos_t *infos, size_t size, Elf64_Half matching)
 
 void print_file_version(Elf64_Word version)
 {
-	printf("%6s%-28c%#x\n", "Version", ':',
+	/* # for prefixinf the hex output */
+	printf("%7s%-31c%#x\n", "Version", ':',
 	version == EV_NONE ? EV_NONE : EV_CURRENT);
 }
 /**
@@ -50,7 +51,7 @@ void print_architecture(Elf64_Half machine)
 		{EM_386, "Intel 80386"},
 		{EM_X86_64, "Advanced Micro Devices X86-64"},
 	};
-	printf("%6s%-28c", "Machine", ':');
+	printf("%9s%-28c", "Machine", ':');
 	print_infos(archi, 5, machine);
 }
 /**
@@ -67,7 +68,7 @@ void print_type(Elf64_Half type)
 		{ET_DYN, "DYN (Shared object file)"},
 		{ET_CORE, "CORE (Core file)"},
 	};
-	printf("%6s%-28c", "Type", ':');
+	printf("%6s%-31c", "Type", ':');
 	print_infos(type_array, 5, type);
 }
 
@@ -86,7 +87,7 @@ void print_OS_ABI(unsigned char *bytes)
 		{ELFOSABI_LINUX, "Unix - Linux"},
 		{ELFOSABI_SOLARIS, "Unix - Solaris"},
 	};
-	printf("%6s%-28c", "OS/ABI", ':');
+	printf("%8s%-29c", "OS/ABI", ':');
 	print_infos(osabi_array, 6, bytes[EI_OSABI]);
-	printf("%6s%-28c%d\n", "ABI Version", ':', bytes[EI_ABIVERSION]);
+	printf("%14s%24i\n", "ABI Version:", bytes[EI_ABIVERSION]);
 }

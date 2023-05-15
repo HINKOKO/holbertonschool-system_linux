@@ -10,7 +10,7 @@ void print_magic(unsigned char *bytes)
 {
 	size_t i;
 
-	printf(" Magic:   ");
+	printf("%11s", "Magic:   ");
 	for (i = 0; i < EI_NIDENT; i++)
 		printf("%02x ", bytes[i]);
 	printf("\n");
@@ -32,11 +32,11 @@ int print_class(unsigned char *bytes, char *args)
 	}
 	if (bytes[EI_CLASS] == ELFCLASS32)
 	{
-		printf("%6s%-28c%s\n", "Class", ':', "ELF32");
+		printf("%7s%-30c%s\n", "Class", ':', "ELF32");
 		return (32);
 	}
 	else
-		printf("%6s%-28c%s\n", "Class", ':', "ELF64");
+		printf("%7s%-30c%s\n", "Class", ':', "ELF64");
 	return (0);
 }
 
@@ -57,11 +57,11 @@ int print_endian(unsigned char *bytes, char *args)
 	}
 	if (bytes[EI_DATA] == ELFDATA2LSB)
 	{
-		printf("%6s%-28c%s\n", "Data", ':', "2's complement, little endian");
+		printf("%6s%-31c%s\n", "Data", ':', "2's complement, little endian");
 		return (LSB);
 	}
 	else
-		printf("%6s%-28c%s\n", "Data", ':', "2's complement, big endian");
+		printf("%6s%-31c%s\n", "Data", ':', "2's complement, big endian");
 	return (MSB);
 }
 
@@ -79,6 +79,6 @@ int print_version(unsigned char *bytes, char *args)
 		fprintf(stderr, "Invalid Versioning in file: %d\n", *args);
 		return (1);
 	}
-	printf("%6s%-28c%i (current)\n", "Version", ':', EV_CURRENT);
+	printf("%9s%-28c%i (current)\n", "Version", ':', EV_CURRENT);
 	return (0);
 }
