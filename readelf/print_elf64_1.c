@@ -33,13 +33,8 @@ void print_infos(infos_t *infos, size_t size, Elf64_Half matching)
 
 void print_file_version(Elf64_Word version)
 {
-	infos_t obj_version[] = {
-		{EV_NONE, "Invalid ELF Version"},
-		{EV_CURRENT, "0x1"},
-		{EV_NUM, "0x2"},
-	};
-	printf("%6s%-28c%i", "Version", ':', EV_CURRENT);
-	print_infos(obj_version, 3, version);
+	printf("%6s%-28c%#x\n", "Version", ':',
+	version == EV_NONE ? EV_NONE : EV_CURRENT);
 }
 /**
  * print_architecture - print the machine architecture
