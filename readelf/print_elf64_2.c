@@ -53,9 +53,9 @@ void print_header_infos(Elf64_Ehdr header_infos)
 	Elf64_Half string_table_idx = header_infos.e_shstrndx;
 
 	printf("%6s%-28c%li%s\n", "Size of this header", ':',
-	(long int)size_header, " (bytes into file)");
+	(long int)size_header, " (bytes)");
 	printf("%6s%-28c%li%s\n", "Size of program headers", ':',
-	(long int)size_prog, " (bytes into file)");
+	(long int)size_prog, " (bytes)");
 	printf("%6s%-28c%i\n", "Number of program headers", ':', num_header);
 	printf("%6s%-28c%li%s\n", "Size of section headers", ':',
 	(long int)size_section_header, " (bytes)");
