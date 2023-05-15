@@ -1,7 +1,7 @@
 #include "hreadelf.h"
 
 /**
- * print_infos - displays infos accroding to differents
+ * print_infos_32 - displays infos accroding to differents
  * arrays defined regarding to the fields inspected in header
  * @infos: struct of infos
  * @size: size of that struct
@@ -27,7 +27,7 @@ void print_infos_32(infos_t *infos, size_t size, Elf32_Half matching)
 }
 
 /**
- * print_file_version - dsiplay the file version
+ * print_file_version_32 - dsiplay the file version
  * @version: Elf64_Word e_version => object file version
 */
 
@@ -38,7 +38,7 @@ void print_file_version_32(Elf32_Word version)
 	version == EV_NONE ? EV_NONE : EV_CURRENT);
 }
 /**
- * print_architecture - print the machine architecture
+ * print_architecture_32 - print the machine architecture
  * @machine: Architecure e_machine
 */
 
@@ -55,7 +55,7 @@ void print_architecture_32(Elf32_Half machine)
 	print_infos(archi, 5, machine);
 }
 /**
- * print_type - displays the type of file the ELF is about
+ * print_type_32 - displays the type of file the ELF is about
  * @type: Elf64_Half => Object file type e_type (elf.h)
 */
 
@@ -73,22 +73,35 @@ void print_type_32(Elf32_Half type)
 }
 
 /**
- * print_OS_ABI - print the OS Version
+ * print_OS_ABI_32 - print the OS Version
  * @bytes: our bytes array
 */
 
 void print_OS_ABI_32(unsigned char *bytes)
 {
-	infos_t osabi_array[] = {
-		{ELFOSABI_NONE, "UNIX - System V"},
-		{ELFOSABI_SYSV, "UNIX - System V"},
-		{ELFOSABI_HPUX, "UNIX - HP-UX"},
-		{ELFOSABI_NETBSD, "UNIX - NetBSD"},
-		{ELFOSABI_LINUX, "UNIX - Linux"},
-		{ELFOSABI_SOLARIS, "UNIX - Solaris"},
-	};
-	printf("%8s%-29c", "OS/ABI", ':');
-	print_infos(osabi_array, 6, bytes[EI_OSABI]);
-	printf("%14s%24i\n", "ABI Version:", bytes[EI_ABIVERSION]);
+	unsigned char osabi = ((Elf32_Ehdr *)bytes)->e_ident[EI_OSABI];
 
+	printf("%8s%-29c", "OS/ABI", ':');
+	switch (osabi)
+	{
+		case ELFOSABI_SYSV: /* Also ELFOSABI_NONE */
+			puts("UNIX - System V");
+			break;
+		case ELFOSABI_HPUX:
+			puts("UNIX - HP-UX");
+			break;
+		case ELFOSABI_NETBSD:
+			puts("UNIX - NetBSD");
+			break;
+		case ELFOSABI_LINUX:
+			puts("UNIX - GNU");
+			break;
+		case ELFOSABI_SOLARIS:
+			puts("UNIX - Solaris");
+			break;
+		default:
+			printf("<unknown: %x>\n", osabi);
+			break;
+	}
+	printf("%14s%24i\n", "ABI Version:", bytes[EI_ABIVERSION]);
 }

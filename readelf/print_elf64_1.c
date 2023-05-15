@@ -79,15 +79,29 @@ void print_type(Elf64_Half type)
 
 void print_OS_ABI(unsigned char *bytes)
 {
-	infos_t osabi_array[] = {
-		{ELFOSABI_NONE, "UNIX - System V"},
-		{ELFOSABI_SYSV, "UNIX - System V"},
-		{ELFOSABI_HPUX, "UNIX - HP-UX"},
-		{ELFOSABI_NETBSD, "UNIX - NetBSD"},
-		{ELFOSABI_LINUX, "UNIX - Linux"},
-		{ELFOSABI_SOLARIS, "UNIX - Solaris"},
-	};
+	unsigned char osabi = ((Elf64_Ehdr *)bytes)->e_ident[EI_OSABI];
+
 	printf("%8s%-29c", "OS/ABI", ':');
-	print_infos(osabi_array, 6, bytes[EI_OSABI]);
+	switch (osabi)
+	{
+		case ELFOSABI_SYSV: /* Also ELFOSABI_NONE */
+			puts("UNIX - System V");
+			break;
+		case ELFOSABI_HPUX:
+			puts("UNIX - HP-UX");
+			break;
+		case ELFOSABI_NETBSD:
+			puts("UNIX - NetBSD");
+			break;
+		case ELFOSABI_LINUX:
+			puts("UNIX - GNU");
+			break;
+		case ELFOSABI_SOLARIS:
+			puts("UNIX - Solaris");
+			break;
+		default:
+			printf("<unknown: %x>\n", osabi);
+			break;
+	}
 	printf("%14s%24i\n", "ABI Version:", bytes[EI_ABIVERSION]);
 }

@@ -1,7 +1,7 @@
 #include "hreadelf.h"
 
 /**
- * print_entrypt - print the entry point address
+ * print_entrypt_32 - print the entry point address
  * @entry_pt: entry point of ELF file
 */
 
@@ -11,7 +11,7 @@ void print_entrypt_32(Elf32_Addr entry_pt)
 }
 
 /**
- * print_start_sections - print the start of prog
+ * print_start_sections_32 - print the start of prog
  * and section headers
  * @starters: used to declare a variable for
  * program and sections header table file offset
@@ -29,7 +29,7 @@ void print_start_sections_32(Elf32_Ehdr starters)
 }
 
 /**
- * print_flags - displays processor specific flags
+ * print_flags_32 - displays processor specific flags
  * @elf_flag: flag of processor!
 */
 
@@ -39,7 +39,7 @@ void print_flags_32(Elf32_Word elf_flag)
 }
 
 /**
- * print_header_infos - display the infos about program
+ * print_header_infos_32 - display the infos about program
  * and section headers
  * @header_infos: used to store variables accordingly
 */
