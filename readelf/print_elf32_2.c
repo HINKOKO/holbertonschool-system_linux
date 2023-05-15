@@ -1,4 +1,5 @@
 #include "hreadelf.h"
+
 /**
  * print_entrypt - print the entry point address
  * @entry_pt: entry point of ELF file
@@ -6,7 +7,7 @@
 
 void print_entrypt_32(Elf32_Addr entry_pt)
 {
-	printf("%6s%-28c0x%x\n", "Entry point address", ':', entry_pt);
+	printf("%21s%-16c0x%x\n", "Entry point address", ':', entry_pt);
 }
 
 /**
@@ -21,9 +22,9 @@ void print_start_sections_32(Elf32_Ehdr starters)
 	Elf32_Off prog_headers = starters.e_phoff;
 	Elf32_Off section_headers = starters.e_shoff;
 
-	printf("%6s%-28c%li%s\n", "Start of program headers", ':',
+	printf("%26s%-11c%li%s\n", "Start of program headers", ':',
 	(long int)prog_headers, " (bytes into file)");
-	printf("%6s%-28c%li%s\n", "Start of section headers", ':',
+	printf("%26s%-11c%li%s\n", "Start of section headers", ':',
 	(long int)section_headers, " (bytes into file)");
 }
 
@@ -34,7 +35,7 @@ void print_start_sections_32(Elf32_Ehdr starters)
 
 void print_flags_32(Elf32_Word elf_flag)
 {
-	printf("%6s%-28c0x%x\n", "Flags", ':', elf_flag);
+	printf("%7s%-30c0x%x\n", "Flags", ':', elf_flag);
 }
 
 /**
@@ -52,16 +53,16 @@ void print_header_infos_32(Elf32_Ehdr header_infos)
 	Elf32_Half num_section_header = header_infos.e_shnum;
 	Elf32_Half string_table_idx = header_infos.e_shstrndx;
 
-	printf("%6s%-28c%li%s\n", "Size of this header", ':',
+	printf("%21s%-16c%li%s\n", "Size of this header", ':',
 	(long int)size_header, " (bytes)");
-	printf("%6s%-28c%li%s\n", "Size of program headers", ':',
+	printf("%25s%-12c%li%s\n", "Size of program headers", ':',
 	(long int)size_prog, " (bytes)");
-	printf("%6s%-28c%i\n", "Number of program headers", ':', num_header);
-	printf("%6s%-28c%li%s\n", "Size of section headers", ':',
+	printf("%27s%-10c%i\n", "Number of program headers", ':', num_header);
+	printf("%25s%-12c%li%s\n", "Size of section headers", ':',
 	(long int)size_section_header, " (bytes)");
-	printf("%6s%-28c%i\n", "Number of section headers", ':',
+	printf("%27s%-10c%i\n", "Number of section headers", ':',
 	num_section_header);
-	printf("%6s%-28c%i\n", "Section header string table index", ':',
+	printf("%35s%-2c%i\n", "Section header string table index", ':',
 	string_table_idx);
 }
 
