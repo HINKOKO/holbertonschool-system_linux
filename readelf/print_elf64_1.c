@@ -47,7 +47,7 @@ void print_architecture(Elf64_Half machine)
 	infos_t archi[] = {
 		{EM_NONE, "No Machine"},
 		{EM_M32, "AT&T WE 32100"},
-		{EM_SPARC, "SUN SPARC"},
+		{EM_SPARC, "Sparc"},
 		{EM_386, "Intel 80386"},
 		{EM_X86_64, "Advanced Micro Devices X86-64"},
 	};
