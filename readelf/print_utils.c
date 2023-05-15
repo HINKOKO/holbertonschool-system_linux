@@ -79,6 +79,6 @@ int print_version(unsigned char *bytes, char *args)
 		fprintf(stderr, "Invalid Versioning in file: %d\n", *args);
 		return (1);
 	}
-	printf("%6s%-28c%d\n", "Version", ':', EV_CURRENT);
+	printf("%6s%-28c%i (current)\n", "Version", ':', EV_CURRENT);
 	return (0);
 }
