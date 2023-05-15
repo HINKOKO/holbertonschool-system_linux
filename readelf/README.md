@@ -3,6 +3,7 @@
 ## **Learning Objectives**
 
 - **What is the ELF format**
+
 	**ELF** is **NOT** a ***A type of supernatural being in Germanic mythology and folklore*** , it rather stands for <br>
 	**E**xecutable and **L**inkable **F**ormat. <br>
 	***An ELF defines how instructions are stored in executable code.***
@@ -10,7 +11,15 @@
 	The Compiler --> produces an object files (containing compiled code and data) <br>
 	The Linker --> combines that object files with other object files and libraries to produce an executable.
 	By design, the ELF Format is cross-platform, flexible, extensible (support differents Endianesses for instance).
+
 - **What kind of files are in the ELF format**
+
+	Here are some files in the ELF format:
+	- **Executable files**, programs that can be run directly by the OS.
+	- **Object files**, That is to say compiled code that has not yet been linked into an executable. (extension **.o**)
+	- **Shared libraries**, code modules that can be used by mutiple programs at the same time. (extension **.so**)
+	- **Core dump files**, when a program crash, the core dump is a "snapshot" of the program's memory at the moment of the crash.
+	- **Kernel modules** (in some Unix-like OS).
 
 - **What are the different parts that constitute an ELF file**
 	Generally speaking, ELF files are composed of three main parts:
