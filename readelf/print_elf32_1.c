@@ -23,7 +23,7 @@ void print_infos_32(infos_t *infos, size_t size, Elf32_Half matching)
 	}
 	if (found != 1)
 		/* No match ELFOSABINONE ==> Unix - System V */
-		printf("%s", infos[0].str);
+		printf("%s\n", infos[0].str);
 }
 
 /**
