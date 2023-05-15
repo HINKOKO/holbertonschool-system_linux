@@ -34,7 +34,7 @@ void print_infos(infos_t *infos, size_t size, Elf64_Half matching)
 void print_file_version(Elf64_Word version)
 {
 	/* # for prefixinf the hex output */
-	printf("%7s%-31c%#x\n", "Version", ':',
+	printf("%9s%-28c%#x\n", "Version", ':',
 	version == EV_NONE ? EV_NONE : EV_CURRENT);
 }
 /**
