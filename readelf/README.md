@@ -12,6 +12,14 @@
 	The Linker --> combines that object files with other object files and libraries to produce an executable.
 	By design, the ELF Format is cross-platform, flexible, extensible (support differents Endianesses for instance).
 
+	***Why bother learn ELF ?***
+	That learning helps to understand the inner working of our OS. In the case of security breach or suspicious files
+	being able to look for and understand ELF is really valuable. We can gather the benefits like so:
+	- Generic in-depth understanding of how the OS works
+	- Development of software
+	- **DFIR** Digital Forensics and Incident Response
+	- Malware research (binary analysis) 
+
 - **What kind of files are in the ELF format**
 
 	Here are some files in the ELF format:

@@ -13,11 +13,11 @@
 #define MSB 102
 
 /**
- * struct osabi_s - struct to handle the OS/ABI
+ * struct infos_s - struct to handle the OS/ABI
  * versionning stored in e_ident[EI_NIDENT]
+ * @macro_code: macros associated with it in elf.h
  * @str: the string to print regarding os/abi
- * macro_code: macros associated with it in elf.h
-*/
+ */
 
 typedef struct infos_s
 {
@@ -56,23 +56,9 @@ void print_start_sections_32(Elf32_Ehdr starters);
 void print_flags_32(Elf32_Word elf_flag);
 void print_header_infos_32(Elf32_Ehdr header_infos);
 
-
-
-
-
-
-
-
-
-
-
 /* main printage taking care of the bunch of functions right above*/
 void print_infos(infos_t *infos, size_t size, Elf64_Half matching);
 void print_infos_32(infos_t *infos, size_t size, Elf32_Half matching);
-
-
-
-
 
 /* utility functions to perform checks and conversion */
 FILE *pick_fd(char *filename);
@@ -81,6 +67,10 @@ void swap_endian(void *ptr, size_t size);
 void convert_elf32(Elf32_Ehdr elf32, int endian);
 void convert_elf64(Elf64_Ehdr elf64, int endian);
 
+/***************** TASK 1 *****************/
+/* utilities */
+void reverser(unsigned char *bytes, size_t size);
+void *get_section_start(unsigned char *bytes, int class, int endian);
+uint16_t get_number_sections(unsigned char *bytes, int class, int endian);
 
 #endif /* __HELF__ */
-
