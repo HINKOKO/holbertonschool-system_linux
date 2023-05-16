@@ -78,17 +78,19 @@ int check_args(int argc, char **argv)
 int print_section_header(unsigned char *bytes, char *filename,
 						 int class, int endian)
 {
+	Elf64_Off offset;
+	uint16_t number_sections = 0;
 	/* void to perform sanity arithmetics (hackademics.fr)*/
 	/* goal=> catch a pointer on the first header of section */
 	/* not known at first but casting then to hanlde it */
+	(void)filename;
 
 	void *header_start = get_section_start(bytes, class, endian);
-	(void)filename;
 	/* === *(jojo *) pointer == */
 	/* jojo casted & dereferenced to access its value */
-	Elf64_Off offset = class == ELFCLASS32 ? *(Elf32_Off *)header_start
-										   : *(Elf64_Off *)header_start;
-	uint16_t number_sections = get_number_sections(bytes, class, endian);
+	offset = class == ELFCLASS32 ? *(Elf32_Off *)header_start
+								 : *(Elf64_Off *)header_start;
+	number_sections = get_number_sections(bytes, class, endian);
 
 	printf("There are %d section headers, starting at offset %#lx:\n\n",
 		   number_sections, offset);
