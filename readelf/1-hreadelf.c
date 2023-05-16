@@ -80,12 +80,13 @@ int print_section_header(unsigned char *bytes, char *filename,
 {
 	Elf64_Off offset;
 	uint16_t number_sections = 0;
+	void *header_start = NULL;
 	/* void to perform sanity arithmetics (hackademics.fr)*/
 	/* goal=> catch a pointer on the first header of section */
 	/* not known at first but casting then to hanlde it */
 	(void)filename;
 
-	void *header_start = get_section_start(bytes, class, endian);
+	header_start = get_section_start(bytes, class, endian);
 	/* === *(jojo *) pointer == */
 	/* jojo casted & dereferenced to access its value */
 	offset = class == ELFCLASS32 ? *(Elf32_Off *)header_start
