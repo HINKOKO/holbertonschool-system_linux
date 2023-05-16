@@ -25,7 +25,7 @@ void print_start_sections_32(Elf32_Ehdr starters)
 	printf("%26s%-11c%li%s\n", "Start of program headers", ':',
 		   (uint64_t)prog_headers, " (bytes into file)");
 	printf("%26s%-11c%li%s\n", "Start of section headers", ':',
-		   (long unsigned int)section_headers, " (bytes into file)");
+		   (unsigned long int)section_headers, " (bytes into file)");
 }
 
 /**
@@ -54,12 +54,12 @@ void print_header_infos_32(Elf32_Ehdr header_infos)
 	Elf32_Half string_table_idx = header_infos.e_shstrndx;
 
 	printf("%21s%-16c%li%s\n", "Size of this header", ':',
-		   (long unsigned int)size_header, " (bytes)");
+		   (unsigned long int)size_header, " (bytes)");
 	printf("%25s%-12c%li%s\n", "Size of program headers", ':',
-		   (long unsigned int)size_prog, " (bytes)");
+		   (unsigned long int)size_prog, " (bytes)");
 	printf("%27s%-10c%i\n", "Number of program headers", ':', num_header);
 	printf("%25s%-12c%li%s\n", "Size of section headers", ':',
-		   (long unsigned int)size_section_header, " (bytes)");
+		   (unsigned long int)size_section_header, " (bytes)");
 	printf("%27s%-10c%i\n", "Number of section headers", ':',
 		   num_section_header);
 	printf("%35s%-2c%i\n", "Section header string table index", ':',
