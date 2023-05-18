@@ -10,9 +10,9 @@ void print_section_hname(int class)
 	printf("Section Headers:\n");
 	printf("  [Nr] Name              Type            ");
 	if (class == ELFCLASS32)
-		printf("Addr     Off    Size  ES Flg Lk Inf Al\n");
+		printf("Addr     Off    Size   ES Flg Lk Inf Al\n");
 	else
-		printf("Address         Off     Size  ES Flg Lk Inf Al\n");
+		printf("Address         Off     Size   ES Flg Lk Inf Al\n");
 }
 
 /**
