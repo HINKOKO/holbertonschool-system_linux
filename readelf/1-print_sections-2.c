@@ -43,6 +43,10 @@ void print_section_flags(unsigned char *bytes, int class, int endian)
 		*start++ = 'M';
 	if (flags & SHF_STRINGS)
 		*start++ = 'S';
+	if (flags & SHF_INFO_LINK)
+		*start++ = 'I';
+	if (flags & SHF_EXCLUDE)
+		*start++ = 'E';
 	printf(" %3s", buf);
 }
 
