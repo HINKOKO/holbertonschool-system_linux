@@ -1,122 +1,133 @@
 #include "hreadelf.h"
 
 /**
- * pick_fd - returns the fd
- * @filename: filename to find the fd
- * Return: the file descriptor, NULL if invalid
-*/
+ *
+ *
+ */
 
-FILE *pick_fd(char *filename)
+void print_magic(unsigned char *bytes)
 {
-	FILE *fd;
+	size_t i;
+	unsigned char *magics = ((Elf64_Ehdr *)bytes)->e_ident;
 
-	fd = fopen(filename, "r");
-	if (!fd)
-	{
-		fprintf(stderr, "%s: Error: No such file or directory\n", filename);
-		return (NULL);
-	}
-	return (fd);
+	printf("  Magic  ");
+	for (i = 0; i < 16; i++)
+		printf("%02x ", magics[i]);
+	printf("\n");
 }
 
 /**
- * check_args - check that args are valids
- * @argc: argument count
- * @argv: array of argument
- * Return: status 1 for success to continue, 0 otherwise
-*/
+ *
+ *
+ *
+ */
 
-int check_args(int argc, char **argv)
+void print_class(unsigned char *bytes)
 {
-	int status;
-	struct stat sb;
+	unsigned char klass = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
 
-	status = 1;
-	if (argc != 2)
+	printf("  Class:				");
+	switch (klass)
 	{
-		fprintf(stderr, "Usage: 0-hreadelf <elf_filename>\n");
-		return (0);
+	case (ELFCLASS32):
+		puts("ELF32");
+		break;
+	case (ELFCLASS64):
+		puts("ELF64");
+		break;
+	case (ELFCLASSNONE):
+		puts("Invalid class");
+		break;
 	}
-
-	stat(argv[1], &sb);
-	if (!S_ISREG(sb.st_mode))
-	{
-		fprintf(stderr, "Not a regular file here: %s", argv[1]);
-		return (0);
-	}
-	return (status);
 }
 
 /**
- * print_helf - first entry for starting to print the ELF file
- * @fd: file descriptor
- * @args: array of arguments
- * Return: 0 success, 1 for errors
-*/
+ *
+ *
+ *
+ */
 
-int print_helf(FILE *fd, char *args)
+void print_data(unsigned char *bytes)
 {
-	Elf64_Ehdr elf64;
-	Elf32_Ehdr elf32;
-	int is32, endian, exit_status;
-
-	/* ELF Binary files, so fread() more appropriate than read() */
-	/* fread() reads binary stream input/output ==> ELF */
-	/* Check man fread they use it for an ELF !!! :) */
-	fread(&elf64, sizeof(elf64), 1, fd);
-	/* rewind(fd); */
-	fseek(fd, 0L, SEEK_SET);
-	fread(&elf32, sizeof(elf32), 1, fd);
-	/* ELFMAG symbolink constant represent the four magic bytes */
-	/* SELFMAG Preprocessor declared to be '4' */
-	if (memcmp(elf64.e_ident, ELFMAG, SELFMAG) != 0)
+	unsigned char data = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
+	printf("  Data:					");
+	switch (data)
 	{
-		fprintf(stderr, "readelf: Error: Not an ELF file, Wrong Magic\n");
-		return (0);
+	case (ELFDATA2LSB):
+		puts("2' complement, little endian");
+		break;
+	case (ELFDATA2MSB):
+		puts("2's complement, big endian");
+		break;
+	case (ELFDATANONE):
+	default:
+		puts("Unknown endianness");
+		break;
 	}
-	puts("ELF Header:");
-	print_magic(elf64.e_ident);
-	is32 = print_class(elf64.e_ident, args);
-	if (is32 == 1)
-		return (1);
-	endian = print_endian(elf64.e_ident, args);
-	if (endian == 1)
-		return (1);
-	exit_status = print_version(elf64.e_ident, args);
-	if (exit_status == 1)
-		return (1);
-	if (is32 == 32)
-	{
-		convert_elf32(elf32, endian);
-		print_elf32(elf32);
-	}
-	else
-	{
-		convert_elf64(elf64, endian);
-		print_elf64(elf64);
-	}
-	return (0);
 }
 
+/**
+ *
+ *
+ */
+
+void print_elf_header(unsigned char *bytes, int class, int endian)
+{
+	printf("ELF Header:\n");
+	print_magic(bytes);
+	print_class(bytes);
+	print_data(bytes);
+	print_version(bytes);
+	print_osabi(bytes);
+	print_abi_version(bytes);
+	print_type(bytes, endian);
+	print_machine(bytes, endian);
+	print_file_version(bytes, endian);
+	print_entrypt(bytes, class, endian);
+	print_start_header(bytes, class, endian);
+	print_start_section(bytes, class, endian);
+	print_flags(bytes, class, endian);
+	print_size_header(bytes, class, endian);
+	print_size_prog(bytes, class, endian);
+	print_num_prog(bytes, class, endian);
+	print_section_size(bytes, class, endian);
+	print_num_hsection(bytes, class, endian);
+	print_string_table(bytes, class, endian);
+}
 
 /**
- * main - entry point and manage all errors that can occurs
- * @argc: count of args
- * @argv: array of args
- * Return: 1 for success, 0 otherwise
-*/
+ * main - entry point of make 0
+ * @argc: count of arguments
+ * @argv: array of arguments
+ * Return: 0 success, 1 otherwise
+ */
 
 int main(int argc, char **argv)
 {
-	int exit_status;
-	FILE *fp;
+	unsigned char bytes[64];
 
-	if (check_args(argc, argv) == 0)
-		return (1);
-	fp = pick_fd(argv[1]);
-	if (!fp)
-		return (1);
-	exit_status = print_helf(fp, *argv);
-	return (exit_status);
+	if (argc != 2)
+		return (EXIT_SUCCESS);
+	if (access(argv[1], F_OK) == -1)
+	{
+		fprintf(stderr, "readelf: Error: '%s' No such file\n", argv[1]);
+		return (EXIT_FAILURE);
+	}
+	if (access(argv[1], O_RDONLY) == -1)
+	{
+		fprintf(stderr, "readelf: Error: %s: Failed to read file's magic\n",
+				argv[1]);
+		return (EXIT_FAILURE);
+	}
+	if (read_elf_header_bytes(bytes, argv[1]))
+	{
+		perror("readelf: Error: ");
+		return (EXIT_FAILURE);
+	}
+	if (check_elf_magic(bytes))
+		return (EXIT_FAILURE);
+	print_elf_header(bytes,
+					 bytes[4] == ELFCLASS32 ? ELFCLASS32 : ELFCLASS64,
+					 bytes[5] == ELFDATA2LSB ? ELFDATA2LSB : ELFDATA2MSB);
+	return (0);
 }
-
