@@ -56,9 +56,9 @@ void print_machine(unsigned char *bytes, int endianess)
 }
 
 /**
- *
- *
- *
+ * print_file_version - printf the file version
+ * @bytes: chars array
+ * @endian: LSB/MSB flag int
  */
 
 void print_file_version(unsigned char *bytes, int endian)
@@ -81,8 +81,10 @@ void print_file_version(unsigned char *bytes, int endian)
 }
 
 /**
- *
- *
+ * print_entrypt - display the entry point address
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_entrypt(unsigned char *bytes, int class, int endian)
@@ -108,9 +110,11 @@ void print_entrypt(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
- *
+ * print_start_header - display program header table
+ * file offset
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_start_header(unsigned char *bytes, int class, int endian)
