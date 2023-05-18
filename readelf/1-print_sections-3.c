@@ -30,6 +30,6 @@ void print_key_match_flags(int class)
 		printf(", l (large)");
 	printf("\n  I (info), L (link order), G (group), T (TLS), %s\n",
 		   "E (exclude), x (unknown)");
-	printf("  O (extra OS processing required) o (OS specific), %s\n",
+	printf("  O (extra OS processing required) o (OS specific),%s\n",
 		   " p (processor specific)");
 }
