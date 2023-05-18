@@ -39,7 +39,7 @@ void print_section_flags(unsigned char *bytes, int class, int endian)
 		*start++ = 'A';
 	if (flags & SHF_EXECINSTR)
 		*start++ = 'X';
-	if (flags & SHR_MERGE)
+	if (flags & SHF_MERGE)
 		*start++ = 'M';
 	if (flags & SHF_STRINGS)
 		*start++ = 'S';

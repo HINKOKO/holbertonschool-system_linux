@@ -9,6 +9,9 @@ HEADER = $(wildcard *.h)
 
 1-hreadelf:
 	$(CC) $(FLAGS) $(FILES_1) -o 1-hreadelf
+
+2-hreadelf:
+	$(CC) $(FLAGS) 2-hreadelf.c -o 2-hreadelf
 	
 clean:
 	rm 0-hreadelf 1-hreadelf
