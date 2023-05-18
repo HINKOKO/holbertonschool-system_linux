@@ -97,6 +97,8 @@ char *get_section_type(uint32_t type)
 		return ("VERNEED");
 	case SHT_INIT_ARRAY:
 		return ("INIT_ARRAY");
+	case SHT_FINI_ARRAY:
+		return ("FINI_ARRAY");
 	case SHT_DYNSYM:
 		return ("DYNSYM");
 	case SHT_GNU_HASH:
