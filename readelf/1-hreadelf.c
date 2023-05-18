@@ -1,11 +1,14 @@
 #include "hreadelf.h"
 
 /**
- * print_elf_header - main function to loop through
+ * print_elf_sections_loop - main function to loop through
  * all printers functions
  * @bytes: chars array
  * @class: 32/64 bits flag int
  * @endian: LSB/MSB flag int
+ * @num_sections: number of sections
+ * @hsize: size of header sections
+ * @str_table: the string table
  */
 
 void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
@@ -13,24 +16,24 @@ void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
 {
 	int i;
 
-	// print_section_hname(class);
+	print_section_hname(class);
 
 	for (i = 0; i < num_sections; ++i, bytes += hsize)
 	{
 		printf("  [%2d]  ", i);
 		print_section_name(bytes, class, endian, str_table);
 		print_section_type(bytes, class, endian);
-		// print_section_addr(bytes, class, endian);
-		// print_section_off(bytes, class, endian);
-		// print_section_size(bytes, class, endian);
-		// print_section_entry_size(bytes, class, endian);
-		// print_section_flag(bytes, class, endian);
-		// print_section_link(bytes, class, endian);
-		// print_section_inf(bytes, class, endian);
-		// print_section_al(bytes, class, endian);
+		print_section_addr(bytes, class, endian);
+		print_section_off(bytes, class, endian);
+		print_section_size(bytes, class, endian);
+		print_section_entry_size(bytes, class, endian);
+		print_section_flags(bytes, class, endian);
+		print_section_link(bytes, class, endian);
+		print_section_info(bytes, class, endian);
+		print_section_addralign(bytes, class, endian);
 	}
 
-	// print_key_match_flags(class);
+	print_key_match_flags(class);
 }
 
 /**
@@ -45,15 +48,13 @@ void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
 void print_elf_section_header(unsigned char *bytes, char *filename,
 							  int class, int endian)
 {
-	Elf64_Off offset;
+	Elf64_Off offset = 0;
 	uint16_t n_sections = 0, str_idx = 0, size_hsection = 0;
 	size_t string_offset = 0, sec_size = 0;
-	void *header_start = NULL;
-	/* void for sanity arithmetics */
 	unsigned char *data = NULL, *str_table = NULL;
 
 	/* catch a pointer on the first header of sections */
-	header_start = get_section_header_start(bytes, class, endian);
+	void *header_start = get_section_header_start(bytes, class, endian);
 	/* cast and dereference to access its value */
 	offset = class == ELFCLASS32 ? *(Elf32_Off *)header_start
 								 : *(Elf64_Off *)header_start;
@@ -68,7 +69,8 @@ void print_elf_section_header(unsigned char *bytes, char *filename,
 	}
 
 	str_idx = get_string_tabidx(bytes, class, endian);
-	string_offset = get_section_offset(data + (str_idx * size_hsection), class, endian);
+	string_offset = get_section_offset(data + (str_idx * size_hsection),
+									   class, endian);
 	sec_size = get_section_size(data + (str_idx * size_hsection), class, endian);
 
 	if (read_bytes(&str_table, filename, string_offset, sec_size))
@@ -115,6 +117,6 @@ int main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	print_elf_section_header(bytes, argv[1],
 							 bytes[4] == ELFCLASS32 ? ELFCLASS32 : ELFCLASS64,
-							 bytes[5] == ELFDATA2LSB ? ELFDATA2LSB : ELFDATA2MSB);
+							 bytes[5] == ELFDATA2MSB ? ELFDATA2MSB : ELFDATA2LSB);
 	return (0);
 }

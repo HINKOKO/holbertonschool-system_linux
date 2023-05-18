@@ -9,14 +9,14 @@
  * Return: 0 success, 1 failure
  */
 
-int read_bytes(unsigned char **bytes, char *filename,
+int read_bytes(unsigned char **bytes, const char *filename,
 			   size_t offset, size_t size)
 {
 	FILE *fp = NULL;
 
 	*bytes = malloc(sizeof(char) * size);
 	if (!bytes)
-		return (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	fp = fopen(filename, "rb");
 	if (!fp || fseek(fp, offset, SEEK_SET) || fread(*bytes, size, 1, fp) == 0)
 	{
@@ -64,10 +64,11 @@ uint64_t get_section_size(unsigned char *bytes, int class, int endian)
 }
 
 /**
- * get_section_type_name - get section type name
+ * get_section_type - get section type, a PAIN
  * @type: type index
  * Return: section type name
  */
+
 char *get_section_type(uint32_t type)
 {
 	switch (type)
@@ -92,6 +93,8 @@ char *get_section_type(uint32_t type)
 		return ("REL");
 	case SHT_SHLIB:
 		return ("SHLIB");
+	case SHT_GNU_verneed:
+		return ("VERNEED");
 	case SHT_NULL:
 	default:
 		return ("NULL");
