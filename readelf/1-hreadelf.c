@@ -20,7 +20,7 @@ void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
 
 	for (i = 0; i < num_sections; ++i, bytes += hsize)
 	{
-		printf("  [%2d]  ", i);
+		printf("  [%2d] ", i);
 		print_section_name(bytes, class, endian, str_table);
 		print_section_type(bytes, class, endian);
 		print_section_addr(bytes, class, endian);
@@ -60,7 +60,7 @@ void print_elf_section_header(unsigned char *bytes, char *filename,
 								 : *(Elf64_Off *)header_start;
 	n_sections = get_number_sections(bytes, class, endian);
 	size_hsection = get_size_hsection(bytes, class, endian);
-	printf("There are %d section headers, starting at offset %#lx\n",
+	printf("There are %d section headers, starting at offset: %#lx\n",
 		   n_sections, offset);
 	/* read chunks of bytes of ELF sections according to num mutiply by size */
 	if (read_bytes(&data, filename, offset, n_sections * size_hsection))
