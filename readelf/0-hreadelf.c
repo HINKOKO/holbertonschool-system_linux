@@ -53,7 +53,7 @@ void print_data(unsigned char *bytes)
 	switch (data)
 	{
 	case (ELFDATA2LSB):
-		puts("2' complement, little endian");
+		puts("2's complement, little endian");
 		break;
 	case (ELFDATA2MSB):
 		puts("2's complement, big endian");
