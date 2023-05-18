@@ -35,7 +35,7 @@ void print_machine(unsigned char *bytes, int endianess)
 
 	if (endianess == ELFDATA2MSB)
 		swapper((unsigned char *)&machine, 2);
-	printf("  Machine:				");
+	printf("  Machine:                                ");
 	switch (machine)
 	{
 	case EM_NONE:
@@ -68,7 +68,7 @@ void print_file_version(unsigned char *bytes, int endian)
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&f_version, 2);
 
-	printf("  Version				");
+	printf("  Version                                ");
 	switch (f_version)
 	{
 	case EV_NONE:

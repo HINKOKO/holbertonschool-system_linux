@@ -25,7 +25,7 @@ void print_class(unsigned char *bytes)
 {
 	unsigned char klass = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
 
-	printf("  Class:				");
+	printf("  Class:                                ");
 	switch (klass)
 	{
 	case (ELFCLASS32):
@@ -49,7 +49,7 @@ void print_data(unsigned char *bytes)
 {
 	unsigned char data = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
 
-	printf("  Data:					");
+	printf("  Data:                                 ");
 	switch (data)
 	{
 	case (ELFDATA2LSB):
