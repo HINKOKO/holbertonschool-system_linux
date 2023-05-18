@@ -24,7 +24,7 @@ void print_key_match_flags(int class)
 {
 	printf("Key to Flags:\n");
 
-	printf("  W (write), A (alloc) X (execute), M (merge), S (strings)");
+	printf("  W (write), A (alloc), X (execute), M (merge), S (strings)");
 
 	if (class == ELFCLASS64)
 		printf(", l (large)");
