@@ -35,7 +35,7 @@ void print_machine(unsigned char *bytes, int endianess)
 
 	if (endianess == ELFDATA2MSB)
 		swapper((unsigned char *)&machine, 2);
-	printf("  Machine:                                ");
+	printf("  Machine:                              ");
 	switch (machine)
 	{
 	case EM_NONE:
@@ -68,7 +68,7 @@ void print_file_version(unsigned char *bytes, int endian)
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&f_version, 2);
 
-	printf("  Version                                ");
+	printf("  Version                               ");
 	switch (f_version)
 	{
 	case EV_NONE:
@@ -92,7 +92,7 @@ void print_entrypt(unsigned char *bytes, int class, int endian)
 	Elf64_Addr *entry64;
 	Elf32_Addr *entry32;
 
-	printf("  Entry point address:			");
+	printf("  Entry point address:                  ");
 	if (class == ELFCLASS32)
 	{
 		entry32 = &((Elf32_Ehdr *)bytes)->e_entry;
@@ -122,7 +122,7 @@ void print_start_header(unsigned char *bytes, int class, int endian)
 	Elf64_Off *h64;
 	Elf32_Off *h32;
 
-	printf("  Start of program headers:		");
+	printf("  Start of program headers:             ");
 	if (class == ELFCLASS32)
 	{
 		h32 = &((Elf32_Ehdr *)bytes)->e_phoff;
