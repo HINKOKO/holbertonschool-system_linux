@@ -13,7 +13,7 @@ void print_section_entry_size(unsigned char *bytes, int class, int endian)
 										   : ((Elf64_Shdr *)bytes)->sh_entsize;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&entsize, class == ELFCLASS32 ? 4 : 8);
-	printf("%02lx", entsize);
+	printf(" %02lx", entsize);
 }
 
 /**
@@ -55,7 +55,7 @@ void print_section_link(unsigned char *bytes, int class, int endian)
 										: ((Elf64_Shdr *)bytes)->sh_link;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&link, class == ELFCLASS32 ? 4 : 4);
-	printf("%2u", link);
+	printf(" %2u", link);
 }
 
 /**
@@ -71,7 +71,7 @@ void print_section_info(unsigned char *bytes, int class, int endian)
 										: ((Elf64_Shdr *)bytes)->sh_info;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&info, class == ELFCLASS32 ? 4 : 4);
-	printf("%3u", info);
+	printf(" %3u", info);
 }
 
 /**
@@ -90,5 +90,5 @@ void print_section_addralign(unsigned char *bytes, int class, int endian)
 											 : ((Elf64_Shdr *)bytes)->sh_addralign;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&addralign, class == ELFCLASS32 ? 4 : 8);
-	printf("%2lu\n", addralign);
+	printf(" %2lu\n", addralign);
 }
