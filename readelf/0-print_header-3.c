@@ -1,9 +1,11 @@
 #include "hreadelf.h"
 
 /**
- *
- *
- *
+ * print_start_section - display section header
+ * table file offset
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_start_section(unsigned char *bytes, int class, int endian)
@@ -30,9 +32,10 @@ void print_start_section(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
- *
+ * print_flags - display processor specific flags
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_flags(unsigned char *bytes, int class, int endian)
@@ -45,8 +48,10 @@ void print_flags(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
+ * print_size_header - display prog header size
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_size_header(unsigned char *bytes, int class, int endian)
@@ -58,6 +63,13 @@ void print_size_header(unsigned char *bytes, int class, int endian)
 	printf("  Size of this header:			%d (bytes)\n", ehsize);
 }
 
+/**
+ * print_size_prog - display prog header table entry size
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
+ */
+
 void print_size_prog(unsigned char *bytes, int class, int endian)
 {
 	uint16_t sizeprogh = class == ELFCLASS32 ? ((Elf32_Ehdr *)bytes)->e_phentsize
@@ -68,9 +80,10 @@ void print_size_prog(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
- *
+ * print_num_prog - display prog header table entry count
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_num_prog(unsigned char *bytes, int class, int endian)

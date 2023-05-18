@@ -1,9 +1,12 @@
 #include "hreadelf.h"
 
 /**
- *
- *
+ * print_section_size - display section header table entry size
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
+
 void print_section_size(unsigned char *bytes, int class, int endian)
 {
 	uint16_t sec_size = class == ELFCLASS32 ? ((Elf32_Ehdr *)bytes)->e_shentsize
@@ -14,8 +17,10 @@ void print_section_size(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
+ * print_num_hsection - display section header table entry count
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_num_hsection(unsigned char *bytes, int class, int endian)
@@ -28,8 +33,10 @@ void print_num_hsection(unsigned char *bytes, int class, int endian)
 }
 
 /**
- *
- *
+ * print_string_table - section header table string index
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_string_table(unsigned char *bytes, int class, int endian)
