@@ -1,16 +1,15 @@
 #include "hreadelf.h"
 
 /**
- *
- *
- *
+ * print_version - print the version dude
+ * @bytes: bytes array
  */
 
 void print_version(unsigned char *bytes)
 {
 	unsigned char version = ((Elf64_Ehdr *)bytes)->e_ident[EI_VERSION];
 
-	printf("  Version:				%d", version);
+	printf("  Version:                           %d", version);
 	switch (version)
 	{
 	case (EV_CURRENT):
@@ -27,6 +26,7 @@ void print_version(unsigned char *bytes)
  * print_osabi_2 - Print osabi
  * @osabi: osabi
  */
+
 void print_osabi_2(unsigned char osabi)
 {
 	switch (osabi)
@@ -50,11 +50,12 @@ void print_osabi_2(unsigned char osabi)
  * print_osabi - Print osabi
  * @bytes: character array
  */
+
 void print_osabi(unsigned char *bytes)
 {
 	unsigned char osabi = ((Elf64_Ehdr *)bytes)->e_ident[EI_OSABI];
 
-	printf("  OS/ABI:				");
+	printf("  OS/ABI:                            ");
 	switch (osabi)
 	{
 	case ELFOSABI_SYSV: /* Also ELFOSABI_NONE */
@@ -82,15 +83,15 @@ void print_osabi(unsigned char *bytes)
 }
 
 /**
- *
- *
+ * print_abi_version - print the abi version
+ * @bytes: bytes array
  */
 
 void print_abi_version(unsigned char *bytes)
 {
 	unsigned char abi = ((Elf64_Ehdr *)bytes)->e_ident[EI_ABIVERSION];
 
-	printf("  ABI Version:				%d\n", abi);
+	printf("  ABI Version:                       %d\n", abi);
 }
 
 /**
@@ -104,7 +105,7 @@ void print_type(unsigned char *bytes, int endianess)
 
 	if (endianess == ELFDATA2MSB)
 		swapper((unsigned char *)&type, 2);
-	printf("  Type:					");
+	printf("  Type:                              ");
 	switch (type)
 	{
 	case ET_NONE:

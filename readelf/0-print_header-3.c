@@ -13,7 +13,7 @@ void print_start_section(unsigned char *bytes, int class, int endian)
 	Elf64_Off *h64;
 	Elf32_Off *h32;
 
-	printf("  Start of section headers:             ");
+	printf("  Start of section headers:          ");
 	if (class == ELFCLASS32)
 	{
 		h32 = &((Elf32_Ehdr *)bytes)->e_shoff;
@@ -44,7 +44,7 @@ void print_flags(unsigned char *bytes, int class, int endian)
 										 : ((Elf64_Ehdr *)bytes)->e_flags;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&flags, 4);
-	printf("  Flags:                                0x%x\n", flags);
+	printf("  Flags:                             0x%x\n", flags);
 }
 
 /**
@@ -60,7 +60,7 @@ void print_size_header(unsigned char *bytes, int class, int endian)
 										  : ((Elf64_Ehdr *)bytes)->e_ehsize;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&ehsize, 2);
-	printf("  Size of this header:                  %d (bytes)\n", ehsize);
+	printf("  Size of this header:               %d (bytes)\n", ehsize);
 }
 
 /**
@@ -76,7 +76,7 @@ void print_size_prog(unsigned char *bytes, int class, int endian)
 											 : ((Elf64_Ehdr *)bytes)->e_phentsize;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&sizeprogh, 2);
-	printf("  Size of program headers:              %d (bytes)\n", sizeprogh);
+	printf("  Size of program headers:           %d (bytes)\n", sizeprogh);
 }
 
 /**
@@ -92,5 +92,5 @@ void print_num_prog(unsigned char *bytes, int class, int endian)
 											: ((Elf64_Ehdr *)bytes)->e_phnum;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&numprogh, 2);
-	printf("  Number of program headers:            %d\n", numprogh);
+	printf("  Number of program headers:         %d\n", numprogh);
 }
