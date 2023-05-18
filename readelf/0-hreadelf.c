@@ -10,7 +10,7 @@ void print_magic(unsigned char *bytes)
 	size_t i;
 	unsigned char *magics = ((Elf64_Ehdr *)bytes)->e_ident;
 
-	printf("  Magic    ");
+	printf("  Magic:   ");
 	for (i = 0; i < 16; i++)
 		printf("%02x ", magics[i]);
 	printf("\n");
