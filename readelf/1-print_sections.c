@@ -31,7 +31,7 @@ void print_section_type(unsigned char *bytes, int class, int endian)
 										: ((Elf64_Shdr *)bytes)->sh_type;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&type, class == ELFCLASS32 ? 4 : 4);
-	printf("%-15s", get_section_type(type));
+	printf(" %-15s", get_section_type(type));
 }
 
 /**
@@ -47,7 +47,7 @@ void print_section_addr(unsigned char *bytes, int class, int endian)
 										  : ((Elf64_Shdr *)bytes)->sh_addr;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&addr, class == ELFCLASS32 ? 4 : 8);
-	printf("%0*lx", class == ELFCLASS32 ? 8 : 16, addr);
+	printf(" %0*lx", class == ELFCLASS32 ? 8 : 16, addr);
 }
 
 /**
@@ -65,7 +65,7 @@ void print_section_off(unsigned char *bytes, int class, int endian)
 										   : ((Elf64_Shdr *)bytes)->sh_offset;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&offset, class == ELFCLASS32 ? 4 : 8);
-	printf("%06lx", offset);
+	printf(" %06lx", offset);
 }
 
 /**
@@ -82,5 +82,5 @@ void print_section_size(unsigned char *bytes, int class, int endian)
 											: ((Elf64_Shdr *)bytes)->sh_size;
 	if (endian == ELFDATA2MSB)
 		swapper((unsigned char *)&sec_size, class == ELFCLASS32 ? 4 : 8);
-	printf("%06lx", sec_size);
+	printf(" %06lx", sec_size);
 }
