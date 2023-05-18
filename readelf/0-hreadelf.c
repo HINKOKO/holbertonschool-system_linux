@@ -1,8 +1,8 @@
 #include "hreadelf.h"
 
 /**
- *
- *
+ * print_magic - display magic bytes
+ * @bytes: chars array
  */
 
 void print_magic(unsigned char *bytes)
@@ -17,9 +17,8 @@ void print_magic(unsigned char *bytes)
 }
 
 /**
- *
- *
- *
+ * print_class - display the class of ELF
+ * @bytes: chars array
  */
 
 void print_class(unsigned char *bytes)
@@ -42,14 +41,14 @@ void print_class(unsigned char *bytes)
 }
 
 /**
- *
- *
- *
+ * print_data - display the data field of ELF
+ * @bytes: chars array
  */
 
 void print_data(unsigned char *bytes)
 {
 	unsigned char data = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
+
 	printf("  Data:					");
 	switch (data)
 	{
@@ -67,8 +66,11 @@ void print_data(unsigned char *bytes)
 }
 
 /**
- *
- *
+ * print_elf_header - main function to loop through
+ * all printers functions
+ * @bytes: chars array
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
 void print_elf_header(unsigned char *bytes, int class, int endian)
