@@ -34,10 +34,31 @@ void print_section_size(unsigned char *bytes, int class, int endian);
 void print_num_hsection(unsigned char *bytes, int class, int endian);
 void print_string_table(unsigned char *bytes, int class, int endian);
 
+/* MAIN PRINT OF SECTION */
+void print_elf_section_header(unsigned char *bytes, char *filename,
+							  int class, int endian);
+/* printer functions for sections */
+void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
+							 int num_sections, int hsize, unsigned char *str_table);
+void print_section_name(unsigned char *bytes, int class, int endian,
+						unsigned char *strtable);
+void print_section_type(unsigned char *bytes, int class, int endian);
+
+/* getters functions for sections */
+uint64_t get_section_size(unsigned char *bytes, int class, int endian);
+Elf64_Off get_section_offset(unsigned char *bytes, int class, int endian);
+uint16_t get_string_tabidx(unsigned char *bytes, int class, int endian);
+Elf64_Half get_size_hsection(unsigned char *bytes, int class, int endian);
+Elf64_Off get_number_sections(unsigned char *bytes, int class, int endian);
+void *get_section_header_start(unsigned char *bytes, int class, int endian);
+char *get_section_type(uint32_t type);
+
 /* TOOL BOX */
 
 int read_elf_header_bytes(unsigned char *bytes, const char *filename);
 int check_elf_magic(unsigned char *bytes);
 void swapper(unsigned char *bytes, size_t size);
+int read_bytes(unsigned char **bytes, char *filename,
+			   size_t offset, size_t size);
 
 #endif /* __HELF__ */

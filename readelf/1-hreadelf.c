@@ -1,125 +1,120 @@
 #include "hreadelf.h"
 
 /**
- * check_magic - function to check if magic bytes are magic
+ * print_elf_header - main function to loop through
+ * all printers functions
  * @bytes: chars array
- * Return: 0 success, 1 failure
+ * @class: 32/64 bits flag int
+ * @endian: LSB/MSB flag int
  */
 
-int check_magic(unsigned char *bytes)
+void print_elf_sections_loop(unsigned char *bytes, int class, int endian,
+							 int num_sections, int hsize, unsigned char *str_table)
 {
-	Elf64_Ehdr *elf64;
+	int i;
 
-	elf64 = (Elf64_Ehdr *)bytes;
-	if (memcmp(elf64->e_ident, ELFMAG, SELFMAG) != 0)
+	// print_section_hname(class);
+
+	for (i = 0; i < num_sections; ++i, bytes += hsize)
 	{
-		fprintf(stderr, "Not an ELF file, wrong magic bytes\n");
-		return (1);
+		printf("  [%2d]  ", i);
+		print_section_name(bytes, class, endian, str_table);
+		print_section_type(bytes, class, endian);
+		// print_section_addr(bytes, class, endian);
+		// print_section_off(bytes, class, endian);
+		// print_section_size(bytes, class, endian);
+		// print_section_entry_size(bytes, class, endian);
+		// print_section_flag(bytes, class, endian);
+		// print_section_link(bytes, class, endian);
+		// print_section_inf(bytes, class, endian);
+		// print_section_al(bytes, class, endian);
 	}
-	return (0);
+
+	// print_key_match_flags(class);
 }
 
 /**
- * read_header_bytes - reads 64 bytes from header
- * @bytes: charac array
- * @filename: the ELF file to read from
- * Return: 0 success, 1 failure
+ * print_elf_section_header - mimics the readelf -W -S
+ * infos about section headers
+ * @bytes: chars array
+ * @filename: the ELF file to print from
+ * @class: 32/64 bits int flag
+ * @endian: LSB/MSB int flag
  */
 
-int read_header_bytes(unsigned char *bytes, const char *filename)
-{
-	FILE *fp = NULL;
-
-	fp = fopen(filename, "rb");
-	if (!fp || fread(bytes, 64, 1, fp) == 0)
-		return (1);
-	fclose(fp);
-	return (0);
-}
-
-/**
- * check_args - check that args are valids
- * @argc: argument count
- * @argv: array of argument
- * Return: status 1 for success to continue, 0 otherwise
- */
-
-int check_args(int argc, char **argv)
-{
-	int status;
-	struct stat sb;
-
-	status = 1;
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: 0-hreadelf <elf_filename>\n");
-		return (0);
-	}
-
-	stat(argv[1], &sb);
-	if (!S_ISREG(sb.st_mode))
-	{
-		fprintf(stderr, "Not a regular file here: %s", argv[1]);
-		return (0);
-	}
-	return (status);
-}
-
-/**
- * print_section_header - take care of displaying the header and
- * call the other print functions on the way
- * @bytes: char array
- * @filename: the filename ELF to show sections off
- * @class: 32 or 64 bit int flag decision
- * @endian: little or big endian int flag decision
- * Return: 0 success, 1 failure, thank you
- */
-
-int print_section_header(unsigned char *bytes, char *filename,
-						 int class, int endian)
+void print_elf_section_header(unsigned char *bytes, char *filename,
+							  int class, int endian)
 {
 	Elf64_Off offset;
-	uint16_t number_sections = 0;
+	uint16_t n_sections = 0, str_idx = 0, size_hsection = 0;
+	size_t string_offset = 0, sec_size = 0;
 	void *header_start = NULL;
-	/* void to perform sanity arithmetics (hackademics.fr)*/
-	/* goal=> catch a pointer on the first header of section */
-	/* not known at first but casting then to hanlde it */
-	(void)filename;
+	/* void for sanity arithmetics */
+	unsigned char *data = NULL, *str_table = NULL;
 
-	header_start = get_section_start(bytes, class, endian);
-	/* === *(jojo *) pointer == */
-	/* jojo casted & dereferenced to access its value */
+	/* catch a pointer on the first header of sections */
+	header_start = get_section_header_start(bytes, class, endian);
+	/* cast and dereference to access its value */
 	offset = class == ELFCLASS32 ? *(Elf32_Off *)header_start
 								 : *(Elf64_Off *)header_start;
-	number_sections = get_number_sections(bytes, class, endian);
+	n_sections = get_number_sections(bytes, class, endian);
+	size_hsection = get_size_hsection(bytes, class, endian);
+	printf("There are %d section headers, starting at offset %#lx\n",
+		   n_sections, offset);
+	/* read chunks of bytes of ELF sections according to num mutiply by size */
+	if (read_bytes(&data, filename, offset, n_sections * size_hsection))
+	{
+		exit(EXIT_FAILURE);
+	}
 
-	printf("There are %d section headers, starting at offset %#lx:\n\n",
-		   number_sections, offset);
-	return (0);
+	str_idx = get_string_tabidx(bytes, class, endian);
+	string_offset = get_section_offset(data + (str_idx * size_hsection), class, endian);
+	sec_size = get_section_size(data + (str_idx * size_hsection), class, endian);
+
+	if (read_bytes(&str_table, filename, string_offset, sec_size))
+	{
+		free(data);
+		exit(EXIT_FAILURE);
+	}
+	print_elf_sections_loop(data, class, endian,
+							n_sections, size_hsection, str_table);
+	free(data);
+	free(str_table);
 }
 
 /**
- * main - entry point and manage all errors that can occurs
- * @argc: count of args
- * @argv: array of args
- * Return: 1 for success, 0 otherwise
+ * main - entry point of make 0
+ * @argc: count of arguments
+ * @argv: array of arguments
+ * Return: 0 success, 1 otherwise
  */
 
 int main(int argc, char **argv)
 {
 	unsigned char bytes[64];
 
-	if (check_args(argc, argv) == 0)
-		return (1);
-	if (read_header_bytes(bytes, argv[1]))
+	if (argc != 2)
+		return (EXIT_SUCCESS);
+	if (access(argv[1], F_OK) == -1)
+	{
+		fprintf(stderr, "readelf: Error: '%s' No such file\n", argv[1]);
+		return (EXIT_FAILURE);
+	}
+	if (access(argv[1], O_RDONLY) == -1)
+	{
+		fprintf(stderr, "readelf: Error: %s: Failed to read file's magic\n",
+				argv[1]);
+		return (EXIT_FAILURE);
+	}
+	if (read_elf_header_bytes(bytes, argv[1]))
 	{
 		perror("readelf: Error: ");
-		return (1);
+		return (EXIT_FAILURE);
 	}
-	if (check_magic(bytes))
-		return (1);
-	print_section_header(bytes, argv[1],
-						 bytes[4] == ELFCLASS32 ? ELFCLASS32 : ELFCLASS64,
-						 bytes[5] == ELFDATA2LSB ? ELFDATA2LSB : ELFDATA2MSB);
+	if (check_elf_magic(bytes))
+		return (EXIT_FAILURE);
+	print_elf_section_header(bytes, argv[1],
+							 bytes[4] == ELFCLASS32 ? ELFCLASS32 : ELFCLASS64,
+							 bytes[5] == ELFDATA2LSB ? ELFDATA2LSB : ELFDATA2MSB);
 	return (0);
 }

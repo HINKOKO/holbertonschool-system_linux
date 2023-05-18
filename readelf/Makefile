@@ -1,7 +1,7 @@
 CC = gcc
 FLAGS = -Wall -Werror -Wextra -pedantic
 FILES_0 = $(wildcard 0-*.c) header_tools.c
-FILES_1 = $(wildcard 1-*.c)
+FILES_1 = $(wildcard 1-*.c) header_tools.c section_tools.c
 HEADER = $(wildcard *.h)
 
 0-hreadelf:
