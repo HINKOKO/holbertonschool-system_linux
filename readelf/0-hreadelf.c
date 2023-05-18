@@ -47,7 +47,7 @@ void print_class(unsigned char *bytes)
 
 void print_data(unsigned char *bytes)
 {
-	unsigned char data = ((Elf64_Ehdr *)bytes)->e_ident[EI_CLASS];
+	unsigned char data = ((Elf64_Ehdr *)bytes)->e_ident[EI_DATA];
 
 	printf("  Data:                              ");
 	switch (data)
