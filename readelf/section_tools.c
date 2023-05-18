@@ -95,6 +95,8 @@ char *get_section_type(uint32_t type)
 		return ("SHLIB");
 	case SHT_GNU_verneed:
 		return ("VERNEED");
+	case SHT_INIT_ARRAY:
+		return ("INIT_ARRAY");
 	case SHT_NULL:
 	default:
 		return ("NULL");
