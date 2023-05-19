@@ -109,6 +109,55 @@
 	- `.data` initialized data with read and write access rights
 	- `.rodata` initialized data with read only access rights
 	- `.bss` Uninitialiazed data, read and write access rights
+	 
+	 ## about **SHT** **S**ection **H**eader **T**able
+
+	 It **describes** the ***linking view*** of the binary.
+	 This table has ***entries*** for all the sections in the binary where each entry describes the respective section attributes. <br>
+	 (i.e. the section offset, type, size, flags, etc..)
+	 ```
+	 There are 31 section headers, starting at offset 0x3780:
+
+	Section Headers:
+	[Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+	[ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+	[ 1] .interp           PROGBITS        0000000000000318 000318 00001c 00   A  0   0  1
+	[ 2] .note.gnu.property NOTE            0000000000000338 000338 000030 00   A  0   0  8
+	[ 3] .note.gnu.build-id NOTE            0000000000000368 000368 000024 00   A  0   0  4
+	[ 4] .note.ABI-tag     NOTE            000000000000038c 00038c 000020 00   A  0   0  4
+	[ 5] .gnu.hash         GNU_HASH        00000000000003b0 0003b0 000024 00   A  6   0  8
+	[ 6] .dynsym           DYNSYM          00000000000003d8 0003d8 000120 18   A  7   1  8
+	[ 7] .dynstr           STRTAB          00000000000004f8 0004f8 0000c4 00   A  0   0  1
+	[ 8] .gnu.version      VERSYM          00000000000005bc 0005bc 000018 02   A  6   0  2
+	[ 9] .gnu.version_r    VERNEED         00000000000005d8 0005d8 000040 00   A  7   1  8
+	[10] .rela.dyn         RELA            0000000000000618 000618 0000c0 18   A  6   0  8
+	[11] .rela.plt         RELA            00000000000006d8 0006d8 000090 18  AI  6  24  8
+	[12] .init             PROGBITS        0000000000001000 001000 00001b 00  AX  0   0  4
+	[13] .plt              PROGBITS        0000000000001020 001020 000070 10  AX  0   0 16
+	[14] .plt.got          PROGBITS        0000000000001090 001090 000010 10  AX  0   0 16
+	[15] .plt.sec          PROGBITS        00000000000010a0 0010a0 000060 10  AX  0   0 16
+	[16] .text             PROGBITS        0000000000001100 001100 0001bf 00  AX  0   0 16
+	[17] .fini             PROGBITS        00000000000012c0 0012c0 00000d 00  AX  0   0  4
+	[18] .rodata           PROGBITS        0000000000002000 002000 000012 00   A  0   0  4
+	[19] .eh_frame_hdr     PROGBITS        0000000000002014 002014 000034 00   A  0   0  4
+	[20] .eh_frame         PROGBITS        0000000000002048 002048 0000ac 00   A  0   0  8
+	[21] .init_array       INIT_ARRAY      0000000000003d90 002d90 000008 08  WA  0   0  8
+	[22] .fini_array       FINI_ARRAY      0000000000003d98 002d98 000008 08  WA  0   0  8
+	[23] .dynamic          DYNAMIC         0000000000003da0 002da0 0001f0 10  WA  7   0  8
+	[24] .got              PROGBITS        0000000000003f90 002f90 000070 08  WA  0   0  8
+	[25] .data             PROGBITS        0000000000004000 003000 000010 00  WA  0   0  8
+	[26] .bss              NOBITS          0000000000004010 003010 000008 00  WA  0   0  1
+	[27] .comment          PROGBITS        0000000000000000 003010 00002b 01  MS  0   0  1
+	[28] .symtab           SYMTAB          0000000000000000 003040 0003d8 18     29  18  8
+	[29] .strtab           STRTAB          0000000000000000 003418 000247 00      0   0  1
+	[30] .shstrtab         STRTAB          0000000000000000 00365f 00011a 00      0   0  1
+	Key to Flags:
+	W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+	L (link order), O (extra OS processing required), G (group), T (TLS),
+	C (compressed), x (unknown), o (OS specific), E (exclude),
+	D (mbind), l (large), p (processor specific)
+
+	 ```
 
 - **What information are present in the program header table**
 	A program header table - also known as ***program segment header table*** 
