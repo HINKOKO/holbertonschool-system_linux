@@ -161,9 +161,10 @@
 
 - **What information are present in the program header table**
 	A program header table - also known as ***program segment header table*** 
-	descrisbes ***segments** within a binary and are necessary for program loading.
-	These segments are understood by the kernel during load time and describe the memory layout of an executable on disk,
-	and how it should translate to memory.
+	describes ***segments** within a binary and are necessary for program loading.
+	It describes the **execution view** of the binary.
+	These segments are understood by the kernel during load time and describe the memory layout of an executable on disk, and how it should translate to memory.
+	It's kind of a guide to the kernel on how to load the on-disk representations (sections) of binary program into memory (segments) for execution.
 	==> That program table provides essential infos for the kernel to **load and execute** the binary.
 
 - **How to parse an ELF file using C structures**
