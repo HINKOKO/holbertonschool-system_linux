@@ -35,7 +35,8 @@
 	- Program headers or **Segments**
 	- Section headers or **Sections**
 	
-	A general layout of of a typical ELF file is structured as follow:
+	As its name suggest, **E**xecutable and **L**inkable format suggests 2 views,
+	which involves a general layout of a typical ELF file as follow:
 	```
 	**Linking View**				**Execution View**
 
