@@ -30,10 +30,17 @@
 	- **Kernel modules** (in some Unix-like OS).
 
 - **What are the different parts that constitute an ELF file**
-	Generally speaking, ELF files are composed of three main parts:
-	- ELF Header
-	- Program headers or **Segments**
-	- Section headers or **Sections**
+	An ELF Binary is made up of 4 main components:
+	- **ELF Header** always present at offset 0 of the binary, and works as a **roadmap** to parse ELF Binary
+	It describes attributes of an ELF binary, useful informations to the loaders & linkers. It includes **location to other body parts** of the ELF which is helpful while implementing parsers for the binary (That's what we do in this repo !) 
+
+	- **Program Header Table** (Segments) or **PHT** describes the **segments** of an ELF.
+	Useful to the loader and the runtime linker.
+
+	- **Section Header Table** (Sections) or **SHT** describes the **sections** of an ELF.
+	Useful to the compile-time linker (ld), => its presence is optional for ***runtime execution***.
+
+	- Data as **Sections and Segments** The actual content of the binary ELF. Sections are just block of bytes present in linking view (on-disk view) to produce segment (which provide a runtime/in-memory view). Segments are blocks composed of one or more sections and are produced by the linker.
 	
 	As its name suggest, **E**xecutable and **L**inkable format suggests 2 views,
 	which involves a general layout of a typical ELF file as follow:
