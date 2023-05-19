@@ -100,8 +100,11 @@
 	This value is helpful to correctly interpret the remaining parts within the ELF file.
 
 - **What information are present in the sections header table**
-	This "view" of the ELF file is used for linking and relocation, for the executable files, which we are working with in this project,
-	we find 4 main sections:
+	This "view" of the ELF file is used for linking and relocation, a catchy explanation taken from ***Computer Science from the Bottom Up*** <br>
+	declares this : <br>
+	***Sections are a way to organize binary into logical areas to communicate information between the compiler and the linker*** <br>
+	
+	For the executable files, which we are working with in this project, we find 4 main sections:
 	- `.text` contains executable code, loaded only once and packed into a segment (as it won't change)
 	- `.data` initialized data with read and write access rights
 	- `.rodata` initialized data with read only access rights
