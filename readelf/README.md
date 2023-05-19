@@ -34,6 +34,32 @@
 	- ELF Header
 	- Program headers or **Segments**
 	- Section headers or **Sections**
+	
+	A general layout of of a typical ELF file is structured as follow:
+	```
+	**Linking View**				**Execution View**
+
+	+----------------+               +----------------+ 
+	|   ELF Header   |               |   ELF Header   |
+	+----------------+               +----------------+ 
+	| Program header |               | Program header |
+	| table (opt.)   |               |     table      |
+	+----------------+               +----------------+
+	|   Section 1    |               |    Segment 1   |
+	+----------------+               |                |
+	|      ...       |               |                |
+	+----------------+               +----------------+
+	|      ...       |               |    Segment 2   |
+	+----------------+               |                |
+	|   Section n    |               +----------------+
+	+----------------+               |                |
+	|      ...       |               |      ...       |
+	+----------------+               +----------------+
+	| Section header |               | Section header |
+	|      table     |               |     table      |
+	+----------------+               +----------------+
+	```
+	
 
 - **What information are present in the file header**
 	```
@@ -78,6 +104,13 @@
 	- `.data` initialized data with read and write access rights
 	- `.rodata` initialized data with read only access rights
 	- `.bss` Uninitialiazed data, read and write access rights
+
 - **What information are present in the program header table**
+	A program header table - also known as ***program segment header table*** 
+	descrisbes ***segments** within a binary and are necessary for program loading.
+	These segments are understood by the kernel during load time and describe the memory layout of an executable on disk,
+	and how it should translate to memory.
+	==> That program table provides essential infos for the kernel to **load and execute** the binary.
+
 - **How to parse an ELF file using C structures**
 	The ``/usr/include/elf.h`` header file is a standard C header file which defines data structures, constants and macros used to parse and manipulate ELF files.
