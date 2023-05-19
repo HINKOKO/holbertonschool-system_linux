@@ -43,7 +43,8 @@
 	|   ELF Header   |               |   ELF Header   |
 	+----------------+               +----------------+ 
 	| Program header |               | Program header |
-	| table (opt.)   |               |     table      |
+	|     table      |               |     table      | 
+	|   (optional)   |               |                |
 	+----------------+               +----------------+
 	|   Section 1    |               |    Segment 1   |
 	+----------------+               |                |
@@ -56,10 +57,10 @@
 	|      ...       |               |      ...       |
 	+----------------+               +----------------+
 	| Section header |               | Section header |
-	|      table     |               |     table      |
+	|      table     |               | table(optional)|
 	+----------------+               +----------------+
 	```
-	
+
 
 - **What information are present in the file header**
 	```
