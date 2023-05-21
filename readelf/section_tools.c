@@ -126,6 +126,8 @@ char *get_section_type2(uint32_t type)
 		return ("LOOS+ffffff3");
 	case 0x6ffffff1:
 		return ("LOOS+ffffff1");
+	case 0x6ffffffc:
+		return ("VERDEF");
 	case SHT_NULL:
 	default:
 		return ("NULL");
