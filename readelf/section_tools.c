@@ -105,6 +105,27 @@ char *get_section_type(uint32_t type)
 		return ("GNU_HASH");
 	case SHT_GNU_versym:
 		return ("VERSYM");
+	case SHT_GNU_verdef:
+		return ("VERDEF");
+	default:
+		return (get_section_type2(type));
+	}
+}
+
+/**
+ * get_section_type2 - get section type, a PAIN
+ * @type: type index
+ * Return: section type name
+ */
+
+char *get_section_type2(uint32_t type)
+{
+	switch (type)
+	{
+	case 0x6ffffff3:
+		return ("LOOS+ffffff3");
+	case 0x6ffffff1:
+		return ("LOOS+ffffff1");
 	case SHT_NULL:
 	default:
 		return ("NULL");

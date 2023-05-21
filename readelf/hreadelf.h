@@ -54,7 +54,6 @@ void print_section_addralign(unsigned char *bytes, int class, int endian);
 void print_section_hname(int class);
 void print_key_match_flags(int class);
 
-
 /* getters functions for sections */
 uint64_t get_section_size(unsigned char *bytes, int class, int endian);
 Elf64_Off get_section_offset(unsigned char *bytes, int class, int endian);
@@ -63,6 +62,7 @@ uint16_t get_size_hsection(unsigned char *bytes, int class, int endian);
 uint16_t get_number_sections(unsigned char *bytes, int class, int endian);
 void *get_section_header_start(unsigned char *bytes, int class, int endian);
 char *get_section_type(uint32_t type);
+char *get_section_type2(uint32_t type);
 
 /* TOOL BOX */
 
