@@ -14,13 +14,13 @@ asm_strncmp:
 	xor rcx, rcx ; trick xor to initialize counter to 0 fast
 
 loop:
-	mov r9b, [rdi + rcx] ; get the first character of 1st string
+	mov al, [rdi + rcx] ; get the first character of 1st string
 	mov r8b, [rsi + rcx] ; get the first character of 2nd string
-	cmp r9b, 0 ; check for end of string 1
+	cmp al, 0 ; check for end of string 1
 	je compare
 	cmp r8b, 0 ; check for end of string 2
 	je compare
-	cmp r9b, r8b
+	cmp al, r8b
 	jne compare
 	inc rcx
 	cmp rcx, rdx ; compare counter to parameter size_t n asked by user
@@ -28,8 +28,8 @@ loop:
 	jmp loop
 
 compare:
-	sub r9b, r8b ; r9b -= r8b
-	movsx rax, r9b ; move and get the sign please
+	sub al, r8b ; al -= r8b
+	movsx rax, al ; move and get the sign please
 	jmp end
 
 greater:
