@@ -1,24 +1,19 @@
-BITS 32 
+BITS 64
 
-section .text
-	global add_me
+	global add_me ; export the function
+
+	section .text
+
+	; int add_me(int a, int b)
+	; adds two integers
 
 add_me:
-	; Function prologue
-	push ebp ; preserve previous base pointer
-	; calling code may have been using 'RBP' for its own purpose
-	; preserve and be able to call it later
-	mov ebp, esp ; establish new base pointer
 
-	; args accessed related to ebp
-	mov eax, [ebp + 8] ; get first
-	mov ebx, [ebp + 12] ; get second
-
-	add eax, ebx ; perfomr addition
-
-	; clean up the stack, EPILOGUE !
-	mov esp, ebp
-	pop ebp
-
-	; return result
+	; the 6 first integer/pointer params stored in order rdi, rsi, rdx, rcx, r8 & r9
+	; First integer parameter (EDI) // 'e' used because 32 bits asked
+	mov eax, edi
+	; Second integer parameter added to eax which holds 1st param edi (+ ESI)
+	add eax, esi
+	; return
 	ret
+
