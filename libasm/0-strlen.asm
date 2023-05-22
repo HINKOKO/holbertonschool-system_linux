@@ -17,5 +17,5 @@ asm_loop:
 asm_end:
 	mov rax, r9 ; put the value of counter to return I/O register rax
 	mov rsp, rbp ; clean up the stack frame
-	pop rbp 
+	pop rbp
 	ret
