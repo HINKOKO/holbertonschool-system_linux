@@ -8,7 +8,7 @@ asm_strcmp:
 loop_cmp:
 	movzx eax, byte [rdi] ; load 1st character 1st string zx to zero extend to 32 bits
 	movzx edx, byte [rsi] ; load 1st char 2nd string zx zero extend to 32 bits
-	
+
 	cmp al, 0x0 ; check if reach end of strings
 	je compare ; if yes , jump to compare
 
@@ -38,8 +38,3 @@ out:
 	mov rsp, rbp ; restore the stack pointer
 	pop rbp ; restore base pointer ==> clean_up stack frame
 	ret
-
-
-
-
-	
