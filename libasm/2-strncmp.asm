@@ -29,10 +29,6 @@ count_loop:
 	cmp r13b, byte [rcx + r12 - 1] ; compare char from arg1 & arg2
 	je count_loop ; Repeat the loop
 
-correction:
-	dec r12;
-	jmp next_loop
-
 next_loop:
 	mov rax, 0 ; init return value 0
 	push qword [rbx + r12 - 1] ; put the last char arg1 compared onto stack
@@ -71,3 +67,6 @@ end:
 	pop rbp ; epilogue of stack frame
 	ret
 
+correction:
+	dec r12;
+	jmp next_loop
