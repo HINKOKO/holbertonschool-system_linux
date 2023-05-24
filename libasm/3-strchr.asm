@@ -9,29 +9,31 @@ bits 64
 		; individual characters but also special values
 		; gets implicitly converted to its ASCII code when calling the function
 
+; register order => rdi, rsi, rdx, rcx, r8, r9
+; sil => 8 bits register of rsi => source index register, used as a pointer
+; to a source in stream ops
+
 asm_strchr:
-; order of registers => rdi, rsi, rdx, rcx, r8, r9
-	push rbp ; save the base pointer
-	mov rbp, rsp ; set up a new base == Prologue
+	xor rax, rax ; quick trick to effitcient clear rax to 0
+	; using rax for arithmetics (iterator)
 
-	mov rsi, [rbp + 8] ; load string address into rsi
-	mov cl, [rbp + 12] ; load character to look for
+loop:
+	cmp BYTE [rdi + rax], 0 ; compare current char with terminating null byte
+	jz end ; if equals 0 jump to end
 
-search_loop:
-	lodsb ; Load a byte from [RSI] into AL and increment RSI
-	cmp al, cl ; compare loaded byte from string with the char
-	je c_found ; jump if match
-	test al, al ; check if end of string
-	jnz search_loop ; if not repeat the loop
+	cmp sil, 0 ; rsi 8 bits child, check if target char is NULL
+	jz end ; if yes, jump to end
 
-	xor rax, rax ; set rax to 0 (not found)
-	jmp end
+	cmp BYTE [rdi + rax], sil ; compare current char with targeted char
+	jz found ; if equals 0 jump to found
 
-c_found:
-	sub rsi, 1 ; decrement RSI to point to the found character
-	mov rax, rsi ; Move the pointer to rax
+	inc rax ; increment iterator
+	jmp loop ; Repeat loop
+
+found:
+	lea rax, [rdi + rax] ; load effective address of char found in rax
+	ret
 
 end:
-	mov rsp, rbp ; Restore stack pointer
-	pop rbp ; Restore base pointer (epilogue)
-	ret
+	mov rax, 0 ; no found clear rax
+	ret ; return
