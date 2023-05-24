@@ -14,30 +14,26 @@ bits 64
 ; to a source in stream ops
 
 asm_strchr:
-	xor eax, eax ; quick trick to effitcient clear rax to 0
-	; using rax for arithmetics (iterator)
+	push rbp ; save base pointer
+	mov rbp, rsp ; set up new stack pointer
 
 loop:
-	cmp BYTE [rdi + rax], 0 ; is the end of string already ?
-	jz end ; if equals 0 jump to end
-	
-	test sil, sil
-	jz null
-
-	cmp BYTE [rdi + rax], sil ; compare current char with targeted char
-	jz found ; if equals 0 jump to found
-
-	inc rax ; increment iterator
-	jmp loop ; Repeat loop
+	mov r8b, [rdi] ; load 1 byte of string (1 char) in r8b
+	cmp r8b, sil ; compare with the pattern to find (sil => baby 8 bits of rsi)
+	je found ; if equal jump to fond
+	test r8b, r8b ; test for null terminator
+	jz null ; if yes jump to null
+	inc rdi ; increment string pointer
+	jmp loop ; Repeat the loop
 
 found:
-	lea rax, [rdi + rax] ; load effective address of char found in rax
-	ret
+	mov rax, rdi ; Move the adress of matching char to rax
 
 null:
-	xor rax, rax
-	jmp end
+	xor rax, rax ; return NULL to indicate not found, as 'man strchr'
+	jmp end ; jump to the end
 
 end:
-	mov rax, 0 ; no found clear rax
+	mov rsp, rbp ; restore stack pointer
+	pop rbp ; restore base pointer
 	ret ; return
