@@ -10,6 +10,7 @@ asm_strncmp:
 
 loop:
 	cmp rdx, 0 ; register with 'n' parameter, args3
+	je equal ; n bytes end of counting
 	mov r8b, [rdi] ; move 1 char at a time from s1 r8b => 1 byte
 	mov r9b, [rsi] ; move 1 char at a time from s2 r9b => 1 byte
 	cmp r8b, r9b ; compare register and jumps accordingly if one "wins"
