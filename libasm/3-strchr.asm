@@ -15,24 +15,20 @@ bits 64
 
 asm_strchr:
 	push rbp ; save base pointer
-	mov rbp, rsp ; set up new stack pointer
+	mov rbp, rsp ; set_up new stack pointer
+	xor rax, rax ; trick clean up rax register
 
 loop:
-	mov al, [rdi] ; load 1 byte of string (1 char) in r8b
-	cmp al, sil ; compare with the pattern to find (sil => baby 8 bits of rsi)
-	je found ; if equal jump to fond
-	test al, al ; test for null terminator
-	jz null ; if yes jump to null
-	inc rdi ; increment string pointer
-	jmp loop ; Repeat the loop
+	mov al, byte [rdi] ; load 1 byte (1 char) of string (rdi) in al (8 bits baby of rax)
+	cmp al, sil ; compare with pattern
+	jz found ; if 0 jump to found
+	cmp byte [rdi], 0 ; is this end of string yet ?
+	jz end ; if yes jump to end
+	inc rdi ; increment pointer in string
+	jmp loop ; repeat the loop
 
 found:
-	mov rax, rdi ; Move the adress of matching char to rax
-
-null:
-	xor rax, rax ; return NULL to indicate not found, as 'man strchr'
-	jmp end ; jump to the end
-
+	mov rax, rdi ; move address of char found in rax
 end:
 	mov rsp, rbp ; restore stack pointer
 	pop rbp ; restore base pointer
