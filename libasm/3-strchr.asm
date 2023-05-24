@@ -14,7 +14,7 @@ bits 64
 ; to a source in stream ops
 
 asm_strchr:
-	xor rax, rax ; quick trick to effitcient clear rax to 0
+	xor eax, eax ; quick trick to effitcient clear rax to 0
 	; using rax for arithmetics (iterator)
 
 loop:
@@ -33,5 +33,5 @@ found:
 	ret
 
 end:
-	xor rax, rax ; no found clear rax
+	xor eax, eax ; no found clear rax
 	ret ; return
