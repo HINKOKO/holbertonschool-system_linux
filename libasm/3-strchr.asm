@@ -33,5 +33,5 @@ found:
 	ret
 
 end:
-	mov rax, 0 ; no found clear rax
+	xor rax, rax ; no found clear rax
 	ret ; return
