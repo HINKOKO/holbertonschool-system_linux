@@ -20,7 +20,9 @@ asm_strchr:
 loop:
 	cmp BYTE [rdi + rax], 0 ; is the end of string already ?
 	jz end ; if equals 0 jump to end
-
+	
+	test sil, sil
+	jz null
 
 	cmp BYTE [rdi + rax], sil ; compare current char with targeted char
 	jz found ; if equals 0 jump to found
@@ -32,6 +34,10 @@ found:
 	lea rax, [rdi + rax] ; load effective address of char found in rax
 	ret
 
+null:
+	xor rax, rax
+	jmp end
+
 end:
-	xor eax, eax ; no found clear rax
+	mov rax, 0 ; no found clear rax
 	ret ; return
