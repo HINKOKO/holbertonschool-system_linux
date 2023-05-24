@@ -21,7 +21,7 @@ loop:
 	cmp BYTE [rdi + rax], 0 ; compare current char with terminating null byte
 	jz end ; if equals 0 jump to end
 
-	cmp sil, 0 ; rsi 8 bits child, check if target char is NULL
+	cmp rsi, 0 ; rsi 8 bits child, check if target char is NULL
 	jz end ; if yes, jump to end
 
 	cmp BYTE [rdi + rax], sil ; compare current char with targeted char
