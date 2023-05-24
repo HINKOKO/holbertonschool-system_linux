@@ -18,10 +18,10 @@ asm_strchr:
 	mov rbp, rsp ; set up new stack pointer
 
 loop:
-	mov r8b, [rdi] ; load 1 byte of string (1 char) in r8b
-	cmp r8b, sil ; compare with the pattern to find (sil => baby 8 bits of rsi)
+	mov al, [rdi] ; load 1 byte of string (1 char) in r8b
+	cmp al, sil ; compare with the pattern to find (sil => baby 8 bits of rsi)
 	je found ; if equal jump to fond
-	test r8b, r8b ; test for null terminator
+	test al, al ; test for null terminator
 	jz null ; if yes jump to null
 	inc rdi ; increment string pointer
 	jmp loop ; Repeat the loop
