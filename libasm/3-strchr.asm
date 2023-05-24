@@ -18,11 +18,9 @@ asm_strchr:
 	; using rax for arithmetics (iterator)
 
 loop:
-	cmp BYTE [rdi + rax], 0 ; compare current char with terminating null byte
+	cmp BYTE [rdi + rax], 0 ; is the end of string already ?
 	jz end ; if equals 0 jump to end
 
-	cmp rsi, 0 ; rsi 8 bits child, check if target char is NULL
-	jz end ; if yes, jump to end
 
 	cmp BYTE [rdi + rax], sil ; compare current char with targeted char
 	jz found ; if equals 0 jump to found
