@@ -11,13 +11,12 @@ asm_putc:
 	push rbp
 	mov rbp, rsp ; stack frame set_up (ENTER)
 
-	xor rdi, rdi ; cleanup rdi before writing
+	push rdi ; save register if were in use
 
 	mov rax, 1 ; syscall write
 	mov rdi, 1 ; write the char
-	mov rsi, rsp ; move rsi to address of top stack (where chars written)
-	mov rdx, 1 ; count the byte
-
+	mov rsi, rsp ; source pointer to address to stack
+	mov rdx, 1 ; count the char written
 	syscall ; perform the system call to write
 
 	mov rsp, rbp
