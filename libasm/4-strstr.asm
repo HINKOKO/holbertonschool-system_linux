@@ -19,12 +19,11 @@ asm_strstr:
 	push r9 ; those two buddies as tmp storage for str1 & str2
 
 	xor rax, rax
-	xor rcx, rcx ; clear those register before use (segfault otherwise)
-	; xor rbx, rbx
-	; xor rdx, rdx
-	; xor r8, r8
-	; xor r9, r9 ; clear registers before use (segfault otherwise==> PLD)
-	; not with these one not cleared ! PLD
+	xor rcx, rcx ; clear those register before use (segfault otherwise for these 2)
+	xor rbx, rbx
+	xor rdx, rdx
+	xor r8, r8
+	xor r9, r9
 
 strstr_loop:
 	mov rdx, rcx ; save the idx if match in next step
