@@ -11,6 +11,7 @@ asm_putc:
 	push rbp
 	mov rbp, rsp ; stack frame set_up (ENTER)
 
+	xor rdi, rdi ; cleanup rdi before writing
 
 	mov rax, 1 ; syscall write
 	mov rdi, 1 ; write the char
