@@ -22,7 +22,7 @@ print_alphabet:
 	; Setup the 'write' syscall
 	mov rax, 1 ; syscall 1 == write
 	mov rdx, 1 ; Data register, record the 1 byte we write
-	mov rbi, 1 ; Destination Index Register, used destination stream ops (1 == stdout)
+	mov rdi, 1 ; Destination Index Register, used destination stream ops (1 == stdout)
 	mov rsi, rsp ; Address of the stack 
 	; RSI used as a pointer to a source in stream operations
 
