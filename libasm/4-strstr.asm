@@ -9,58 +9,48 @@ bits 64
 
 asm_strstr:
 	push rbp
-	mov rbp, rsp ; setup stack frame
+	mov rbp, rsp ; classic prologue
+	cmp rdi, 0 ; check if str1 is NULL
+	je error ; if yes jump to handle error
+	cmp rsi, 0 ; check if str2 is NULL
+	je error ; if yes jump to handle error
+	jmp boot ; jump to boot
 
-	push rcx ; iterator 'i' for str1
-	; more "logical" to keep rcx counter for str1 => nope(?)
-	push rbx ; iterator 'j' for str2
-	push rdx ; register to store index finding
-	push r8
-	push r9 ; those two buddies as tmp storage for str1 & str2
+boot:
+	mov r9b, [rdi] ; (set) then reset the r9 register with 1st arg
+	xor rcx, rcx ; clear the counter
+	jmp while ; jump to the 'core' while loop
 
-	cmp rsi, 0
-	jz end
+reboot_count:
+	cmp r9b, 0 ; check if str1[i] != '\0'
+	je no_equal ; if yes jump to no equal (str2 not finished but str1 yes => problem)
+	inc rdi ; str1[i++] move the iterator one step
+	jmp boot
 
-	xor rax, rax
-	xor rcx, rcx ; clear those register before use (segfault otherwise for these 2)
-	xor r8, r8
-	xor r9, r9
+while:
+	mov r9b, [rdi + rcx] ; temp r9b now hosting str1[i]
+	mov r8b, [rsi + rcx] ; temp r8b hosting str2[i]
+	cmp r8b, 0 ; did we reach end of needle string (str2) ?
+	je strings_equal ; if yes jump to string_equals
+	cmp r9b, r8b ; compare str1[i] & str2[i]
+	jne reboot_count ; if no jump to init_val
+	inc rcx ; move our counter += 1
+	jmp while ; Repeat the loop
 
-strstr_loop:
-	mov rdx, rcx ; save the idx if match in next step
-	xor rbx, rbx ; clear 'j' iterator 2, start again at needlestring[0]
+strings_equal:
+	mov rax, rdi ; store in rax the index str1[i]
+	jmp end ; jump to end
 
-strstr_match_loop:
-	mov r8b, [rdi + rcx] ; rdi => 1st arg => 1st string + iterate to it
-	mov r9b, [rsi + rbx] ; rsi => 2nd arg => idem...
-	test r9b, r9b ; trick to check if str2 is over ?
-	jz matching_idx ; if yes, jump to mathcing_idx
-	cmp r8b, r9b ; if no compare chars from str1 & str2
-	jne break ; if not, jump to break (to move iterator 1 among other things)
-	inc rcx ;
-	inc rbx ; if all of this pass increment and repeat
-	jmp strstr_match_loop ; Repeat the loop
+no_equal:
+	xor rax, rax ; clear up the rax register => return 0
+	jmp end
 
-matching_idx:
-	mov rax, rdi
-	add rax, rdx
-
-break:
-	mov r8b, [rdi + rcx]
-	test r8b, r8b ; is it end of string 1 ?
-	jz end ; if yes, smells like exiting
-	inc rcx ; if not increment again iterator and let's go
-	jmp strstr_loop ; jump to strstr_loop
+error:
+	xor rax, rax ; clear up register => return 0
+	jmp end
 
 end:
-	; restore our working registers
-	pop r9
-	pop r8
-	pop rdx
-	pop rbx
-	pop rcx
-
 	mov rsp, rbp
-	pop rbp
-	ret
+	pop rbp ; classic epilogue
+	ret ; pop rip => return ptr or 0
 
