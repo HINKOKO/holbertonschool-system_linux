@@ -18,10 +18,11 @@ asm_strstr:
 	push r8
 	push r9 ; those two buddies as tmp storage for str1 & str2
 
+	cmp rsi, 0
+	jz end
+
 	xor rax, rax
 	xor rcx, rcx ; clear those register before use (segfault otherwise for these 2)
-	xor rbx, rbx
-	xor rdx, rdx
 	xor r8, r8
 	xor r9, r9
 
