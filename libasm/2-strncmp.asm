@@ -10,7 +10,7 @@ asm_strncmp:
 
 loop:
 	cmp rdx, 0 ; check if arg3 (n bytes) is 0
-	je equal ; n bytes end of counting
+	je equal ; n bytes 0 => end of counting
 	mov r8b, [rdi] ; load one char str1 in r8b
 	mov r9b, [rsi] ; load one char str2 in r9b
 	cmp r8b, r9b ; compare register and jumps accordingly if one "wins"
