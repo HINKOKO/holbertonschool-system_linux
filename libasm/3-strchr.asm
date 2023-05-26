@@ -16,15 +16,14 @@ bits 64
 asm_strchr:
 	push rbp ; save base pointer
 	mov rbp, rsp ; set_up new stack pointer
-	xor rax, rax ; trick clean up rax register
 
 loop:
 	mov al, byte [rdi] ; load 1 byte (1 char) of string (rdi) in al (8 bits baby of rax)
-	cmp al, sil ; compare with pattern
+	cmp al, sil ; compare with pattern (sil 8bits of rsi (arg2))
 	jz found ; if 0 jump to found
 	cmp byte [rdi], 0 ; is this end of string yet ?
 	jz end ; if yes jump to end
-	inc rdi ; increment pointer in string
+	inc rdi ; increment pointer in string str1[i++]
 	jmp loop ; repeat the loop
 
 found:
@@ -32,4 +31,4 @@ found:
 end:
 	mov rsp, rbp ; restore stack pointer
 	pop rbp ; restore base pointer
-	ret ; return
+	ret ; return, pop rip
