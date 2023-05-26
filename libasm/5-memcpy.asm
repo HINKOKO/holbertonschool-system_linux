@@ -8,15 +8,12 @@ bits 64
 	; copies n bytes from memory area src to memory area dest.
 
 asm_memcpy:
-
-	test rdx, rdx ; check if args[3] not NULL
-	je end ; if yes its already the end
-	mov r8b, byte[rsi] ;
-	mov byte [rdi], r8b
-	inc rsi
-	inc rdi
-	dec rdx
+	test rdx, rdx ; check if 3rd parameter of memcpy is Null
+	mov r8b, [rsi] ; source aera => 2nd args => rsi
+	mov [rdi] , r8b ; move in dest aera => 1st arg => rdi
+	inc rsi ; move in source[i++]
+	inc rdi ; move in dest area[i++]
+	dec rdx ; n--
 	jmp asm_memcpy
-
 end:
 	ret
