@@ -18,8 +18,8 @@ asm_strchr:
 	mov rbp, rsp ; set_up new stack pointer
 
 loop:
-	mov bl, byte [rdi] ; load 1 byte (1 char) of string (rdi) in al (8 bits baby of rax)
-	cmp bl, sil ; compare with pattern (sil 8bits of rsi (arg2))
+	mov cl, byte [rdi] ; load 1 byte (1 char) of string (rdi) in al (8 bits baby of rax)
+	cmp cl, sil ; compare with pattern (sil 8bits of rsi (arg2))
 	jz found ; if 0 jump to found
 	cmp byte [rdi], 0 ; is this end of string yet ?
 	jz end ; if yes jump to end
