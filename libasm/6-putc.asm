@@ -17,13 +17,14 @@ asm_putc:
 	push rbp
 	mov rbp, rsp ; stack frame set_up (ENTER)
 
+	push rdi ; strange output otherwise (PLD)
+	mov rax, 1 ; syscall write 1
+	mov rdi, 1 ; set to 1 stdout
+	mov rsi, rsp ; set to address of char to be written (top stack)
+	mov rdx, 1 ; set to 1, hey we write one char (1 byte)
+	syscall ; perform the system call write
 
-	mov rax, 1 ; syscall write
-	mov rdi, 1 ; write the char
-	mov rsi, rsp ; set to the address of character to be written
-	mov rdx, 1 ; count the char written
-	syscall ; perform the system call to write
-
+	pop rdi ; restore registers
 	mov rsp, rbp
 	pop rbp ; restore stack frame
 
