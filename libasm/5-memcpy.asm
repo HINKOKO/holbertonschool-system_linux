@@ -9,8 +9,9 @@ bits 64
 
 asm_memcpy:
 	test rdx, rdx ; check if 3rd parameter of memcpy is Null
-	mov r8b, [rsi] ; source aera => 2nd args => rsi
-	mov [rdi] , r8b ; move in dest aera => 1st arg => rdi
+	je end ; if yes exit
+	mov r8b, byte [rsi] ; source aera => 2nd args => rsi
+	mov byte [rdi] , r8b ; move in dest aera => 1st arg => rdi
 	inc rsi ; move in source[i++]
 	inc rdi ; move in dest area[i++]
 	dec rdx ; n--
