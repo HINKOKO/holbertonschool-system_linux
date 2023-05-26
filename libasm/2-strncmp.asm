@@ -9,18 +9,18 @@ bits 64
 asm_strncmp:
 
 loop:
-	cmp rdx, 0 ; register with 'n' parameter, args3
+	cmp rdx, 0 ; check if arg3 (n bytes) is 0
 	je equal ; n bytes end of counting
-	mov r8b, [rdi] ; move 1 char at a time from s1 r8b => 1 byte
-	mov r9b, [rsi] ; move 1 char at a time from s2 r9b => 1 byte
+	mov r8b, [rdi] ; load one char str1 in r8b
+	mov r9b, [rsi] ; load one char str2 in r9b
 	cmp r8b, r9b ; compare register and jumps accordingly if one "wins"
 	jl less
 	jg greater
 	cmp r8b, 0 ; check if end of string in register r8b
 	je equal ; if yes strings equal
-	inc rdi
-	inc rsi
-	dec rdx ; decrement n parameter => we go to next char
+	inc rdi ; str1[i++]
+	inc rsi ; str2[i++]
+	dec rdx ; n--
 	jmp loop ; repeat the loop
 
 less:
