@@ -16,6 +16,7 @@ bits 64
 asm_strchr:
 	push rbp ; save base pointer
 	mov rbp, rsp ; set_up new stack pointer
+	xor rax, rax ; cleaning the rax register
 
 loop:
 	mov al, byte [rdi] ; load 1 byte (1 char) of string (rdi) in al (8 bits baby of rax)
