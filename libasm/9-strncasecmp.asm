@@ -1,24 +1,12 @@
 bits 64
 
-	global asm_strncasecmp ; expor the function
+	global asm_strncasecmp ; export the function
 
 	section .text
-	; copycat of function strcasecmp
-	; int asm_strcasecmp(const char *s1, const char *s2);
-	; what the HELL IS THAT FUNCTION ?
-	; ******* DRAFT THOUGHTS ********
-	; It compares 2 strings in a case-INSENSITIVE Manner
-	; Let's go => char in str1 is equal to str2 ? don't give a damn about case
-	; move on to next char
-	; Now imagine it founds different characters ==>
-	; if str1 char is 'greater' than str2 char => positive value (based on ASCII values)
-	; if str1 char is 'less' than str2 char => negative
-	; finally if one string ends before a difference is found => the length of strings is used to compute the result
-	; but testing this behavior gives weird result, try it out with a homemade main using strcasecmp ;)
-	; Thanks
-	; ******* END OF DRAFT THOUGHTS ********
-	; *** Thanks IBM Docs ***
-	; => strcasecmp() function compares str1 & str2 without sensivity case
+	; copycat of function strncasecmp
+	; int asm_strncasecmp(const char *s1, const char *s2, size_t n);
+	; => strncasecmp() is similiar to strcasecmp() except that it compares no more than
+	; n bytes of s1 and s2
 	; All alphabetics characters are converted to lower before comparison
 
 asm_strncasecmp:
