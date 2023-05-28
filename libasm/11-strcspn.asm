@@ -25,7 +25,7 @@ loop_s:
 	xor rcx, rcx
 
 loop_reject:
-	mov r9b, [rdi + rcx]
+	mov r9b, [rsi + rcx]
 	test r9b, r9b
 	jz end
 	cmp r8b, r9b
