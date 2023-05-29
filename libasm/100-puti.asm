@@ -11,29 +11,34 @@ section .text
 ; asm_puti(-1024) => 5
 
 asm_puti:
-	mov eax, edi ; function arg 'n'
-	mov ecx, 0xa ; base 10*
+	push rbp
+	mov rbp, rsp
+	push r8
+	push r9
+	push r10
 
-	push rcx
-	mov rsi, rsp
-	sub rsp, 16
+	xor r8, r8
+	xor r9, r9
+	xor r10, r10
+	movsx r8, rdi
+	xor rax, rax
 
-.toascii_digit: ; do{
-	xor edx, edx
-	div ecx ; edx = remainder = low digit eax/=10
-	add edx, '0'
-	dec rsi
-	mov [rsi], dl
-	test eax, eax ; } while (x)
-	jnz .toascii_digit
+	cmp r8, 0
+	jge positive
 
-;;; rsi points to the fist digit
-	mov eax, 1 ; write syscall
-	mov edi, 1 ; fd = STDOUT_FILENO
-	lea edx, [rsp + 16 + 1]
-	sub edx, esi
-	syscall
 
-	add rsp, 24
 
+positive:
+	test r8, r8
+	jnz convert_loop
+	mov rdi, 48
+	call
+	
+end:
+	pop r10
+	pop r9
+	pop r8
+
+	mov rsp, rbp
+	pop rbp
 	ret
