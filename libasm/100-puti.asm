@@ -12,28 +12,31 @@ section .text
 
 asm_puti:
 	push rbp
-	mov rbp, rsp
+	mov rbp, rsp ; prologue stack frame
 	push r8
 	push r9
 	push r10
+	push rdi ; save the value of n
 
 	xor r8, r8
 	xor r9, r9
 	xor r10, r10
-	movsx r8, rdi
+	movsx r8, edi
 	xor rax, rax
 
-	cmp r8, 0
+	cmp r8, 0 ; compare specific equals 0
 	jge positive
+	mov r10, 1 ; trick to keep track of negative (count + 1)
 	imul r8, -1
-	mov rdi, 45
+	mov rdi, 45 ; '-' character
 	call asm_putc
 
 positive:
 	test r8, r8
 	jnz convert_loop
-	mov rdi, 48
-	call
+	mov rdi, 48 ; putting 0
+	call asm_putc
+	mov r10, 1
 
 convert_loop:
 	xor rdx, rdx
@@ -50,12 +53,25 @@ convert_loop:
 	jmp convert_loop
 
 next:
+	mov r8, r9 ; count in r8
+
 
 print_loop:
-	test r8, r8
-	jz whatever ; ???
+	test r8, r8 ; counter reached 0 ?
+	jz print_end ;
+	pop rdi
+	add rdi, 48
+	call asm_putc
+	dec r8 ; to loop until 0
+	jmp print_loop
+
+print_end:
+	cmp r10, 0x1
+	jne end
+	inc r9
 
 end:
+	mov rax, r9
 	pop r10
 	pop r9
 	pop r8
