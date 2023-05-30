@@ -14,29 +14,29 @@ asm_puti:
 	push rbp
 	mov rbp, rsp ; prologue stack frame
 	push r8
-	push r9
 	push r10
+	push r12
 	push rdi ; save the value of n
 
 	xor r8, r8
-	xor r9, r9
 	xor r10, r10
+	xor r12, r12 ; clear registers for proper start
 	movsx r8, edi
-	xor rax, rax
+	xor rax, rax ; clear accumulator
 
-	cmp r8, 0 ; compare specific equals 0
-	jge positive
-	mov r10, 1 ; trick to keep track of negative (count + 1)
-	imul r8, -1
-	mov rdi, 45 ; '-' character
-	call asm_putc
+	cmp r8, 0 ; compare n value to 0
+	jge positive ; jump to positive if greater or equal
+	mov r12, 1 ; trick to keep track of negative a negative n (like setting a fake leftmost bit to 1)
+	imul r8, -1 ; convert to positive temporary
+	mov rdi, 45 ; character '-'
+	call asm_putc ; print it
 
 positive:
-	test r8, r8
-	jnz convert_loop
+	test r8, r8 ; check end of n
+	jnz convert_loop ; if not 0 jump to convert loop
 	mov rdi, 48 ; putting 0
 	call asm_putc
-	mov r10, 1
+	mov r12, 1
 
 convert_loop:
 	xor rdx, rdx
@@ -49,11 +49,11 @@ convert_loop:
 	mov r8, rax ; quotient in rax
 	push rdx ; remainder in rdx
 
-	inc r9 ; count the bytes written
+	inc r10 ; count the bytes written
 	jmp convert_loop
 
 next:
-	mov r8, r9 ; count in r8
+	mov r8, r10 ; count in r8
 
 
 print_loop:
@@ -66,16 +66,16 @@ print_loop:
 	jmp print_loop
 
 print_end:
-	cmp r10, 0x1
+	cmp r12, 0x1
 	jne end
-	inc r9
+	inc r10
 
 end:
-	mov rax, r9
+	mov rax, r10 ; putt in rax the bytes written
+	pop r12
 	pop r10
-	pop r9
-	pop r8
+	pop r8 ; restore registers
 
 	mov rsp, rbp
-	pop rbp
-	ret
+	pop rbp ; epilogue
+	ret ; pop rip
