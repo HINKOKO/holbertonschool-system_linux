@@ -64,7 +64,19 @@ while_number:
 
 
 while_no_base:
-
+	xor rdx, rdx
+	test r8, r8
+	jz next_loop
+	mov rax, r8
+	mov rbx, 10 ; default behavior base 10
+	div rbx
+	mov r8, rax ; update r8
+	xor rax, rax ; clear rax
+	mov rax, rdx ; remainder to accu
+	add rax, 48 ; trick ASCII conversion
+	push rax ; save value stack
+	inc r10 ; increment bytes written
+	jmp while_no_base ; repeat the loop
 
 next_loop:
 	mov r8, r10
