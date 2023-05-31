@@ -36,7 +36,7 @@ positive:
 	jnz convert_loop ; if not 0 jump to convert loop
 	mov rdi, 48 ; putting 0
 	call asm_putc
-	mov r14, r8 ; save value of n
+	mov r12, 1
 
 convert_loop:
 	xor rdx, rdx
