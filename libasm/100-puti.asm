@@ -36,7 +36,7 @@ positive:
 	jnz convert_loop ; if not 0 jump to convert loop
 	mov rdi, 48 ; putting 0
 	call asm_putc
-	mov r12, 1
+	mov r14, r8 ; save value of n
 
 convert_loop:
 	xor rdx, rdx
@@ -47,7 +47,7 @@ convert_loop:
 	div rbx ; rax /= rbx
 
 	mov r8, rax ; quotient in rax
-	push rdx ; remainder in rdx
+	push rdx ; remainder in rdx => push to the stack
 
 	inc r10 ; count the bytes written
 	jmp convert_loop
@@ -59,9 +59,9 @@ next:
 print_loop:
 	test r8, r8 ; counter reached 0 ?
 	jz print_end ;
-	pop rdi
+	pop rdi ; pop the remainders, which are on stack, to rdi
 	add rdi, 48
-	call asm_putc
+	call asm_putc ; putc works on rdi
 	dec r8 ; to loop until 0
 	jmp print_loop
 
