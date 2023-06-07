@@ -13,7 +13,7 @@ void (*current_handler_signal(void))(int)
 	void (*sighandler)(int);
 
 	/* param NULL to ignore the signal */
-	sighandler = signal(SIGINT, SIG_DFL);
+	sighandler = signal(SIGINT, NULL);
 	/* restore original signal handler with this call */
 	signal(SIGINT, sighandler);
 	return (sighandler);
