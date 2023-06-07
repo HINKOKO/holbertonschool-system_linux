@@ -1,4 +1,4 @@
-#include "signal.h"
+#include "signals.h"
 
 /**
  * current_handler_signal - retrieve the current handler
@@ -9,5 +9,5 @@
 
 void (*current_handler_signal(void))(int)
 {
-	return (signal(SIGINT, SIG_DFL));
+	return (signal(SIGINT, SIG_DFL) == NULL ? NULL : signal(SIGINT, SIG_DFL));
 }
