@@ -10,6 +10,7 @@
 void sigint_handler(int signum)
 {
 	printf("Gotcha! [%i]\n", signum);
+	fflush(stdout);
 }
 
 /**
@@ -19,7 +20,5 @@ void sigint_handler(int signum)
 
 int handle_signal(void)
 {
-	if (signal(SIGINT, sigint_handler) == SIG_ERR)
-		return (-1);
-	return (0);
+	return (signal(SIGINT, sigint_handler) == SIG_ERR ? -1 : 0);
 }
