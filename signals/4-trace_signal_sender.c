@@ -9,6 +9,8 @@
  * @context: rarely used, contains info about execution context
  */
 
+/* extended signature for the handler and access the siginfo_t */
+/* siginfo_t contains informations about signal, including calling PID */
 void sigquit_handler(int signum, siginfo_t *info, void *context)
 {
 	/* Unused here */
@@ -28,8 +30,10 @@ int trace_signal_sender(void)
 {
 	struct sigaction sa;
 
+	/* sa_sigaction is a function pointer */
 	sa.sa_sigaction = sigquit_handler;
 	sa.sa_flags = SA_SIGINFO;
 
+	/* passing null as third cause not interested by storing it */
 	return (sigaction(SIGQUIT, &sa, NULL));
 }
