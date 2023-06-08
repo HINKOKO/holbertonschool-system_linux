@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 {
 	if (argc < 2)
 	{
-		fprintf(stderr, "Usage %s <pid>", argv[0]);
+		fprintf(stderr, "Usage: %s <pid>", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	return (kill(atoi(argv[1]), SIGINT) == -1 ? EXIT_FAILURE : EXIT_SUCCESS);
