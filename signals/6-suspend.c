@@ -13,10 +13,7 @@
 void special_sigint(int signum)
 {
 	printf("Caught %d\n", signum);
-	printf("Signal received\n");
-	/* _Exit uppercase, higher level alternative */
-	/* performs some clean-up ops, flushes std I/O closes fd...*/
-	_Exit(EXIT_SUCCESS);
+	fflush(stdout);
 }
 
 /**
@@ -33,6 +30,7 @@ int main(void)
 	sigaction(SIGINT, &sa, NULL);
 	/* suspends indefinitely until a signal is received */
 	pause();
+	printf("Signal received\n");
 
-	return (0);
+	return (EXIT_SUCCESS);
 }
