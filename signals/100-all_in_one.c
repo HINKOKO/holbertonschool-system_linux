@@ -13,7 +13,7 @@ void handle_them_all(int signum, siginfo_t *info, void *context)
 	(void)context;
 	(void)signum;
 
-	psiginfo(info, "Caught: ");
+	psiginfo(info, "Caught");
 }
 
 /**
