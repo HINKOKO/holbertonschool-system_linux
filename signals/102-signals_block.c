@@ -13,7 +13,7 @@ int signals_block(int *signals)
 
 	if (sigemptyset(&sigset) == -1)
 		return (-1);
-	for (; *signals, signals++)
+	for (; *signals; signals++)
 		if (sigaddset(&sigset, *signals) == -1)
 			return (-1);
 	return (sigprocmask(SIG_BLOCK, &sigset, NULL) == -1 ? -1 : 0);
