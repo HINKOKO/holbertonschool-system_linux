@@ -18,5 +18,6 @@ int pid_exist(pid_t pid);
 /* Advanced tasks */
 void all_in_one(void);
 int sigset_init(sigset_t *set, int *signals);
+int signals_block(int *signals);
 
 #endif /* __SIGNALISTICS__*/
