@@ -10,7 +10,7 @@
 int signals_block(int *signals)
 {
 	int i = 0;
-	sigset_t sigset = {0};
+	sigset_t sigset;
 
 	sigemptyset(&sigset);
 	while (signals[i])
