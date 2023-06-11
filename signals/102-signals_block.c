@@ -9,15 +9,12 @@
 
 int signals_block(int *signals)
 {
-	int i = 0;
 	sigset_t sigset;
 
-	sigemptyset(&sigset);
-	while (signals[i])
-	{
-		sigaddset(&sigset, signals[i]);
-		i++;
-	}
-	sigprocmask(SIG_BLOCK, &sigset, NULL);
-	return (0);
+	if (sigemptyset(&sigset) == -1)
+		return (-1);
+	for (; *signals, signals++)
+		if (sigaddset(&sigset, *signals) == -1)
+			return (-1);
+	return (sigprocmask(SIG_BLOCK, &sigset, NULL) == -1 ? -1 : 0);
 }
