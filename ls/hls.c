@@ -35,7 +35,7 @@ void display_with_options(opt_t *nodes, int *opt, int multi)
 	dir = opendir(nodes->str);
 
 	if (multi == 1 && errno == 0)
-		printf("%s :\n", nodes->str);
+		printf("%s:\n", nodes->str);
 	if (dir)
 	{
 		entry = readdir(dir);
