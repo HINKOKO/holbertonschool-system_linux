@@ -16,7 +16,7 @@ opt_t *add_node(opt_t **head, char *str)
 	if (!new)
 		return (NULL);
 	/* fill value for new node */
-	new->str = strdup(str);
+	new->str = _strdup(str);
 	new->len = _strlen(str);
 	new->next = NULL;
 	/* list is empty ? */
