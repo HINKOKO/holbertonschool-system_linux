@@ -50,6 +50,8 @@ void free_list(opt_t *head);
 int _strcmp(char const *s1, char *s2);
 int _strlen(const char *s);
 char *_strncpy(char *dest, char const *src, int n);
+char *_strdup(const char *str);
+
 
 
 #endif

@@ -57,3 +57,29 @@ char *_strncpy(char *dest, char const *src, int n)
 	}
 	return (dest);
 }
+
+/**
+ * _strdup - mimics strdup
+ * => duplicate a string dude
+ *
+ *
+ */
+
+char *_strdup(const char *str)
+{
+	int i, len;
+	char *s;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	len = _strlen(str);
+	s = malloc(sizeof(*s) * (len - 1));
+	while (i < len)
+	{
+		s[i] = str[i];
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
