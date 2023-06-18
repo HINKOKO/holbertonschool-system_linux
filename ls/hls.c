@@ -14,9 +14,14 @@ void overload(struct dirent *entry, int *options)
 	{
 		if (options[3] == 1 && _strcmp(entry->d_name, ".") &&
 			_strcmp(entry->d_name, ".."))
+		{
 			one_by_line(entry->d_name, options);
-		else if (entry->d_name[0] != '.')
-			one_by_line(entry->d_name, options);
+		}
+		else
+		{
+			if (entry->d_name[0] != '.')
+				one_by_line(entry->d_name, options);
+		}
 	}
 }
 /**
