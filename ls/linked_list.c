@@ -10,26 +10,26 @@
 
 opt_t *add_node(opt_t **head, char *str)
 {
-	opt_t *new = NULL, *curr = NULL;
+	int i;
+	char *c;
+	opt_t *new = NULL;
 
 	new = malloc(sizeof(opt_t));
 	if (!new)
 		return (NULL);
 	/* fill value for new node */
-	new->str = _strdup(str);
-	new->len = _strlen(str);
-	new->next = NULL;
-	/* list is empty ? */
-	if (*head == NULL)
-		*head = new;
-	else
+	c = _strdup(str);
+	if (c == NULL)
 	{
-		curr = *head;
-		while (curr->next)
-			curr = curr->next;
-		/* append to the end */
-		curr->next = new;
+		free(new);
+		return (NULL);
 	}
+	for (i = 0; str[i];)
+		i++;
+	new->str = c;
+	new->len = i;
+	new->next = *head;
+	*head = new;
 	return (new);
 }
 
