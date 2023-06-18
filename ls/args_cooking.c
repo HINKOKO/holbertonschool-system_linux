@@ -9,7 +9,7 @@
  * Return: a linked list with each argument in a node
  */
 
-opt_t *args_cooking(int argc, char *argv[], int *opt)
+opt_t *args_cooking(int argc, char const *argv[], int *opt)
 {
 	int i = 1, j = 1;
 	opt_t *nodes = NULL;

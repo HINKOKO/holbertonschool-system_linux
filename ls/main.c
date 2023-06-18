@@ -7,7 +7,7 @@
  * Return: 0 for success (always success haha)
  */
 
-int main(int argc, char *argv[])
+int main(int argc, char const *argv[])
 {
 	int op[4] = {0, 0, 0, 0};
 	opt_t *nodes = NULL, *head = NULL;

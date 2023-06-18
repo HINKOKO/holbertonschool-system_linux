@@ -8,7 +8,7 @@
  * Return: pointer to new node
  */
 
-opt_t *add_node(opt_t **head, char *str)
+opt_t *add_node(opt_t **head, const char *str)
 {
 	int i;
 	char *c;

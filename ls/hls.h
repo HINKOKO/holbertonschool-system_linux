@@ -34,7 +34,7 @@ void display_dir(opt_t *nodes, int *options);
 void display_local(char *head, int *opt);
 void display_with_options(opt_t *nodes, int *opt, int multi);
 void overload(struct dirent *entry, int *options);
-opt_t *args_cooking(int argc, char *argv[], int *opt);
+opt_t *args_cooking(int argc, char const *argv[], int *opt);
 void print_long(struct dirent *entry);
 void one_by_line(char *dir, int *options);
 
@@ -42,7 +42,7 @@ void one_by_line(char *dir, int *options);
 void handle_error(char *dir);
 
 /* linked list stuff */
-opt_t *add_node(opt_t **head, char *str);
+opt_t *add_node(opt_t **head, const char *str);
 void free_list(opt_t *head);
 
 
