@@ -75,7 +75,7 @@ char *_strdup(const char *str)
 	if (!str)
 		return (NULL);
 	len = _strlen(str);
-	s = malloc(sizeof(*s) * (len - 1));
+	s = malloc(sizeof(*s) * (len + 1));
 	while (i < len)
 	{
 		s[i] = str[i];
