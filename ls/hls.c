@@ -1,100 +1,123 @@
 #include "hls.h"
 
-
 /**
-* list_dir - function utility for listing directory
-* @path: path to the directory / or file to display
-* @display_dirname: flag for hidding directory name in the output
-* @dirname: parameter to handle directory names if present
-* @col: flag int to decide for col/tab displaying
-*/
+ * overload - modifies display if overload
+ * @entry: pointer to directory entry
+ * @options: option array
+ */
 
-void list_dir(const char *dirname, const char *path, int display_dirname,
-int col)
+void overload(struct dirent *entry, int *options)
+{
+	if (options[2] == 1)
+		one_by_line(entry->d_name, options);
+	else
+	{
+		if (options[3] == 1 && _strcmp(entry->d_name, ".") &&
+			_strcmp(entry->d_name, ".."))
+			one_by_line(entry->d_name, options);
+		else if (entry->d_name[0] != '.')
+			one_by_line(entry->d_name, options);
+	}
+}
+/**
+ * display_with_options - handle options and displays
+ * as requested in input
+ * @nodes: node of linked list options
+ * @opt: options 'flag' array
+ * @multi: flag int to on/off multi arg
+ */
+
+void display_with_options(opt_t *nodes, int *opt, int multi)
 {
 	struct dirent *entry;
-	DIR *dir = opendir(path);
+	DIR *dir;
 
-	if (dir == NULL)
+	dir = opendir(nodes->str);
+
+	if (multi == 1 && errno == 0)
+		printf("%s :\n", nodes->str);
+	if (dir)
 	{
-		if (errno == ENOENT)
+		entry = readdir(dir);
+		while (entry)
 		{
-			fprintf(stderr, "./hls_01: cannot access %s: ", path);
-			perror("");
-		}
-		else if (errno == EACCES)
-		{
-			fprintf(stderr, "./hls_01: cannot open directory %s: ", path);
-			perror("");
-		}
-		else
-			printf("%s\t", path);
-		return;
-	}
-	if (display_dirname)
-		printf("%s:\n", dirname);
-	while ((entry = readdir(dir)))
-	{
-		if (entry->d_name[0] != '.')
-		{
-			if (col)
+			if (opt[1] == 1)
 			{
-				printf("%s\n", entry->d_name);
+				print_long(entry);
+				opt[0] = 1;
 			}
 			else
-				printf("%s\t", entry->d_name);
+				overload(entry, opt);
+			entry = readdir(dir);
 		}
+		if (nodes->next || errno != 0)
+			printf("\n");
 	}
-	printf("\n\n");
+	if (errno)
+		handle_error(nodes->str);
+	if (opt[0] != 1 && errno == 0)
+		printf("\n");
 	closedir(dir);
 }
 
 /**
-* main - sample `ls` command
-* @argc: number of arguments passed to program
-* @argv: array of strings of args
-* Return: 0 for success, 1 for error
-*/
+ * display_local - display current directory '.'
+ * when 'ls' launched with no desired path
+ * @head: linked list of args
+ * @opt: option array
+ */
 
-
-int main(int argc, char *argv[])
+void display_local(char *head, int *opt)
 {
-	int i;
-	struct stat st;
-	int col = 0;
+	struct dirent *entry;
+	DIR *dir;
 
-	if (argc > 1 && _strcmp(argv[1], "-1") == 0)
+	dir = opendir(head);
+	if (dir)
 	{
-		col = 1;
-		argc--;
-		argv++;
-	}
-
-	if (argc == 1)
-		list_dir(".", ".", 0, col);
-	else if (argc == 2)
-		list_dir(argv[1], argv[1], 0, col);
-	else
-	{
-
-		for (i = 1; i < argc; i++)
+		entry = readdir(dir);
+		while (entry != NULL)
 		{
-			if (lstat(argv[i], &st) == -1)
+			if (opt[1] == 1)
 			{
-				fprintf(stderr, "./hls_01: cannot access %s: ", argv[i]);
-				perror("");
-				continue;
+				print_long(entry);
+				opt[0] = 1;
 			}
 			else
 			{
-				if (S_ISDIR(st.st_mode))
-					list_dir(argv[i], argv[i], 1, col);
-				else
-					printf("%s\t", argv[i]);
+				overload(entry, opt);
 			}
+			entry = readdir(dir);
 		}
 	}
-	return (0);
+	if (opt[0] != 1)
+		printf("\n");
+	closedir(dir);
 }
 
+/**
+ * display_dir - check if options are passed and display
+ * directory accrodingly
+ * @nodes: node of the linked list of args
+ * @options: options array
+ */
 
+void display_dir(opt_t *nodes, int *options)
+{
+	opt_t *head = nodes;
+	int multi = 0;
+
+	if (head == NULL)
+	{
+		display_local(".", options);
+		return;
+	}
+	/* if arguments provided */
+	if (head->next)
+		multi = 1;
+	while (head)
+	{
+		display_with_options(head, options, multi);
+		head = head->next;
+	}
+}
