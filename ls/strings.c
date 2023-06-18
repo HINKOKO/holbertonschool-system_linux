@@ -61,7 +61,8 @@ char *_strncpy(char *dest, char const *src, int n)
 /**
  * _strdup - mimics strdup
  * => duplicate a string dude
- *
+ * @str: the string to dup
+ * Return: the duplicated str
  *
  */
 
