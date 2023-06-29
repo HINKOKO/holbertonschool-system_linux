@@ -10,6 +10,34 @@
 
 void *get_elf(FILE *fp, char *filename, char *arg, int *ret)
 {
+	struct stat sb;
+	hdrs hdr;
+
+	/* prepare memory place */
+	memset(&sb, 0, sizeof(hdr));
+	if (stat(arg, &sb))
+		goto printerr;
+
+	hdr.addr = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
+	if (hdr.addr == MAP_FAILED)
+	{
+	printerr:
+		perror(NULL);
+		return;
+	}
+	init_ehdr(&hdr);
+	if (memcmp(hdr.Ehdr64->e_ident, ELFMAG, SELFMAG))
+	{
+		fprintf(stderr, "%s: %s: file format not recognized\n", filename, arg);
+	out:
+		*ret = 1;
+		fclose(fp);
+		return;
+	}
+	init_shdr(&hdr);
+	if (!sym(&hdr))
+		fprintf(stderr, "%s: %s: no symbols for this binary\n", filename, arg);
+	fclose(fp);
 }
 
 /**
