@@ -36,7 +36,7 @@ void get_elf(FILE *fp, char *filename, char *arg, int *ret)
 	}
 	init_shdr(&hdr);
 	if (!sym(&hdr))
-		fprintf(stderr, "%s: %s: no symbols for this binary\n", filename, arg);
+		fprintf(stderr, "%s: %s: no symbols\n", filename, arg);
 	fclose(fp);
 }
 
