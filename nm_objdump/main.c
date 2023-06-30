@@ -8,22 +8,22 @@
  * @ret: current exit status
  */
 
-void *get_elf(FILE *fp, char *filename, char *arg, int *ret)
+void get_elf(FILE *fp, char *filename, char *arg, int *ret)
 {
 	struct stat sb;
 	hdrs hdr;
 
 	/* prepare memory place */
-	memset(&sb, 0, sizeof(hdr));
+	memset(&hdr, 0, sizeof(hdr));
 	if (stat(arg, &sb))
 		goto printerr;
 
-	hdr.addr = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
-	if (hdr.addr == MAP_FAILED)
+	hdr.map = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
+	if (hdr.map == MAP_FAILED)
 	{
 	printerr:
 		perror(NULL);
-		return;
+		goto out;
 	}
 	init_ehdr(&hdr);
 	if (memcmp(hdr.Ehdr64->e_ident, ELFMAG, SELFMAG))
@@ -56,7 +56,7 @@ FILE *parse_args(int argc, char **argv, int idx)
 	/* default behavior of nm if argv[1] is NULL */
 	/* look for "a.out" and nm's it */
 	if (argc == 1)
-		argv[1] == "a.out";
+		argv[1] = "a.out";
 	stat(argv[idx], &sb);
 	if (S_ISDIR(sb.st_mode))
 	{
@@ -83,12 +83,13 @@ int main(int argc, char **argv)
 	FILE *fp;
 	int ret = 0, i = 1;
 
-	while (++i < argc)
+	while (i < argc)
 	{
 		fp = parse_args(argc, argv, i);
 		if (!fp)
 			ret = 1;
 		get_elf(fp, argv[0], argv[i], &ret);
+		i++;
 	}
 	return (ret);
 }

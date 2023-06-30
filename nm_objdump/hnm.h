@@ -7,8 +7,6 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <string.h>
 
 /* MACROS HELPERS */
@@ -28,14 +26,12 @@
 #define SYM_SIZE(x, i) (IS_32 ? sizeof(hdr->Sym32[i].x) : sizeof(hdr->Sym64[i].x))
 
 /* retrieve info in ElfXX_Sym => st_info */
-#define ELFS_ST_BIND (IS_32 ? ELF32_ST_BIND(hdr->Sym32[i].st_info) : \
-					ELF64_ST_BIND(hdr->Sym64[i].st_info))
-#define ELFS_ST_TYPE (IS_32 ? ELF32_ST_TYPE(hdr->Sym32[i].st_info) : \
-					ELF64_ST_TYPE(hdr->Sym64[i].st_info))
+#define ELFN_ST_BIND (IS_32 ? ELF32_ST_BIND(hdr->Sym32[i].st_info) : ELF64_ST_BIND(hdr->Sym64[i].st_info))
+#define ELFN_ST_TYPE (IS_32 ? ELF32_ST_TYPE(hdr->Sym32[i].st_info) : ELF64_ST_TYPE(hdr->Sym64[i].st_info))
 
 /**
  * hdrs - structure to store Elf32//Elf64 infos
- * @addr: pointer to memory region mapped
+ * @map: pointer to memory region mapped
  * @ehdr64: 64-bit ELF header
  * @ehdr32: 32-bit ELF header
  * @is_32: flag int status 32/64 bits
@@ -48,7 +44,7 @@
 
 typedef struct hdrs
 {
-	char *addr;
+	char *map;
 	Elf64_Ehdr *Ehdr64;
 	Elf32_Ehdr *Ehdr32;
 	int is_32;
@@ -58,5 +54,17 @@ typedef struct hdrs
 	Elf64_Sym *Sym64;
 	Elf32_Sym *Sym32;
 } hdrs;
+
+/* GET_INFO */
+char get_info(hdrs *hdr, int i);
+int sym(hdrs *hdr);
+void init_shdr(hdrs *hdr);
+void init_ehdr(hdrs *hdr);
+
+
+/* CONVERT */
+void conv_msb(char *ptr, size_t size);
+
+
 
 #endif /* __HNM__ */
