@@ -21,7 +21,7 @@ void get_elf(FILE *fp, char *filename, char *arg, int *ret)
 	hdr.map = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
 	if (hdr.map == MAP_FAILED)
 	{
-	printerr:
+printerr:
 		perror(NULL);
 		goto out;
 	}
@@ -29,7 +29,7 @@ void get_elf(FILE *fp, char *filename, char *arg, int *ret)
 	if (memcmp(hdr.Ehdr64->e_ident, ELFMAG, SELFMAG))
 	{
 		fprintf(stderr, "%s: %s: file format not recognized\n", filename, arg);
-	out:
+out:
 		*ret = 1;
 		fclose(fp);
 		return;
