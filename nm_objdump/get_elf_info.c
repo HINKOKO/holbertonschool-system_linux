@@ -41,16 +41,16 @@ char get_info(hdrs *hdr, int i)
 	else if (GET_SYM(st_shndx, i) == SHN_COMMON)
 		c = 'C';
 	else if (GET_SHDR(sh_type, GET_SYM(st_shndx, i)) == SHT_NOBITS &&
-			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC || SHF_WRITE))
+			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC | SHF_WRITE))
 		c = 'B';
 	else if (GET_SHDR(sh_type, GET_SYM(st_shndx, i)) == SHT_PROGBITS &&
 			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == SHF_ALLOC)
 		c = 'R';
 	else if (GET_SHDR(sh_type, GET_SYM(st_shndx, i)) == SHT_PROGBITS &&
-			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC || SHF_WRITE))
+			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC | SHF_WRITE))
 		c = 'D';
 	else if (GET_SHDR(sh_type, GET_SYM(st_shndx, i)) == SHT_PROGBITS &&
-			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC || SHF_EXECINSTR))
+			 GET_SHDR(sh_flags, GET_SYM(st_shndx, i)) == (SHF_ALLOC | SHF_EXECINSTR))
 		c = 'T';
 	else if (GET_SHDR(sh_type, GET_SYM(st_shndx, i)) == SHT_DYNAMIC)
 		c = 'D';
@@ -59,13 +59,12 @@ char get_info(hdrs *hdr, int i)
 	if (ELFN_ST_BIND == STB_LOCAL)
 		c += 32;
 	return (c);
-
-	/* to be continued */
 }
 
 /**
  * sym - print symbols of ELF binary
- *
+ * @hdr: struct for ELF infos
+ * Return: 1
  */
 
 int sym(hdrs *hdr)
