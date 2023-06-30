@@ -6,7 +6,7 @@ TASK0 = $(wildcard *.c)
 .PHONY: clean hnm
 
 hnm:
-	$(CC) $(FLAGS) $(TASK0)
+	$(CC) $(FLAGS) $(TASK0) -o hnm
 
 clean:
 	rm -rf hnm
