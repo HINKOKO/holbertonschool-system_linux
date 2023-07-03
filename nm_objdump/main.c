@@ -72,8 +72,9 @@ FILE *parse_args(int argc, char **argv, int idx)
 	return (fp);
 }
 
-/** main - entry point of program, eats argument and lets go
- * @argc - argument count
+/**
+ * main - entry point of program, eats argument and lets go
+ * @argc: argument count
  * @argv: argument vector
  * Return: int ret as an exit status
  */
