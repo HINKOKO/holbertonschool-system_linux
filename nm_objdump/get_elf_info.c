@@ -21,7 +21,8 @@ void conv_msb(char *ptr, size_t size)
 /**
  * get_info - pick symbol type
  * @hdr: struct holding ELF infos
- * @idx: symtab index
+ * @i: symtab index
+ * Return: the symbol abbreviation as a char
  */
 
 char get_info(hdrs *hdr, int i)
@@ -101,11 +102,11 @@ int sym(hdrs *hdr)
 			(GET_SYM(st_info, j) & 15) == STT_FILE)
 			continue;
 		if (!GET_SYM(st_size, j) && !GET_SYM(st_value, j))
-			printf("%*c %c %s\n", IS_32 ? 8 : 16, ' ', get_info(hdr, j), &strtab[GET_SYM(st_name, j)]);
+			printf("%*c %c %s\n", IS_32 ? 8 : 16, ' ',
+				get_info(hdr, j), &strtab[GET_SYM(st_name, j)]);
 		else
-		{
-			printf("%0*lx %c %s\n", IS_32 ? 8 : 16, GET_SYM(st_value, j), get_info(hdr, j), &strtab[GET_SYM(st_name, j)]);
-		}
+			printf("%0*lx %c %s\n", IS_32 ? 8 : 16, GET_SYM(st_value, j),
+				get_info(hdr, j), &strtab[GET_SYM(st_name, j)]);
 	}
 	return (1);
 }
