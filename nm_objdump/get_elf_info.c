@@ -97,11 +97,11 @@ int sym(hdrs *hdr)
 		/* upper-four bytes of st_info => symbol's binding */
 		/* check if symbol associated with a section ? */
 		/* or symbol associated with a source file ? if yes continue => */
-		/* 15 for 0b1111 upper four bytes */
 		if ((GET_SYM(st_info, j) & 15) == STT_SECTION ||
 			(GET_SYM(st_info, j) & 15) == STT_FILE)
 			continue;
-		if (!GET_SYM(st_size, j) && !GET_SYM(st_value, j))
+		if ((!GET_SYM(st_size, j) && !GET_SYM(st_value, j))
+			|| get_info(hdr, j) == 'U')
 			printf("%*c %c %s\n", IS_32 ? 8 : 16, ' ',
 				get_info(hdr, j), &strtab[GET_SYM(st_name, j)]);
 		else
