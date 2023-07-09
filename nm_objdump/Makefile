@@ -12,7 +12,7 @@ hnm:
 	$(CC) $(FLAGS) $(TASK0) -o hnm
 
 hobjdump:
-	$(CC) $(FLAGS) $(TASK1) -o hobjdump
+	$(CC) $(FLAGS) obj_bored_man.c -o hobjdump
 
 clean:
 	rm -rf hnm
