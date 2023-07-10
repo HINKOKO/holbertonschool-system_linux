@@ -11,8 +11,8 @@
 void print_python_list(PyObject *p)
 {
 	printf("[*] Python list info\n");
-	printf("[*] Size of the Python list = %i\n", Py_SIZE(p));
-	printf("[*] Allocated = %i\n", (PyListObject *)p->allocated);
+	printf("[*] Size of the Python list = %zd\n", Py_SIZE(p));
+	printf("[*] Allocated = %zd\n", (PyListObject *)p->allocated);
 	for (int i = 0; i < PyList_Size(p); i++)
-		printf("Element %d: %s", i, Py_TYPE(PyList_GET_ITEM(p, i)->ob_type));
+		printf("Element %d: %s\n", i, Py_TYPE(PyList_GET_ITEM(p, i)->ob_type));
 }
