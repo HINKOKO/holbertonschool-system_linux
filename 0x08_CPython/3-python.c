@@ -35,7 +35,7 @@ void print_python_float(PyObject *p)
 
 void print_python_bytes(PyObject *p)
 {
-	char *str = NULL;
+	const char *str = NULL;
 	Py_ssize_t size;
 
 	printf("[.] bytes object info\n");
@@ -46,7 +46,10 @@ void print_python_bytes(PyObject *p)
 		return;
 	}
 
-	PyBytes_AsStringAndSize(p, &str, &size);
+	size = ((PyVarObject *)p)->ob_size;
+	str = ((PyBytesObject *)p)->ob_sval;
+
+
 	printf("  size: %zd\n", size);
 	printf("  trying string: %s\n", str);
 	printf("  first %zd bytes:", size <= 10 ? size + 1 : 10);
