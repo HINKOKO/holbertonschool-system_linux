@@ -16,16 +16,21 @@ void print_python_float(PyObject *p)
 {
 	PyFloatObject *f = (PyFloatObject *)p;
 	double val = f->ob_fval;
-	char *str = NULL;
+	char str[40];
 
 	printf("[.] float object info\n");
 	if (!PyFloat_Check(f))
 	{
 		printf("  [ERROR] Invalid Float Object\n");
+		fflush(stdout);
 		return;
 	}
-	str = PyOS_double_to_string(val, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
-	printf("  value: %s\n", str);
+	sprintf(str, "%.16g", val);
+	if (strchr(str, '.') != NULL)
+		printf("  value: %s\n", str);
+	else
+		printf("  value: %f\n", val);
+
 }
 
 /**
