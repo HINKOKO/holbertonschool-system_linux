@@ -29,7 +29,7 @@ void print_python_float(PyObject *p)
 	if (strchr(str, '.') != NULL)
 		printf("  value: %s\n", str);
 	else
-		printf("  value: %f\n", val);
+		printf("  value: %.1f\n", val);
 
 }
 
