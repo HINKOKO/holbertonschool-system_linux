@@ -24,8 +24,8 @@ void print_python_float(PyObject *p)
 		printf("  [ERROR] Invalid Float Object\n");
 		return;
 	}
-	str = PyOS_double_to_string(val, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
-	printf("  value: %s\n", str);
+	str = PyOS_double_to_string(val, 'g', 15, Py_DTSF_ADD_DOT_0, NULL);
+	printf(" value: %s\n", str);
 }
 
 /**
