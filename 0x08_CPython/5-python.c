@@ -25,7 +25,7 @@ void print_python_int(PyObject *p)
 
 	if (py_size > 3 || (py_size == 3 && py_digits[2] > 15))
 	{
-		printf("C unsigned int overflow\n");
+		printf("C unsigned long int overflow\n");
 		return;
 	}
 	for (i = 0; i < absolut; i++)
