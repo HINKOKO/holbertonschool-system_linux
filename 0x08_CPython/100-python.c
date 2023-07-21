@@ -54,9 +54,8 @@ int long_to_str(PyObject *lg, char **str)
 	 * d_num = (33*_PyLong_DECIMAL_SHIFT) /
 	 * (10*PyLong_SHIFT - 33 *_PyLong_DECIMAL_SHIFT)
 	 * GUESS WHAT THIS FANCY BADABOUM MAKES 99
-	*/
-	d_num = 33 * _PyLong_DECIMAL_SHIFT /
-				(10 * PyLong_SHIFT - 33 * _PyLong_DECIMAL_SHIFT);
+	 */
+	d_num = 99;
 	size = 1 + size_py + size_py / d_num;
 	ptr_out = calloc(sizeof(digit), size);
 	if (!ptr_out)
@@ -93,7 +92,7 @@ int long_to_str(PyObject *lg, char **str)
  * @size: size
  * @neg: negative or not negative
  * Return: the str'ized num
-*/
+ */
 
 char *decimal_to_string(digit *ptr_out, ssize_t size, int neg)
 {
@@ -123,7 +122,8 @@ char *decimal_to_string(digit *ptr_out, ssize_t size, int neg)
 		}
 	}
 	rem = ptr_out[i];
-	do {
+	do
+	{
 		*--p = '0' + rem % 10;
 		rem /= 10;
 	} while (rem != 0);
