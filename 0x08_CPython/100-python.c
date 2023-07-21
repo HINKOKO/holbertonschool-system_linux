@@ -57,7 +57,6 @@ int long_to_str(PyObject *lg, char **str)
 	 * GUESS WHAT THIS FANCY BADABOUM MAKES 99
 	*/
 	d_num = 99;
-	printf("d_num is tada ! \t%i\n", d_num);
 	size = 1 + size_py + size_py / d_num;
 	ptr_out = calloc(sizeof(digit), size);
 	if (!ptr_out)
