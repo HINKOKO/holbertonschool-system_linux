@@ -18,7 +18,6 @@ void print_python_int(PyObject *p)
 
 	if (long_to_str(p, &str) == -1)
 	{
-		printf("PROBLEM DUDE\n");
 		return;
 	}
 	printf("%s\n", str);
@@ -41,7 +40,7 @@ int long_to_str(PyObject *lg, char **str)
 	int neg, d_num;
 
 	py = (PyLongObject *)lg;
-	size_py = Py_SIZE(lg) < 0 ? -Py_SIZE(lg) : Py_SIZE(lg);
+	size_py = Py_SIZE(py) < 0 ? -Py_SIZE(py) : Py_SIZE(py);
 	neg = size_py < 0;
 
 	/**
@@ -56,14 +55,15 @@ int long_to_str(PyObject *lg, char **str)
 	 * (10*PyLong_SHIFT - 33 *_PyLong_DECIMAL_SHIFT)
 	 * GUESS WHAT THIS FANCY BADABOUM MAKES 99
 	*/
-	d_num = 33 * _PyLong_DECIMAL_SHIFT / (10 * PyLong_SHIFT - 33 * _PyLong_DECIMAL_SHIFT);
+	d_num = 33 * _PyLong_DECIMAL_SHIFT /
+				(10 * PyLong_SHIFT - 33 * _PyLong_DECIMAL_SHIFT);
 	size = 1 + size_py + size_py / d_num;
 	ptr_out = calloc(sizeof(digit), size);
 	if (!ptr_out)
 		return (-1);
 	ptr_in = py->ob_digit;
 	size = 0;
-	for (i = size; --i >= 0;)
+	for (i = size_py; --i >= 0;)
 	{
 		digit hi = ptr_in[i];
 
@@ -97,8 +97,6 @@ int long_to_str(PyObject *lg, char **str)
 
 char *decimal_to_string(digit *ptr_out, ssize_t size, int neg)
 {
-	;
-
 	digit rem, pow;
 	char *str, *p;
 	ssize_t strlen, i, j;
