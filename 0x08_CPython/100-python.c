@@ -54,8 +54,10 @@ int long_to_str(PyObject *lg, char **str)
 	 * d_num = (33*_PyLong_DECIMAL_SHIFT) /
 	 * (10*PyLong_SHIFT - 33 *_PyLong_DECIMAL_SHIFT)
 	 * GUESS WHAT THIS FANCY BADABOUM MAKES 99
+	 * set d_num = 99 works too
 	 */
-	d_num = 99;
+	d_num = 33 * _PyLong_DECIMAL_SHIFT /
+			(10 * PyLong_SHIFT - 33 * _PyLong_DECIMAL_SHIFT);
 	size = 1 + size_py + size_py / d_num;
 	ptr_out = calloc(sizeof(digit), size);
 	if (!ptr_out)
