@@ -92,3 +92,38 @@ The very big difference is that instead of using **base 10** -- really inefficie
 
 Well guys, so we know that in CPython implementation, Python integers are stored in a variable length array of digits. <br>
 These digits are store in **little-endian** order, least significant at index 0, then 1, an so on... <br>
+
+## **Crazy stuff advanced**
+
+From the docs.python.org => <br>
+"All integers are implemented as **long integers object** of arbitrary size" <-- cool.
+
+On 64-bits platforms, each digit is stored as a **30-bit integer** (hence that takes values between 0 and 2^30 - 1) and is stored as an unsigned 32-bits int.
+(digit is a typedef for uint32_t)
+
+On 32-bits platforms, each digit is stored as a **15-bit integer** (hence that takes values between 0 and 2^15 - 1) and is stored as an unsigned 16-bit int.
+
+We perform the calculation for d_num in the **long_to_str** function to determine the number of decimal digits needed to represent the Python long integer value as a string in the console. This calculation is crucial for correctly formatting and rendering the long integer value, especially when it overflows the capacities of C's native data types.
+
+Let's understand the purpose of calculating d_num step-by-step... hahaha
+
+**PyLong_DECIMAL_SHIFT:** This constant is set to 9, as mentioned in the definition of "longintrepr.h" (#define \_PyLong_DECIMAL_SHIFT 9). It indicates that Python uses a binary shift of 9 bits to convert between its internal long integer representation (base 2^30, in order of 1 Billion => 10^9) and the decimal representation used in the decimal module (base 10^9).
+
+**PyLong_SHIFT:** This constant represents the number of bits per digit used in the internal long integer representation. Typically, it is set to 30, meaning each digit can hold a chunk of 30 bits.
+
+**d_num calculation formula** as follows:
+
+```
+d = (33  * PyLong_DECIMAL_SHIFT) / (10 * PyLong_SHIFT - 33 * _PyLong_DECIMAL_SHIFT)
+```
+
+The purpose of this calculation is to determine the number of **decimal digits** that can be represented using a single bin-digit of the internal binary representation. It is essentially a **scaling factor to convert from binary digits to decimal digits.**
+
+The formula is derived from the ratio of the maximum number of decimal digits that can fit into 33 bits (which is 33 _ PyLong_DECIMAL_SHIFT) to the number of excess bits beyond those used for decimal representation (which is 10 _ PyLong_SHIFT - 33 \* PyLong_DECIMAL_SHIFT).
+
+In July, Friday the 21st, I still have no idea why we use **33**, I will investigate fellows.
+
+The value of **d_num** ensures that the conversion from binary to decimal can accurately represent up to d_num decimal digits per digit of the internal binary representation.
+
+With the calculated value of d_num, we can use it to correctly format and render the Python long integer value as a string, even when evil people like Julien Barbier wants the integer to overflow the capacities of beloved C programming data types. The number of decimal digits needed to represent the integer can be determined based on the value of d_num and the number of digits stored in the ob_digit array of the Python long integer object. <br>
+This ensures that the long integer can be rendered correctly and accurately, regardless of its size.
