@@ -41,7 +41,7 @@ int long_to_str(PyObject *lg, char **str)
 
 	py = (PyLongObject *)lg;
 	size_py = Py_SIZE(py) < 0 ? -Py_SIZE(py) : Py_SIZE(py);
-	neg = size_py < 0;
+	neg = Py_SIZE(py) < 0;
 
 	/**
 	 * To determine the number of decimal digits required
