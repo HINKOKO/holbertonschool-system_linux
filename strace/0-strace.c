@@ -10,35 +10,35 @@
 
 int main(int argc, char *argv[], char *envp[])
 {
-	pid_t pid;
+	pid_t child;
 	int retval = 0;
 	struct user_regs_struct regs;
+	unsigned long num = 0;
 
 	if (argc < 2)
 		return (fprintf(stderr, "Bad usage dude\n"), -1);
 
 	/* create child process */
-	pid = fork();
-	if (pid == 0)
+	child = fork();
+	if (child == 0)
 	{
-		ptrace(PTRACE_TRACEME, pid, NULL, NULL);
-		execve(argv[1], &(argv[1]), envp);
+		ptrace(PTRACE_TRACEME, 0, 0, 0);
+		execve(argv[1], argv + 1, envp);
 	}
-	else
-	{
-		/* parent process here */
+	do {
+		/* parent process */
+		ptrace(PTRACE_SYSCALL, child, 0, 0);
 		wait(&retval);
-		if (WIFEXITED(retval))
-			return (0);
-		ptrace(PTRACE_SYSCALL, pid, NULL, NULL);
-		while (wait(&retval) && !WIFEXITED(retval))
+		memset(&regs, 0, sizeof(regs));
+		ptrace(PTRACE_GETREGS, child, 0, &regs);
+		if (num)
+			num = 0;
+		else
 		{
-			memset(&regs, 0, sizeof(regs));
-			ptrace(PTRACE_GETREGS, pid, 0, &regs);
-			if (WSTOPSIG(retval) == SIGTRAP && (long)regs.rax == -38)
-				printf("%lu\n", (long)regs.orig_rax);
-			ptrace(PTRACE_SYSCALL, pid, NULL, NULL);
+			num = regs.orig_rax;
+			printf("%ld\n", num);
 		}
-	}
+	} while (!WIFEXITED(retval));
+
 	return (0);
 }
