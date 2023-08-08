@@ -39,7 +39,7 @@ int main(int argc, char *argv[], char *envp[])
 		else
 		{
 			num = regs.orig_rax;
-			printf("%ld\n", num);
+			printf("%lu\n", num);
 		}
 	} while (!WIFEXITED(retval));
 
