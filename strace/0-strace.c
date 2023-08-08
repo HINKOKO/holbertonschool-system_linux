@@ -18,6 +18,8 @@ int main(int argc, char *argv[], char *envp[])
 	if (argc < 2)
 		return (fprintf(stderr, "Bad usage dude\n"), -1);
 
+	/* disable buffering */
+	setbuf(stdout, NULL);
 	/* create child process */
 	child = fork();
 	if (child == 0)
@@ -28,6 +30,7 @@ int main(int argc, char *argv[], char *envp[])
 	do {
 		/* parent process */
 		ptrace(PTRACE_SYSCALL, child, 0, 0);
+		/* PTRACE_SYSCALL to continue child */
 		wait(&retval);
 		memset(&regs, 0, sizeof(regs));
 		ptrace(PTRACE_GETREGS, child, 0, &regs);
