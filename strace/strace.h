@@ -1,6 +1,9 @@
 #ifndef __STRACEHIM__
 #define __STRACEHIM__
 
+/* use of papamuziko */
+#include "syscalls.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
