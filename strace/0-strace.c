@@ -27,7 +27,10 @@ int main(int argc, char *argv[], char *envp[])
 		ptrace(PTRACE_TRACEME, 0, 0, 0);
 		execve(argv[1], argv + 1, envp);
 	}
-	do {
+	do
+	{
+		if (WIFSTOPPED(retval) && WSTOPSIG(retval) & 0x80)
+			return (0);
 		/* parent process */
 		ptrace(PTRACE_SYSCALL, child, 0, 0);
 		/* PTRACE_SYSCALL to continue child */
