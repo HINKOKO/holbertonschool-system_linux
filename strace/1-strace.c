@@ -41,9 +41,9 @@ int main(int argc, char *argv[], char *envp[])
 				printf("\n"), flag = 0;
 			memset(&regs, 0, sizeof(regs));
 			ptrace(PTRACE_GETREGS, child, 0, &regs);
-			if (WSTOPSIG(retval) == SIGTRAP && (long) regs.rax == -38)
+			if (WSTOPSIG(retval) == SIGTRAP && (long)regs.rax == -38)
 			{
-				printf("%s", (char *) syscalls_64_g[(unsigned long)regs.orig_rax].name);
+				printf("%s", (char *)syscalls_64[(unsigned long)regs.orig_rax].name);
 				flag = 1;
 			}
 			ptrace(PTRACE_SYSCALL, child, 0, 0);

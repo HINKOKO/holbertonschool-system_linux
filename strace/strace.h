@@ -14,5 +14,6 @@
 #include <unistd.h>
 #include <syscall.h>
 #include <sys/ptrace.h>
+#include <sys/reg.h>
 
 #endif /* __STRACEHIM__ */
