@@ -1,4 +1,10 @@
 #include "strace.h"
+#include "syscalls.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+#include <sys/types.h>
+#include <sys/reg.h>
 
 int step_sys(pid_t child)
 {
