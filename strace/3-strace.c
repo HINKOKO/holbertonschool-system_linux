@@ -64,10 +64,10 @@ int tracer(pid_t child)
 		ptrace(PTRACE_GETREGS, child, 0, &regs);
 		fprintf(stdout, "%s(", syscalls_64[regs.orig_rax].name);
 		print_regs(regs);
-		/* ptrace(PTRACE_GETREGS, child, 0, &regs); */
+		ptrace(PTRACE_GETREGS, child, 0, &regs);
 		fprintf(stdout, ") = %#lx\n", (unsigned long)regs.rax);
 	}
-	fprintf(stdout, " = ?\n");
+	fprintf(stdout, ") = ?\n");
 	return (0);
 }
 
