@@ -90,16 +90,17 @@ int main(int argc, char *argv[], char *envp[])
 		return (fprintf(stderr, "%s [path_to_bin]", argv[0]));
 
 	child = fork();
+	++argv;
 	if (child == 0)
 	{
 		ptrace(PTRACE_TRACEME);
 		kill(getpid(), SIGSTOP);
-		return (execve(argv[1], argv, envp));
+		return (execve(argv[0], argv, envp));
 	}
 	else
 	{
 		setbuf(stdout, NULL);
-		fprintf(stdout, "execve(%s %p %p)", argv[0],
+		fprintf(stdout, "execve(%p, %p, %p)", (void *)argv[0],
 				(void *)argv, (void *)envp);
 		return (tracer(child));
 	}
