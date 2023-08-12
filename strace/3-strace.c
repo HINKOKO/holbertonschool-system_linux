@@ -18,7 +18,7 @@ void print_regs(struct user_regs_struct regs)
 	params[0] = (unsigned long)regs.rdi;
 	params[1] = (unsigned long)regs.rsi;
 	params[2] = (unsigned long)regs.rdx;
-	params[3] = (unsigned long)regs.rcx;
+	params[3] = (unsigned long)regs.r10;
 	params[4] = (unsigned long)regs.r8;
 	params[5] = (unsigned long)regs.r9;
 
@@ -81,7 +81,7 @@ int main(int argc, char *argv[], char *envp[])
 			}
 			ptrace(PTRACE_SYSCALL, child, 0, 0);
 		}
-		printf(" = ?\n");
+		printf(") = ?\n");
 	}
 	return (0);
 }
