@@ -24,18 +24,18 @@ int step_sys(pid_t child)
 
 void print_regs(struct user_regs_struct regs)
 {
+	unsigned long params[6] = {0};
 	size_t nb_params = 0, i;
-	unsigned long params[6] = {
-		regs.rdi,
-		regs.rsi,
-		regs.rdx,
-		regs.rcx,
-		regs.r8,
-		regs.r9,
-	};
+
+	params[0] = regs.rdi;
+	params[1] = regs.rsi;
+	params[2] = regs.rdx;
+	params[3] = regs.rcx;
+	params[4] = regs.r8;
+	params[5] = regs.r9;
 
 	/* retrieve specific nb_params according to each syscall */
-	nb_params = syscalls_64[regs.orig_rax].nb_params;
+	nb_params = syscalls_64[(unsigned long)regs.orig_rax].nb_params;
 	for (i = 0; i < nb_params; ++i)
 	{
 		if (i > 0)
