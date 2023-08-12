@@ -36,13 +36,13 @@ void print_regs(struct user_regs_struct regs)
 
 	/* retrieve specific nb_params according to each syscall */
 	nb_params = syscalls_64[(unsigned long)regs.orig_rax].nb_params;
-	for (i = 0; i < nb_params; ++i)
+	for (i = 0; i < nb_params; i++)
 	{
 		if (i > 0)
 			fprintf(stdout, ",");
-		if (syscalls_64[regs.orig_rax].params[i] == VARARGS)
+		if (syscalls_64[(unsigned long)regs.orig_rax].params[i] == VARARGS)
 			fprintf(stdout, "...");
-		else if (syscalls_64[regs.orig_rax].params[i] != VOID)
+		else if (syscalls_64[(unsigned long)regs.orig_rax].params[i] != VOID)
 			fprintf(stdout, "%#lx", params[i]);
 	}
 }
