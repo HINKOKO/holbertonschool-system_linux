@@ -1,32 +1,6 @@
 #include "strace.h"
 
-void print_regs(struct user_regs_struct regs)
-{
-	size_t nb_params = 0, i;
-	unsigned long params[6] = {
-		regs.rdi,
-		regs.rsi,
-		regs.rdx,
-		regs.rcx,
-		regs.r8,
-		regs.r9,
-	};
-
-	/* retrieve specific nb_params according to each syscall */
-	nb_params = syscalls_64[regs.orig_rax].nb_params;
-	for (i = 0; i < nb_params; ++i)
-	{
-		if (i > 0)
-			fprintf(stdout, ",");
-		if (syscalls_64[regs.orig_rax].params[i] != VOID)
-		{
-			if (syscalls_64[regs.orig_rax].params[i] == VARARGS)
-				fprintf(stdout, "...");
-			else
-				fprintf(stdout, "%#lx", (unsigned long)params[i]);
-		}
-	}
-}
+void print_regs(struct user_regs_struct regs);
 
 int step_sys(pid_t child)
 {
@@ -64,7 +38,7 @@ int tracer(pid_t child)
 		ptrace(PTRACE_GETREGS, child, 0, &regs);
 		fprintf(stdout, "%s(", syscalls_64[regs.orig_rax].name);
 		print_regs(regs);
-		// ptrace(PTRACE_GETREGS, child, 0, &regs);
+		/* ptrace(PTRACE_GETREGS, child, 0, &regs); */
 		fprintf(stdout, ") = %#lx\n", (unsigned long)regs.rax);
 	}
 	fprintf(stdout, " = ?\n");
@@ -92,4 +66,32 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	else
 		return (tracer(child));
+}
+
+void print_regs(struct user_regs_struct regs)
+{
+	size_t nb_params = 0, i;
+	unsigned long params[6] = {
+		regs.rdi,
+		regs.rsi,
+		regs.rdx,
+		regs.rcx,
+		regs.r8,
+		regs.r9,
+	};
+
+	/* retrieve specific nb_params according to each syscall */
+	nb_params = syscalls_64[regs.orig_rax].nb_params;
+	for (i = 0; i < nb_params; ++i)
+	{
+		if (i > 0)
+			fprintf(stdout, ",");
+		if (syscalls_64[regs.orig_rax].params[i] != VOID)
+		{
+			if (syscalls_64[regs.orig_rax].params[i] == VARARGS)
+				fprintf(stdout, "...");
+			else
+				fprintf(stdout, "%#lx", (unsigned long)params[i]);
+		}
+	}
 }
