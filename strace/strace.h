@@ -16,4 +16,8 @@
 #include <sys/ptrace.h>
 #include <sys/reg.h>
 
+/* utility for arguments retrieving in registers */
+unsigned long syscall_args(struct user_regs_struct regs, int i);
+
+
 #endif /* __STRACEHIM__ */

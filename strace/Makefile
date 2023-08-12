@@ -3,7 +3,7 @@ FLAGS=-Wall -Wextra -Werror -pedantic
 SRC_0 := $(wildcard 0*.c)
 SRC_1 := $(wildcard 1*.c)
 SRC_2 := $(wildcard 2*.c)
-SRC_3 := $(wildcard 3*.c)
+SRC_3 := $(wildcard 3*.c) utils_args.c
 SRC_4 := $(wildcard 4*.c)
 
 EXEC_0 := strace_0
