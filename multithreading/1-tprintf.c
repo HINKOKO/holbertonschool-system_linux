@@ -9,6 +9,7 @@
 
 int tprintf(char const *format, ...)
 {
-	printf("[%lu] %s", (unsigned long)format, (char *)format);
+	/* pthread_self() provides proper thread ID concerned by the call */
+	printf("[%lu] %s", pthread_self(), (char *)format);
 	return (0);
 }
