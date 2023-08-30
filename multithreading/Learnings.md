@@ -117,9 +117,31 @@ void *function_name(void *arg)
   }
   ```
 
+- **5. How to properly exit a thread**
+
 ```
 
-- **5. How to properly exit a thread**
+void *thread_fever(void *arg)
+{
+(void)arg;
+printf("Hello from the Tdreeead !!\n");
+printf("Thread is over\n");
+pthread_exit(NULL);
+}
+
+int main(void)
+{
+pthread_t tid;
+
+    pthread_create(&tid, NULL, thread_fever, NULL);
+    /* pthread_join -> join with a temrinated thread*/
+    pthread_join(&tid, NULL);
+    printf("Main thread finished\n");
+    return (0);
+
+}
+
+```
 
 - **6. How to handle mutual exclusion**
 
@@ -139,4 +161,7 @@ Matrix of the form for the kernel convolution, (an example with 3 by 3)
 | 1 | 2 | 1 | <br>
 | 2 | 4 | 2 | <br>
 | 1 | 2 | 1 | <br>
+
+```
+
 ```
