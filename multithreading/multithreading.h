@@ -75,5 +75,11 @@ typedef struct blur_portion_s
 /* functions prototypes */
 void *thread_entry(void *arg);
 int tprintf(char const *format, ...);
+/* let's go seriously */
+void blur_portion(blur_portion_t const *portion);
+void perform_bluring(const img_t *img, img_t *new_img, const kernel_t *kernel,
+					 size_t x, size_t y);
+void insert_bluring(const img_t *img, img_t *new_img, const kernel_t *kernel,
+					size_t x, size_t y);
 
 #endif /* __MULTITHREADS__ */
