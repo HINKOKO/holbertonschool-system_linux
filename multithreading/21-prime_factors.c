@@ -13,7 +13,7 @@
 list_t *prime_factors(char const *s)
 {
 	unsigned long *factor = NULL, num = 0;
-	int i = 2;
+	unsigned long i = 2;
 	list_t *list = malloc(sizeof(list_t));
 
 	list_init(list);
