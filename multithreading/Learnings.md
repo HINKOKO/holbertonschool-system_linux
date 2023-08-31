@@ -35,6 +35,10 @@ Here some facts about those two terms:
 (Sources => EYNTK, made by Alexandre Gautier, Thanks Dude <br>
 => [TheRandu](https://randu.org/tutorials/threads))
 
+Each one of a process's threads has its own context: its own ID, its own stack, its own instruction pointer, and processor registers. <br>
+But since all of the threads are part of the same process, they share the same virtual memory address space: the same code, the same heap, the same shared libraries and same open file descriptors. <br>
+Threads does not fall in the pattern of strict "parent-child" hierarchy like processes, they rather are like a \*_group of peers_, regardless of which one was created over another and so on... => They are peers like HOlbies ! hum.. <br>
+
 - ### **3. What is the difference between concurrency and parallelism**
 
   #### **3.1 Concurrency**
@@ -64,7 +68,7 @@ Here some facts about those two terms:
 
   Thanks to [Lokesh Gupta](https://howtodoinjava.com/java/multi-threading/concurrency-vs-parallelism/)
 
-- **4. How to create a thread**
+- ### **4. How to create a thread**
 
 In Low-level Specialization, we play mostly with **C-programming**, **multithreading** is not supported by the language standard <br>
 No worries, we got a standard interface in C to manipulate threads with its **<pthread.h>** library. It is gathering around 60 functions to **create** and **join** threads, as well as managing them. <br>
@@ -117,7 +121,7 @@ void *function_name(void *arg)
   }
   ```
 
-- **5. How to properly exit a thread**
+- ### **5. How to properly exit a thread**
 
 ```
 
@@ -143,16 +147,30 @@ pthread_t tid;
 
 ```
 
-- **6. How to handle mutual exclusion**
+- ### **6. How to handle mutual exclusion**
+
+**Mutex** is short for **M**utual **E**xclusion, and also called a "synchronization primitive". It's basically a "lock" that permits us to regulate access to data and prevent shared resources being used at the same time by different threads. <br>
+We can think of **mutex** as the lock of the bathroom door. One thread locks it to indicate "occupied" and the other thread is waiting patiently that this locks indicates 'free' or 'opened'.
 
 - **7. What is a deadlock**
 
 - **8. What is a race condition**
 
-- **9. Aside Notes**
+- ### **9. Aside Notes**
 
-  <i>pthread_join()</i> function is the equivalent of <i>wait()</i> for processes. A call to <i>pthread_join()</i> blocks the calling thread <br>
-  until the thread with identifier equal to the first argument terminates. ( => pthread_join(<i>thread_id</i>, NULL))
+#### **Joining Threads**
+
+In order to block the execution of a thread until another one finishes, we can use the **pthread_join** function call:
+
+```
+int pthread_join(pthread_t thread, void **retval)
+```
+
+**thread** => the ID of the thread that <i>this calling thread</i> (the one calling pthread_join) should wait for. <br>
+**retval** => pointer towards a variable that can contain the return value of the thread's routine (**start_routine** supplied with **pthread_create** call), generally , a simple **NULL** would suffice.
+
+<i>pthread_join()</i> function is the equivalent of <i>wait()</i> for processes. A call to <i>pthread_join()</i> blocks the calling thread <br>
+until the thread with identifier equal to the first argument terminates. ( => pthread_join(<i>thread_id</i>, NULL))
 
 - **10. What is a Gaussian Blur guys ?**
 
