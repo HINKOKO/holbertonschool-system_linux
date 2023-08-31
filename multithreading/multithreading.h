@@ -101,7 +101,7 @@ typedef enum task_status_e
 	PENDING = 0,
 	STARTED,
 	SUCCESS,
-	FAILURE,
+	FAILURE
 } task_status_t;
 
 /**
