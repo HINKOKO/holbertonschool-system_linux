@@ -9,58 +9,53 @@
 
 void blur_portion(blur_portion_t const *portion)
 {
-	size_t j, i;
+	size_t x = 0, y = 0;
 
-	if (!portion || !portion->img || !portion->img_blur ||
-		!portion->kernel)
+	/* sanity checks */
+	if (!portion || !portion->img || !portion->img_blur || !portion->kernel)
 		return;
 
-	/* loop through given portion of img */
-	for (j = portion->y; j < portion->y + portion->h; j++)
-		for (i = portion->x; i < portion->x + portion->w; i++)
-			perform_bluring(portion->img, portion->img_blur, portion->kernel,
-							i, j);
+	/* let's loop over all the pixels in given portion */
+
+	for (y = portion->y; y < portion->y + portion->h; y++)
+		for (x = portion->x; x < portion->x + portion->w; x++)
+			perform_bluring(portion->img, portion->img_blur, portion->kernel, x, y);
 }
 
 void perform_bluring(const img_t *img, img_t *new_img, const kernel_t *kernel,
 					 size_t x, size_t y)
 {
-	float divider = 0, avg_r = 0, avg_g = 0, avg_b = 0;
-	size_t radius = 0, pos_i = 0, i = 0, j;
+	float divider = 0, total_r = 0, total_g = 0, total_b = 0;
+	size_t pos_i = 0, radius = 0, i = 0, j;
 	ssize_t pos_x = 0, pos_y = 0;
 
-	/* radius is distance from center pixel to edge cells */
-	/* here the life is sweet because we prefer and odd-sized kernel */
-	radius = kernel->size / 2;
+	/* radius of kernel is the distance from the center of the kernel */
+	/* to the edge of the kernel */
+	/* radius is calculated by dividing size of kernel by 2 */
+	/* because we got a 'symetric' kernel => distance from center to any edge */
+	/* is same in all directions */
+	/* the LARGER the RADIUS , the BLURER the img will be (it will blur more) */
 
-	/* place the kernel on portion and loop through it */
-	for (pos_y = y - radius; i < kernel->size; pos_y++, i++)
-		for (j = 0, pos_x = x - radius; j < kernel->size; pos_x++, j++)
+	radius = kernel->size / 2;
+	/* loop over the kernel */
+	for (pos_y = (ssize_t)y - radius; i < kernel->size; i++, pos_y++)
+		for (j = 0, pos_x = (ssize_t)x - radius; j < kernel->size; j++, pos_x++)
 		{
-			/* check if we are inside boundaries */
-			if (pos_y >= 0 && (size_t)pos_y < img->h &&
-				pos_x >= 0 && (size_t)pos_x < img->w)
+			if (pos_x >= 0 && (size_t)pos_x < img->w &&
+				pos_y >= 0 && (size_t)pos_y < img->h)
 			{
-				/* update divider and pos_i, formula works thanks to 2D array */
-				/* that is storing pixels postion */
+				/* Add current pixel to the average */
 				divider += kernel->matrix[i][j];
 				pos_i = (pos_y * img->w) + pos_x;
-				/* update each r,g,b color average as looping through */
-				/* multiply corresponding kernel cell by img cell */
-				avg_r += img->pixels[pos_i].r * kernel->matrix[i][j];
-				avg_g += img->pixels[pos_i].g * kernel->matrix[i][j];
-				avg_b += img->pixels[pos_i].b * kernel->matrix[i][j];
+				total_r += img->pixels[pos_i].r * kernel->matrix[i][j];
+				total_g += img->pixels[pos_i].g * kernel->matrix[i][j];
+				total_b += img->pixels[pos_i].b * kernel->matrix[i][j];
 			}
 		}
-	/* divide each average by average of all kernel cells */
-	avg_r /= divider;
-	avg_g /= divider;
-	avg_b /= divider;
 
-	/* set those values in new_img , don't mess up the original one, thug !*/
-	/* ( set i 'cursor' in new_img at proper position) */
+	/* set the new value of rgb levers in the new_img*/
 	pos_i = (y * new_img->w) + x;
-	new_img->pixels[pos_i].r = (uint8_t)avg_r;
-	new_img->pixels[pos_i].g = (uint8_t)avg_g;
-	new_img->pixels[pos_i].b = (uint8_t)avg_b;
+	new_img->pixels[pos_i].r = (uint8_t)(total_r / divider);
+	new_img->pixels[pos_i].g = (uint8_t)(total_g / divider);
+	new_img->pixels[pos_i].b = (uint8_t)(total_b / divider);
 }
