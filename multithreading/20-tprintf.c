@@ -1,7 +1,7 @@
 #include "multithreading.h"
 #include <stdarg.h>
 
-pthread_mutex_t mutex;
+static pthread_mutex_t mutex;
 
 __attribute__((constructor)) void init_mutex(void)
 {
@@ -23,11 +23,19 @@ __attribute__((destructor)) void destroy_mutex(void)
 
 int tprintf(char const *format, ...)
 {
+	/* Arguments are varying in number AND IN TYPE => va_list the way to go*/
+	va_list args;
+
+	va_start(args, format);
 
 	/* lock the mutex */
 	pthread_mutex_lock(&mutex);
 	/* pthread_self() to retrieve proper ID */
-	printf("[%lu] %s", pthread_self(), format);
+	printf("[%lu] ", pthread_self());
+	/* vprintf from man 3 printf is the way to go with va_list */
+	vprintf(format, args);
+
+	va_end(args);
 
 	pthread_mutex_unlock(&mutex);
 	return (0);
