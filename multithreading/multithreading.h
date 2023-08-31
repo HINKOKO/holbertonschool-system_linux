@@ -6,6 +6,8 @@
 #include <pthread.h>
 #include <stdint.h>
 
+#include "list.h"
+
 /**
  * struct pixel_s - RGS pixel
  *
@@ -75,11 +77,16 @@ typedef struct blur_portion_s
 /* functions prototypes */
 void *thread_entry(void *arg);
 int tprintf(char const *format, ...);
-/* let's go seriously */
+
+/* Blurring functions */
 void blur_portion(blur_portion_t const *portion);
 void perform_bluring(const img_t *img, img_t *new_img, const kernel_t *kernel,
 					 size_t x, size_t y);
-void insert_bluring(const img_t *img, img_t *new_img, const kernel_t *kernel,
-					size_t x, size_t y);
+/* momentum schniouf */
+void perform_bluring(img_t const *img, img_t *newimg,
+					 const kernel_t *kern, size_t xax, size_t yax);
+
+/* prime factors functions */
+list_t *prime_factors(char const *s);
 
 #endif /* __MULTITHREADS__ */
