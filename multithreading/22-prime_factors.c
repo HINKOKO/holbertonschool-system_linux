@@ -52,7 +52,9 @@ task_t *create_task(task_entry_t entry, void *param)
 
 void destroy_task(task_t *task)
 {
-	(void)task;
+	list_destroy(task->param, free);
+	free(task->param);
+	free(task);
 	return;
 }
 
