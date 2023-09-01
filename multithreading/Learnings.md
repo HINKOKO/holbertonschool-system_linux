@@ -150,11 +150,29 @@ pthread_t tid;
 - ### **6. How to handle mutual exclusion**
 
 **Mutex** is short for **M**utual **E**xclusion, and also called a "synchronization primitive". It's basically a "lock" that permits us to regulate access to data and prevent shared resources being used at the same time by different threads. <br>
-We can think of **mutex** as the lock of the bathroom door. One thread locks it to indicate "occupied" and the other thread is waiting patiently that this locks indicates 'free' or 'opened'.
+We can think of **mutex** as the lock of the bathroom door. One thread locks it to indicate "occupied" and the other thread is waiting patiently that this locks indicates 'free' or 'opened'. <br>
+Mutexes are a protocol to **serialize** the access to shared resources.
 
-- **7. What is a deadlock**
+- ### **7. What is a deadlock**
 
-- **8. What is a race condition**
+  An important problem can happens with **mutexes** => a **deadlock**. Here's a basic situation: <br>
+  Thread 1 locks **lock A** | Thread 2 locks **lock B** <br>
+  Thread 1 now wants **lock B** | Thread 2 now wants **lock A** <br>
+  ==> Instant **deadlock** A program can deadlock if two (or more) threads have stopped execution or are spinning permanently <br>
+  It can also happen if threads do not unlock mutexes properly, for an example of proper unlocking, see this [sample](./practice_threads/practice_thread.c) in this Repo.
+
+- ### **8. What is a race condition**
+
+  A **race condition** occurs when threads access sharing data or resources without synchronization rules/protocol defined by the programmer. The access to the resources has not been serialized and you got multiple threads? you'll certainly face a race condition soon... see this [Not to do]() file,
+  **COmpilation Trick**
+
+  ```
+  gcc -fsanitize=thread -g nottodo.c && ./a.out
+  ```
+
+  This "flag" will warn you if a race condition is present, Try to compile the file given in the link with this flag to see a beautiful explanation warning 😉. <br>
+  Even if we decrease the **MAXCOUNT** to a small number, the program will be 'successfull', our two threads will manage to count up to 2 \* MAXCOUNT, but still a data race danger, with higher number, test it, you barely get the count... <br>
+  Here's a nice video from ComputerPhile => [Watch this](https://www.youtube.com/watch?v=7ENFeb-J75k&ab_channel=Computerphile)
 
 - ### **9. Aside Notes**
 
