@@ -1,6 +1,8 @@
 #include "multithreading.h"
 #include <stdlib.h>
 
+void print_task_result(task_t *task);
+
 /* mutex init as task 4 */
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -9,7 +11,7 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 /**
  * __attribute__((constructor)) void _initmut(void)
  * {
- *	pthread_mutex_init(&mutex, NULL);
+  pthread_mutex_init(&mutex, NULL);
  * }
  */
 
@@ -52,8 +54,10 @@ task_t *create_task(task_entry_t entry, void *param)
 
 void destroy_task(task_t *task)
 {
+	list_destroy(task->result, free);
 	free(task->result);
 	free(task);
+
 	return;
 }
 
