@@ -3,17 +3,7 @@
 
 void print_task_result(task_t *task);
 
-/* mutex init as task 4 */
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-
-/* this macro replace pthread_mutex_init() ?? */
-
-/**
- * __attribute__((constructor)) void _initmut(void)
- * {
-  pthread_mutex_init(&mutex, NULL);
- * }
- */
 
 
 __attribute__((constructor)) void _destroy(void)
@@ -47,7 +37,7 @@ task_t *create_task(task_entry_t entry, void *param)
 }
 
 /**
- * destroy_task - destroy a task dude !
+ * destroy_task - destroy the accomplished task
  *
  * @task: pointer to the task to be destroyed
  */
@@ -57,15 +47,12 @@ void destroy_task(task_t *task)
 	list_destroy(task->result, free);
 	free(task->result);
 	free(task);
-
-	return;
 }
 
 /**
- * exec_task - executes a task dude - Thread Entry
-
+ * exec_tasks - executes a task dude - Thread Entry
  * @tasks: pointer to the list of tasks to be executed
-  -> each tasks in a node ?
+ *
  * Return: NULL can be returned safely, => its return value
  * won't be retrieved
  *
@@ -84,7 +71,7 @@ void *exec_tasks(list_t const *tasks)
 	/* task->head point to front node of list */
 	curr = tasks->head;
 	do {
-		/* content is a 'custom content' linked to -> function pointer task_entry_t */
+		/* content is custom content->linked to-> function pointer task_entry_t */
 		/* it can point to any type => including a pointer to another structure */
 		task = curr->content;
 		pthread_mutex_lock(&mutex);
