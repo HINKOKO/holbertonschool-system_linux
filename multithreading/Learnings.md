@@ -2,7 +2,7 @@
 
 ## **Learnings Covered in the project**
 
-- ### [**1. What is a Thread ?**](#1)
+- ### [**1. What is a Thread ?**](#what)
 
   One could define a Thread as an execution unit that is part of a process, a set of logic sequential instruction, once again , <i>that is part of a process</i> => Threads are sometimes called <i>lightweigth processes</i><br>
   <br>
@@ -15,7 +15,7 @@
   A thread a thread... isn't it something you put through the eye of a sewing needle ? Absolutely. <br>
   We can think at our processors as sewing needles, and the threads in a program as the threads fiber, those thin strands that passes through the eye of the sewing needle, Yay !
 
-- ### [**2. What are the differences between a thread and a process ?**](#2)
+- ### [**2. What are the differences between a thread and a process ?**](#diff)
 
 - #### **2.1 What is a process**
 
@@ -42,7 +42,7 @@ Each one of a process's threads has its own context: its own ID, its own stack, 
 But since all of the threads are part of the same process, they share the same virtual memory address space: the same code, the same heap, the same shared libraries and same open file descriptors. <br>
 Threads does not fall in the pattern of strict "parent-child" hierarchy like processes, they rather are like a \*_group of peers_, regardless of which one was created over another and so on... => Threads are like Holbies ! hum.. <br>
 
-- ### [**3. What is the difference between concurrency and parallelism**](#3)
+- ### [**3. What is the difference between concurrency and parallelism**](#concu)
 
   #### **3.1 Concurrency**
 
@@ -71,7 +71,7 @@ Threads does not fall in the pattern of strict "parent-child" hierarchy like pro
 
   Thanks to [Lokesh Gupta](https://howtodoinjava.com/java/multi-threading/concurrency-vs-parallelism/)
 
-- ### [**4. How to create a thread**](#4)
+- ### [**4. How to create a thread**]
 
 In Low-level Specialization, we play mostly with **C-programming**, **multithreading** is not supported by the language standard <br>
 No worries, we got a standard interface in C to manipulate threads with its **<pthread.h>** library. It is gathering around 60 functions to **create** and **join** threads, as well as managing them. <br>
@@ -150,13 +150,13 @@ pthread_t tid;
 
 ```
 
-- ### [**6. How to handle mutual exclusion**](#6)
+- ### [**6. How to handle mutual exclusion**]
 
 **Mutex** is short for **M**utual **E**xclusion, and also called a "synchronization primitive". It's basically a "lock" that permits us to regulate access to data and prevent shared resources being used at the same time by different threads. <br>
 We can think of **mutex** as the lock of the bathroom door. One thread locks it to indicate "occupied" and the other thread is waiting patiently that this locks indicates 'free' or 'opened'. <br>
 Mutexes are a protocol to **serialize** the access to shared resources.
 
-- ### [**7. What is a deadlock**](#7)
+- ### [**7. What is a deadlock**]
 
   An important problem can happens with **mutexes** => a **deadlock**. Here's a basic situation: <br>
   Thread 1 locks **lock A** | Thread 2 locks **lock B** <br>
@@ -164,7 +164,7 @@ Mutexes are a protocol to **serialize** the access to shared resources.
   ==> Instant **deadlock** A program can deadlock if two (or more) threads have stopped execution or are spinning permanently <br>
   It can also happen if threads do not unlock mutexes properly, for an example of proper unlocking, see this [sample](./practice_threads/practice_thread.c) in this Repo.
 
-- ### [**8. What is a race condition**](#8)
+- ### [**8. What is a race condition**]
 
   A **race condition** occurs when threads access sharing data or resources without synchronization rules/protocol defined by the programmer. The access to the resources has not been serialized and you got multiple threads? you'll certainly face a race condition soon... see this [Not to do]() file,
 
