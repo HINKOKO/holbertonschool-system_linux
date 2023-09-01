@@ -6,7 +6,10 @@
 
   One could define a Thread as an execution unit that is part of a process, a set of logic sequential instruction, once again , <i>that is part of a process</i> => Threads are sometimes called <i>lightweigth processes</i><br>
   <br>
-  A process can have multiple threads, all executing at the same time.
+  A process can have multiple threads, all executing at the same time. <br>
+  <br>
+
+  **a Thread is a sequence of instructions within a program/process, that can be executed totally independently of other code**
 
   The project provided us in the resources this excellent [analogy](https://randu.org/tutorials/threads/#what) <br>
   A thread a thread... isn't it something you put through the eye of a sewing needle ? Absolutely. <br>
@@ -37,7 +40,7 @@ Here some facts about those two terms:
 
 Each one of a process's threads has its own context: its own ID, its own stack, its own instruction pointer, and processor registers. <br>
 But since all of the threads are part of the same process, they share the same virtual memory address space: the same code, the same heap, the same shared libraries and same open file descriptors. <br>
-Threads does not fall in the pattern of strict "parent-child" hierarchy like processes, they rather are like a \*_group of peers_, regardless of which one was created over another and so on... => They are peers like HOlbies ! hum.. <br>
+Threads does not fall in the pattern of strict "parent-child" hierarchy like processes, they rather are like a \*_group of peers_, regardless of which one was created over another and so on... => Threads are like Holbies ! hum.. <br>
 
 - ### **3. What is the difference between concurrency and parallelism**
 
@@ -164,6 +167,7 @@ Mutexes are a protocol to **serialize** the access to shared resources.
 - ### **8. What is a race condition**
 
   A **race condition** occurs when threads access sharing data or resources without synchronization rules/protocol defined by the programmer. The access to the resources has not been serialized and you got multiple threads? you'll certainly face a race condition soon... see this [Not to do]() file,
+
   **COmpilation Trick**
 
   ```
@@ -190,14 +194,4 @@ int pthread_join(pthread_t thread, void **retval)
 <i>pthread_join()</i> function is the equivalent of <i>wait()</i> for processes. A call to <i>pthread_join()</i> blocks the calling thread <br>
 until the thread with identifier equal to the first argument terminates. ( => pthread_join(<i>thread_id</i>, NULL))
 
-- **10. What is a Gaussian Blur guys ?**
-
-Matrix of the form for the kernel convolution, (an example with 3 by 3)
-
-| 1 | 2 | 1 | <br>
-| 2 | 4 | 2 | <br>
-| 1 | 2 | 1 | <br>
-
-```
-
-```
+- ### **10. What is a Gaussian Blur guys ?**
