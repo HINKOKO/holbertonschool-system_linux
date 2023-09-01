@@ -108,7 +108,7 @@ typedef enum task_status_e
  * struct task_s - Executable task structure
  *
  * @entry: Pointer to a function to serve as the task entry
- * @param: Address to a custion content to be passed to the entry function
+ * @param: Address to a custom content to be passed to the entry function
  * @status: Task status, default to PENDING
  * @result: Stores the return value of the entry function
  * @lock: Task mutex
