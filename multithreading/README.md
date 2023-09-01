@@ -12,11 +12,11 @@ We learned about and are now able to answer the following questions, check out m
 
 - [**What are the differences between a thread and a process ?**](./Learnings.md#2)
 
-- [**3. What is the difference between concurrency and parallelism**](./Learnings.md#3)
+- [**What is the difference between concurrency and parallelism**](./Learnings.md#3)
 
 - [**How to create a thread**](./Learnings.md#4)
 
-- [**6. How to handle mutual exclusion**](./Learnings.md#6)
+- [**How to handle mutual exclusion**](./Learnings.md#6)
 
 - [**What is a deadlock**](./Learnings.md#7)
 
