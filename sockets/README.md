@@ -39,7 +39,7 @@ This is going to be a really simple API, allowing us to manage a list of things 
 - **title** -> String
 - **description** -> String
 
-<u style="font-size: 1.25rem"Here are the different routes that will have to be implemented:</u>
+<u style="font-size: 1.25rem">Here are the different routes that will have to be implemented:</u>
 
 - **/todos**
   - POST -> Creates a new todo
