@@ -1,4 +1,4 @@
-# **Sockets** :electric-plug:
+# **Sockets** :electric_plug:
 
 ## **General Learnings**
 
