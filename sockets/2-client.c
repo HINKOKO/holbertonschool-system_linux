@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 	if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
 		error_n_die("Failed to connect the client via socket");
 
-	fprintf(stdout, "Connected to: %s:%s\n", argv[1], argv[2]);
+	fprintf(stdout, "Connected to %s:%s\n", argv[1], argv[2]);
 	close(sockfd);
 	return (EXIT_SUCCESS);
 }
