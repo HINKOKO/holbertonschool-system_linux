@@ -50,7 +50,7 @@ int accept_msg(int sockfd)
 {
 	int client_fd;
 	struct sockaddr_in client;
-	char buff[MAXLINE + 1];
+	char buff[BUFSIZ];
 	ssize_t received = 0;
 	socklen_t cl_size = sizeof(client);
 
@@ -61,12 +61,11 @@ int accept_msg(int sockfd)
 	printf("Client connected: %s\n", buff);
 
 	/* call to recv() returns the number of 'bytes read' */
-	received = recv(client_fd, buff, MAXLINE, 0);
+	received = recv(client_fd, buff, BUFSIZ, 0);
 	if (received < 0)
 		error_n_die("Nothing received or lost along the path");
 
-	buff[received] = 0;
-	printf("Message received: \"%s\n\"", buff);
+	printf("Message received: \"%s\"\n", buff);
 	close(client_fd);
 	return (EXIT_SUCCESS);
 }
