@@ -57,8 +57,12 @@ int accept_msg(int sockfd)
 	client_fd = accept(sockfd, (struct sockaddr *)&client, &cl_size);
 	if (client_fd < 0)
 		error_n_die("Error: client rejected");
-	inet_ntop(PF_INET, &client.sin_addr, buff, INET_ADDRSTRLEN);
-	printf("Client connected: %s\n", buff);
+	if (getpeername(sockfd, (struct sockaddr *)&client, &cl_size) != -1)
+		error_n_die("Failed to discover who is connected, Abort");
+	/*  getpeername returns the address of connected in buffer pointed by addr */
+	/* Then retrieved by inet_ntoa() (We assume dealing only with IPv4 here )*/
+
+	printf("Client connected: %s\n", inet_ntoa(client.sin_addr));
 
 	/* call to recv() returns the number of 'bytes read' */
 	received = recv(client_fd, buff, BUFSIZ, 0);
