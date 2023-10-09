@@ -10,7 +10,7 @@ int accept_msg(int sockfd)
 {
 	int client_fd;
 	struct sockaddr_in client;
-	char buff[BUFSIZ];
+	char buff[BUFSIZ] = {0};
 	ssize_t received = 0;
 	socklen_t cl_size = sizeof(client);
 
@@ -22,13 +22,16 @@ int accept_msg(int sockfd)
 	printf("Client connected: %s\n", inet_ntoa(client.sin_addr));
 
 	/* call to recv() return the number of 'bytes read' */
+	buff[0] = 0;
 	received = recv(client_fd, buff, BUFSIZ, 0);
-	if (received < 0)
+	if (received > 0)
+	{
+		buff[received] = 0;
+		printf("Raw request: \"%s\"\n", buff);
+		parse_response(buff, client_fd);
+	}
+	else
 		handle_error("Nothing received or lost along the path");
-
-	/* putting the request in a buffer */
-	printf("Raw request: \"%s\"\n", buff);
-	parse_response(buff, client_fd);
 
 	close(client_fd);
 	return (EXIT_SUCCESS);
