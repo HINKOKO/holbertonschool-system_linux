@@ -45,9 +45,9 @@ int accept_msg(int sockfd)
 	client_fd = accept(sockfd, (struct sockaddr *)&client, &cl_size);
 	if (client_fd < 0)
 		handle_error("Error: client rejected");
-	if (getpeername(sockfd, (struct sockaddr *)&client, &cl_size) != -1)
-		handle_error("Failed to discover who is connected, Abort");
-	printf("Client connected: %s\n", inet_ntoa(client.sin_addr));
+
+	inet_ntop(AF_INET, &client.sin_addr, buff, INET_ADDRSTRLEN);
+	printf("Client connected: %s\n", buff);
 
 	/* call to recv() return the number of 'bytes read' */
 	buff[0] = 0;
@@ -58,8 +58,6 @@ int accept_msg(int sockfd)
 		printf("Raw request: \"%s\"\n", buff);
 		parse_response(buff, client_fd);
 	}
-	else
-		handle_error("Nothing received or lost along the path");
 
 	close(client_fd);
 	return (EXIT_SUCCESS);
@@ -74,7 +72,6 @@ int accept_msg(int sockfd)
 
 int send_response(int client_sd, char *response)
 {
-	if (send(client_sd, response, strlen(response), 0) == -1)
-		handle_error("Failed to respond to client");
+	send(client_sd, response, strlen(response), 0);
 	return (EXIT_SUCCESS);
 }
