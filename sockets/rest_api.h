@@ -30,6 +30,7 @@
 
 int start_n_listen(void);
 int accept_msg(int sockfd);
+int send_response(int client_sd, char *response);
 int parse_response(char *raw_request, int client_fd);
 
 #endif /* __SOCKETS_API__ */

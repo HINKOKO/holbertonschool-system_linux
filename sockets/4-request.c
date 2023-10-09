@@ -11,20 +11,6 @@ int main(void)
 }
 
 /**
- * send_response - send response 200 OK to the client
- * @client_sd: client socket descriptor
- * @response: the string to send back
- * Return: 0 for success, 1 otherwise
- */
-
-int send_response(int client_sd, char *response)
-{
-	if (send(client_sd, response, strlen(response), 0) == -1)
-		handle_error("Failed to respond to client");
-	return (EXIT_SUCCESS);
-}
-
-/**
  * parse_response - parse the response header HTTP using
  * good old strtok() to split the header strings
  * @raw_request: the raw request we got back
@@ -34,7 +20,7 @@ int send_response(int client_sd, char *response)
 
 int parse_response(char *raw_request, int client_sd)
 {
-	char *DELIMS = " \n";
+	char *DELIMS = " \t\r\n";
 	char *method, *path, *version;
 
 	method = strtok(raw_request, DELIMS);
