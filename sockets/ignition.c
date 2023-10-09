@@ -10,7 +10,7 @@ int accept_msg(int sockfd)
 {
 	int client_fd;
 	struct sockaddr_in client;
-	char buff[BUFSIZ] = {0};
+	char buff[BUFSIZ + 1] = {0};
 	ssize_t received = 0;
 	socklen_t cl_size = sizeof(client);
 
