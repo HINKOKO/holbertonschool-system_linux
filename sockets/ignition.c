@@ -24,7 +24,7 @@ int start_n_listen(void)
 		handle_error("Bind operation: failure");
 	if (listen(sockfd, MAX_PENDING) == -1)
 		handle_error("Listen: failure");
-	printf("Server listening on Port %d\n", ntohs(server.sin_port));
+	printf("Server listening on port %d\n", ntohs(server.sin_port));
 	while (1)
 		accept_msg(sockfd);
 	close(sockfd);
