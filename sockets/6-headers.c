@@ -54,9 +54,16 @@ int parse_response(char *raw_request, int client_sd)
 
 char *back_sp(char *token)
 {
+	char *end;
 	/* remove leading space */
 	while (isspace((unsigned char)*token))
 		token++;
+
+	end = token + strlen(token) - 1;
+	while (end > token && isspace((unsigned char)*end))
+		end--;
+
+	*(end + 1) = 0;
 
 	return (token);
 }
