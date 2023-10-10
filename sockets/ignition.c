@@ -11,6 +11,9 @@ int start_n_listen(void)
 	int sockfd;
 	struct sockaddr_in server;
 
+	/* disable buffering => todo_api_output is filled */
+	setbuf(stdout, NULL);
+
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
 		handle_error("Socket creation: failure");
