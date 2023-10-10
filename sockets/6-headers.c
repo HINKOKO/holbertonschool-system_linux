@@ -38,7 +38,7 @@ int parse_response(char *raw_request, int client_sd)
 	while (header != NULL)
 	{
 		key = strtok_r(header, ":", &inner);
-		val = back_sp(strtok_r(NULL, ":", &inner));
+		val = back_sp(strtok_r(NULL, CRLF, &inner));
 		printf("Header: \"%s\" -> \"%s\"\n", key, val);
 		header = strtok_r(NULL, CRLF, &outer);
 	}
