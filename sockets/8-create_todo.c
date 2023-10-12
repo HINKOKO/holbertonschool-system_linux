@@ -32,7 +32,7 @@ int parse_response(char *raw_request, int client_sd)
 {
 	char *start, *method, *path, *header, *body, *key, *val;
 	char *outer, *inner;
-	short content_len = 0;
+	unsigned int content_len = 0;
 
 	body = strstr(raw_request, CRLF CRLF);
 	/* if some-body there */
@@ -83,6 +83,7 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 {
 	char *body_params, *param, *val, *outer, *inner;
 	char *title = NULL, *desc = NULL;
+	char buf1[1024] = {0};
 	todo_t *todo, *tmp;
 
 	body[content_length] = 0;
@@ -98,7 +99,6 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 			desc = val;
 		body_params = strtok_r(NULL, "&", &outer);
 	}
-	/* If missing title or description => Not valid */
 	if (!title || !desc)
 		return (send_response(client_sd, RESPONSE_422));
 
@@ -116,9 +116,8 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 			tmp = tmp->next;
 		tmp->next = todo;
 	}
-	printf("{\"id\":%d,\"title\":\"%s\",\"description\":\"%s\"}",
-		   ids - 1, title, desc);
+	sprintf(buf1, "{\"id\":%d,\"title\":\"%s\",\"decription\":\"%s\"}", ids - 1,
+			title, desc);
 	send_response(client_sd, RESPONSE_201);
 	return (0);
-	(void)content_length;
 }
