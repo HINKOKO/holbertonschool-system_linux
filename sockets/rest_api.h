@@ -20,7 +20,7 @@
 #define CRLF "\r\n"
 #define RESPONSE_200_CORE "HTTP/1.1 200 OK"
 #define RESPONSE_200 (RESPONSE_200_CORE CRLF CRLF)
-#define RESPONSE_201 "HTTP/1.1 201 Created\r\n\r\n"
+#define RESPONSE_201 "HTTP/1.1 201 Created"
 /*classic not found*/
 #define RESPONSE_404 "HTTP/1.1 404 Not Found\r\n\r\n"
 /* Content-Length is a required header */
@@ -30,15 +30,18 @@
 #define TITLE "title"
 #define DESC "description"
 #define CONTENT_TYPE "Content-Type"
-#define TYPE_VAL "application/json"
+#define JSON "application/json"
+
+#define ID "id"
+#define TITLE "title"
+#define DESC "description"
 
 
 #define CONTENT_LENGTH "Content-Length"
 #define URL_ENCODED "application/x-www-form-urlencoded"
 
 #define handle_error(msg)   \
-	do                      \
-	{                       \
+	do {                    \
 		perror(msg);        \
 		exit(EXIT_FAILURE); \
 	} while (0)
