@@ -20,7 +20,7 @@
 #define CRLF "\r\n"
 #define RESPONSE_200_CORE "HTTP/1.1 200 OK"
 #define RESPONSE_200 (RESPONSE_200_CORE CRLF CRLF)
-#define RESPONSE_201 "HTTP/1.1 201 Created\r\n\r\n"
+#define RESPONSE_201 "HTTP/1.1 201 Created\r\n"
 /*classic not found*/
 #define RESPONSE_404 "HTTP/1.1 404 Not Found\r\n\r\n"
 /* Content-Length is a required header */
@@ -62,6 +62,17 @@ typedef struct todo
 	struct todo *next;
 } todo_t;
 
+/**
+ * struct todo_info - overview of todo node
+ * 
+*/
+
+typedef struct todo_info
+{
+	todo_t *head;
+	todo_t *tail;
+} todo_info_t;
+
 int start_n_listen(void);
 int accept_msg(int sockfd);
 int send_response(int client_sd, char *response);
@@ -69,5 +80,9 @@ int parse_response(char *raw_request, int client_fd);
 char *back_sp(char *token);
 /* starting to do the todos */
 int post_todo(int client_sd, char *body, unsigned int content_length);
+
+/* Functions for REST_API */
+
+
 
 #endif /* __SOCKETS_API__ */

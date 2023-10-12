@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -pedantic -g
+FLAGS=-Wall -Werror -Wextra -pedantic
 SERVER:=ignition.c
 
 SRC4:= $(SERVER) 4-request.c

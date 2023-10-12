@@ -20,6 +20,8 @@ int main(void)
 	return (start_n_listen());
 }
 
+
+
 /**
  * parse_response - parse the response header HTTP using
  * good old strtok() to split the header strings
@@ -35,35 +37,38 @@ int parse_response(char *raw_request, int client_sd)
 	unsigned int content_len = 0;
 
 	body = strstr(raw_request, CRLF CRLF);
-	/* if some-body there */
 	if (body != NULL)
 	{
 		*body = 0;
 		body += strlen(CRLF CRLF);
 	}
-	/* printf("Body is => %s\n", body); */
 	start = strtok_r(raw_request, CRLF, &outer);
 	method = strtok(start, SP);
 	path = strtok(NULL, SP);
 	path = strtok(path, "?");
-	/* compare with required elements */
-	/* case-insensitive HTTP/1.1 specs */
-	if (strcasecmp(method, REQUIRED_METHOD) || strcasecmp(path, REQUIRED_PATH))
-		return (send_response(client_sd, RESPONSE_404));
 
+	if (strcasecmp(method, REQUIRED_METHOD) || strcasecmp(path, REQUIRED_PATH))
+	{
+		printf("%s %s -> 422 Not Found", REQUIRED_METHOD, path);
+		send(client_sd, RESPONSE_404, strlen(RESPONSE_404), 0);
+		return (1);
+	}
 	printf("Path: %s\n", path);
 	header = strtok_r(NULL, CRLF, &outer);
 	while (header != NULL)
 	{
 		key = strtok_r(header, ":", &inner);
 		val = back_sp(strtok_r(NULL, CRLF, &inner));
-		/* Content-Length is a 'required header' */
 		if (!strcasecmp(key, CONTENT_LENGTH))
 			content_len = atoi(val);
 		header = strtok_r(NULL, CRLF, &outer);
 	}
 	if (!content_len)
-		return (send_response(client_sd, RESPONSE_411));
+	{
+		printf("%s %s 411 Length Required\n", method, path);
+		send(client_sd, RESPONSE_411, strlen(RESPONSE_411), 0);
+		return (1);
+	}
 	post_todo(client_sd, body, content_len);
 	return (EXIT_SUCCESS);
 }
@@ -82,12 +87,10 @@ int parse_response(char *raw_request, int client_sd)
 int post_todo(int client_sd, char *body, unsigned int content_length)
 {
 	char *body_params, *param, *val, *outer, *inner;
-	char *title = NULL, *desc = NULL;
-	char buf1[1024] = {0};
+	char *title = NULL, *desc = NULL, str[BUFSIZ];
 	todo_t *todo, *tmp;
 
 	body[content_length] = 0;
-
 	body_params = strtok_r(body, "&", &outer);
 	while (body_params)
 	{
@@ -100,24 +103,25 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 		body_params = strtok_r(NULL, "&", &outer);
 	}
 	if (!title || !desc)
-		return (send_response(client_sd, RESPONSE_422));
-
+	{
+		printf("%s %s -> 422 Unprocessable Entity\n",
+			REQUIRED_PATH, REQUIRED_METHOD);
+		send(client_sd, RESPONSE_422, strlen(RESPONSE_422), 0);
+		return (1);
+	}
 	todo = calloc(1, sizeof(*todo));
 	todo->id = ids++;
 	todo->desc = strdup(desc);
 	todo->title = strdup(title);
-
 	if (!root)
 		root = todo;
-	else
-	{
-		tmp = root;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = todo;
-	}
-	sprintf(buf1, "{\"id\":%d,\"title\":\"%s\",\"decription\":\"%s\"}", ids - 1,
-			title, desc);
-	send_response(client_sd, RESPONSE_201);
+	tmp = root;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = todo;
+	sprintf(str, "%s%s%u%s%s\r\n\r\n{\"id\":%d,\"title\":\"%s\",\"description\":\"%s\"}",
+		RESPONSE_201, "Content-Length", content_length, "Content-Type: ",
+		JSON, todo->id, title, desc);
+	send(client_sd, str, strlen(str), 0);
 	return (0);
 }
