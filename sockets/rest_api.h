@@ -16,10 +16,25 @@
 #define MAX_PENDING 10
 #define MAXLINE 4096
 
+/* Macros for dealing with HTTP format */
 #define CRLF "\r\n"
-
 #define RESPONSE_200_CORE "HTTP/1.1 200 OK"
 #define RESPONSE_200 (RESPONSE_200_CORE CRLF CRLF)
+#define RESPONSE_201 "HTTP/1.1 201 Created\r\n\r\n"
+/*classic not found*/
+#define RESPONSE_404 "HTTP/1.1 404 Not Found\r\n\r\n"
+/* Content-Length is a required header */
+#define RESPONSE_411 "HTTP/1.1 411 Length Required\r\n\r\n"
+/* Missing either title or description body parameters */
+#define RESPONSE_422 "HTTP/1.1 422 Unprocessable Entity\r\n\r\n"
+#define TITLE "title"
+#define DESC "description"
+#define CONTENT_TYPE "Content-Type"
+#define TYPE_VAL "application/json"
+
+
+#define CONTENT_LENGTH "Content-Length"
+#define URL_ENCODED "application/x-www-form-urlencoded"
 
 #define handle_error(msg)   \
 	do                      \
@@ -28,9 +43,28 @@
 		exit(EXIT_FAILURE); \
 	} while (0)
 
+/**
+ * todo - todo's represented as node of a Linked list
+ * @id: identify todo's by a unique id
+ * @title: title of the todo
+ * @desc: description of the todo
+ * @next: pointer to next todo
+ */
+
+typedef struct todo
+{
+	int id;
+	char *title;
+	char *desc;
+	struct todo *next;
+} todo_t;
+
 int start_n_listen(void);
 int accept_msg(int sockfd);
 int send_response(int client_sd, char *response);
 int parse_response(char *raw_request, int client_fd);
+char *back_sp(char *token);
+/* starting to do the todos */
+int post_todo(int client_sd, char *body, unsigned int content_length);
 
 #endif /* __SOCKETS_API__ */

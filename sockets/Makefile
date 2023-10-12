@@ -1,17 +1,19 @@
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -pedantic
+FLAGS=-Wall -Werror -Wextra -pedantic -g
 SERVER:=ignition.c
 
 SRC4:= $(SERVER) 4-request.c
 SRC5:= $(SERVER) 5-queries.c
 SRC6:= $(SERVER) 6-headers.c
 SRC7:= $(SERVER) 7-body.c
+SRC8:= $(SERVER) 8-create_todo.c util_functions.c
 
 
 NAME4:=todo_api_0
 NAME5:=todo_api_1
 NAME6:=todo_api_2
 NAME7:=todo_api_3
+NAME8:=todo_api_4
 
 
 todo_api_0:
@@ -25,6 +27,9 @@ todo_api_2:
 
 todo_api_3:
 	$(CC) $(FLAGS) $(SRC7) -o $(NAME7)
+
+todo_api_4:
+	$(CC) $(FLAGS) $(SRC8) -o $(NAME8)
 
 
 
