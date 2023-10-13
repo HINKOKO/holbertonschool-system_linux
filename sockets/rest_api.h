@@ -29,19 +29,17 @@
 #define RESPONSE_422 "HTTP/1.1 422 Unprocessable Entity\r\n\r\n"
 #define TITLE "title"
 #define DESC "description"
-#define CONTENT_TYPE "Content-Type"
+#define CONTENT_TYPE "Content-Type: application/json\r\n\r\n"
 #define JSON "application/json"
+#define CONTENT_LENGTH "Content-Length"
 
 #define ID "id"
 #define TITLE "title"
 #define DESC "description"
 
-
-#define CONTENT_LENGTH "Content-Length"
-#define URL_ENCODED "application/x-www-form-urlencoded"
-
 #define handle_error(msg)   \
-	do {                    \
+	do                      \
+	{                       \
 		perror(msg);        \
 		exit(EXIT_FAILURE); \
 	} while (0)
@@ -56,22 +54,23 @@
 
 typedef struct todo
 {
-	int id;
+	size_t id;
 	char *title;
 	char *desc;
+	size_t len;
 	struct todo *next;
 } todo_t;
 
 /**
  * struct todo_info - overview of todo node
- * 
-*/
+ *
+ */
 
 typedef struct todo_info
 {
 	todo_t *head;
 	todo_t *tail;
-} todo_info_t;
+} list_t;
 
 int start_n_listen(void);
 int accept_msg(int sockfd);
@@ -79,10 +78,14 @@ int send_response(int client_sd, char *response);
 int parse_response(char *raw_request, int client_fd);
 char *back_sp(char *token);
 /* starting to do the todos */
-int post_todo(int client_sd, char *body, unsigned int content_length);
+int post_todo(int client_sd, char *body, short content_length);
 
 /* Functions for REST_API */
+int receiver(int sockfd, char *buffer);
 
-
+todo_t *posting_todo(char *buff, list_t *list);
+void post_response(int client_sd, list_t *list);
+void parse_req(char *buff, int client_sd, list_t *list);
+int parse_error(char *buff, int client_sd);
 
 #endif /* __SOCKETS_API__ */

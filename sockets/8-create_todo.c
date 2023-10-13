@@ -6,6 +6,9 @@
 #define REQUIRED_METHOD "POST"
 #define REQUIRED_PATH "/todos"
 #define SP " \t"
+#define POST_SPACE 17
+#define COLOR "\033[4m"
+#define RESET "\033[0m"
 
 static int ids;
 static todo_t *root;
@@ -20,8 +23,6 @@ int main(void)
 	return (start_n_listen());
 }
 
-
-
 /**
  * parse_response - parse the response header HTTP using
  * good old strtok() to split the header strings
@@ -34,10 +35,10 @@ int parse_response(char *raw_request, int client_sd)
 {
 	char *start, *method, *path, *header, *body, *key, *val;
 	char *outer, *inner;
-	unsigned int content_len = 0;
+	short content_len = 0;
 
 	body = strstr(raw_request, CRLF CRLF);
-	if (body != NULL)
+	if (strlen(body))
 	{
 		*body = 0;
 		body += strlen(CRLF CRLF);
@@ -84,7 +85,7 @@ int parse_response(char *raw_request, int client_sd)
  * Return: 0 success, otherwise appropriate message/error code
  */
 
-int post_todo(int client_sd, char *body, unsigned int content_length)
+int post_todo(int client_sd, char *body, short content_length)
 {
 	char *body_params, *param, *val, *outer, *inner;
 	char *title = NULL, *desc = NULL, str[BUFSIZ];
@@ -105,7 +106,7 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 	if (!title || !desc)
 	{
 		printf("%s %s -> 422 Unprocessable Entity\n",
-			REQUIRED_PATH, REQUIRED_METHOD);
+			   REQUIRED_PATH, REQUIRED_METHOD);
 		send(client_sd, RESPONSE_422, strlen(RESPONSE_422), 0);
 		return (1);
 	}
@@ -119,9 +120,11 @@ int post_todo(int client_sd, char *body, unsigned int content_length)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = todo;
-	sprintf(str, "%s%s%u%s%s\r\n\r\n{\"id\":%d,\"title\":\"%s\",\"description\":\"%s\"}",
-		RESPONSE_201, "Content-Length", content_length, "Content-Type: ",
-		JSON, todo->id, title, desc);
+	sprintf(str, "%ld", todo->id);
+	sprintf(str, "%s%s%u\r\n%s%s%lu%s%s%s%s\"}",
+			RESPONSE_201, "Content-Length: ", content_length + POST_SPACE,
+			CONTENT_TYPE, "{\"id\":", todo->id, ",\"title\":\"", todo->title, "\",\"description\":\"",
+			todo->desc);
 	send(client_sd, str, strlen(str), 0);
 	return (0);
 }
