@@ -139,8 +139,9 @@ int get_em_all(int client_sd)
 	buf2[0] = '[';
 	for (node = root; node; node = node->next)
 	{
-		sprintf(buf2, "{\"" ID "\":%d, \"" TITLE "\":\"%s\",\""
-			DESC "\":\"%s\"}", node->id, node->title, node->desc);
+		sprintf(buf2, "{\"" ID "\":%d,\"" TITLE "\":\"%s\",\""
+			DESC "\":\"%s\"}%s", node->id, node->title, node->desc,
+			node->next ? "," : "");
 	}
 	/* add closing bracket */
 	*(buf2 + strlen(buf2)) = ']';
