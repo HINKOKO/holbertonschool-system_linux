@@ -121,8 +121,7 @@ int post_todo(int client_sd, char *body, short content_length)
 		DESC "\":\"%s\"}", ids - 1, title, desc);
 	sprintf(buf1, RESPONSE_201 CRLF CONTENT_LENGTH ": %ld" CRLF
 		CONTENT_TYPE ": " JSON CRLF CRLF "%s", strlen(buf2), buf2);
-	send_response(client_sd, buf1);
-	return (0);
+	return (send_response(client_sd, buf1));
 }
 
 /**
@@ -139,7 +138,7 @@ int get_em_all(int client_sd)
 	buf2[0] = '[';
 	for (node = root; node; node = node->next)
 	{
-		sprintf(buf2, "{\"" ID "\":%d,\"" TITLE "\":\"%s\",\""
+		sprintf(buf2 + strlen(buf2), "{\"" ID "\":%d,\"" TITLE "\":\"%s\",\""
 			DESC "\":\"%s\"}%s", node->id, node->title, node->desc,
 			node->next ? "," : "");
 	}
