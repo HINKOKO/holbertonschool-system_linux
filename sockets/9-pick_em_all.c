@@ -47,7 +47,7 @@ int parse_response(char *raw_request, int client_sd)
 	path = strtok(path, "?");
 
 	if (strcasecmp(path, REQUIRED_PATH) ||
-			strcasecmp(method, POST_METHOD) && strcasecmp(method, GET_ALL))
+			(strcasecmp(method, POST_METHOD) && strcasecmp(method, GET_ALL)))
 		return (send_response(client_sd, RESPONSE_404));
 
 	printf("Path: %s\n", path);
@@ -143,7 +143,7 @@ int get_em_all(int client_sd)
 			DESC "\":\"%s\"}", node->id, node->title, node->desc);
 	}
 	/* add closing bracket */
-	*(buf2 + strlen(buf2)) = "]";
+	*(buf2 + strlen(buf2)) = ']';
 	sprintf(buf1, "HTTP/1.1 200 OK" CRLF CONTENT_LENGTH ": %ld" CRLF
 		CONTENT_TYPE ": " JSON CRLF CRLF "%s", strlen(buf2), buf2);
 	return (send_response(client_sd, buf1));

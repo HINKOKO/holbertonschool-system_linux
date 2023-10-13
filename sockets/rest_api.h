@@ -76,17 +76,11 @@ int accept_msg(int sockfd);
 int send_response(int client_sd, char *response);
 int parse_response(char *raw_request, int client_fd);
 char *back_sp(char *token);
-/* starting to do the todos */
-int post_todo(int client_sd, char *body, short content_length);
-int client_response(int client_sd, short len, todo_t *todo);
 
 /* Functions for REST_API */
-int start_n_listen(void);
-int receiver(int sockfd, char *buffer);
+int post_todo(int client_sd, char *body, short content_length);
+int client_response(int client_sd, short len, todo_t *todo);
+int get_em_all(int client_sd);
 
-todo_t *posting_todo(char *buff, list_t *list);
-void post_response(int client_sd, list_t *list);
-void parse_req(char *buff, int client_sd, list_t *list);
-int parse_error(char *buff, int client_sd);
 
 #endif /* __SOCKETS_API__ */
