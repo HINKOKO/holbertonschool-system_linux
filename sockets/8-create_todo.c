@@ -88,7 +88,8 @@ int parse_response(char *raw_request, int client_sd)
 int post_todo(int client_sd, char *body, short content_length)
 {
 	char *body_params, *param, *val, *outer, *inner;
-	char *title = NULL, *desc = NULL, str[BUFSIZ];
+	char *title = NULL, *desc = NULL;
+	char buf1[1024] = {0}, buf2[1024] = {0};
 	todo_t *todo, *tmp;
 
 	body[content_length] = 0;
@@ -120,11 +121,10 @@ int post_todo(int client_sd, char *body, short content_length)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = todo;
-	sprintf(str, "%ld", todo->id);
-	sprintf(str, "%s%s%u\r\n%s%s%lu%s%s%s%s\"}",
-			RESPONSE_201, "Content-Length: ", content_length + POST_SPACE,
-			CONTENT_TYPE, "{\"id\":", todo->id, ",\"title\":\"", todo->title, "\",\"description\":\"",
-			todo->desc);
-	send(client_sd, str, strlen(str), 0);
+	sprintf(buf2, "{\"" ID "\":%d,\"" TITLE "\":\"%s\",\""
+		DESC "\":\"%s\"}", ids - 1, title, desc);
+	sprintf(buf1, RESPONSE_201 CRLF CONTENT_LENGTH ": %ld" CRLF
+		CONTENT_TYPE ": " JSON CRLF CRLF "%s", strlen(buf2), buf2);
+	send(client_sd, buf1, strlen(buf1), 0);
 	return (0);
 }

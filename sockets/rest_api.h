@@ -20,7 +20,7 @@
 #define CRLF "\r\n"
 #define RESPONSE_200_CORE "HTTP/1.1 200 OK"
 #define RESPONSE_200 (RESPONSE_200_CORE CRLF CRLF)
-#define RESPONSE_201 "HTTP/1.1 201 Created\r\n"
+#define RESPONSE_201 "HTTP/1.1 201 Created"
 /*classic not found*/
 #define RESPONSE_404 "HTTP/1.1 404 Not Found\r\n\r\n"
 /* Content-Length is a required header */
@@ -29,7 +29,7 @@
 #define RESPONSE_422 "HTTP/1.1 422 Unprocessable Entity\r\n\r\n"
 #define TITLE "title"
 #define DESC "description"
-#define CONTENT_TYPE "Content-Type: application/json\r\n\r\n"
+#define CONTENT_TYPE "Content-Type"
 #define JSON "application/json"
 #define CONTENT_LENGTH "Content-Length"
 
@@ -54,10 +54,9 @@
 
 typedef struct todo
 {
-	size_t id;
+	int id;
 	char *title;
 	char *desc;
-	size_t len;
 	struct todo *next;
 } todo_t;
 
@@ -72,15 +71,17 @@ typedef struct todo_info
 	todo_t *tail;
 } list_t;
 
-int start_n_listen(void);
+int start_server(void);
 int accept_msg(int sockfd);
 int send_response(int client_sd, char *response);
 int parse_response(char *raw_request, int client_fd);
 char *back_sp(char *token);
 /* starting to do the todos */
 int post_todo(int client_sd, char *body, short content_length);
+int client_response(int client_sd, short len, todo_t *todo);
 
 /* Functions for REST_API */
+int start_n_listen(void);
 int receiver(int sockfd, char *buffer);
 
 todo_t *posting_todo(char *buff, list_t *list);
