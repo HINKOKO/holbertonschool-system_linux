@@ -49,11 +49,8 @@ int parse_response(char *raw_request, int client_sd)
 	path = strtok(path, "?");
 
 	if (strcasecmp(method, REQUIRED_METHOD) || strcasecmp(path, REQUIRED_PATH))
-	{
-		printf("%s %s -> 422 Not Found", REQUIRED_METHOD, path);
-		send(client_sd, RESPONSE_404, strlen(RESPONSE_404), 0);
-		return (1);
-	}
+		return (send_response(client_sd, RESPONSE_404));
+
 	printf("Path: %s\n", path);
 	header = strtok_r(NULL, CRLF, &outer);
 	while (header != NULL)
@@ -66,9 +63,7 @@ int parse_response(char *raw_request, int client_sd)
 	}
 	if (!content_len)
 	{
-		printf("%s %s 411 Length Required\n", method, path);
-		send(client_sd, RESPONSE_411, strlen(RESPONSE_411), 0);
-		return (1);
+		return (send_response(client_sd, RESPONSE_411));
 	}
 	post_todo(client_sd, body, content_len);
 	return (EXIT_SUCCESS);
@@ -125,6 +120,6 @@ int post_todo(int client_sd, char *body, short content_length)
 		DESC "\":\"%s\"}", ids - 1, title, desc);
 	sprintf(buf1, RESPONSE_201 CRLF CONTENT_LENGTH ": %ld" CRLF
 		CONTENT_TYPE ": " JSON CRLF CRLF "%s", strlen(buf2), buf2);
-	send(client_sd, buf1, strlen(buf1), 0);
+	send_response(client_sd, buf1);
 	return (0);
 }
