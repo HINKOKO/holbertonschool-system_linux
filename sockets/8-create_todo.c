@@ -62,9 +62,8 @@ int parse_response(char *raw_request, int client_sd)
 		header = strtok_r(NULL, CRLF, &outer);
 	}
 	if (!content_len)
-	{
 		return (send_response(client_sd, RESPONSE_411));
-	}
+
 	post_todo(client_sd, body, content_len);
 	return (EXIT_SUCCESS);
 }
@@ -100,22 +99,21 @@ int post_todo(int client_sd, char *body, short content_length)
 		body_params = strtok_r(NULL, "&", &outer);
 	}
 	if (!title || !desc)
-	{
-		printf("%s %s -> 422 Unprocessable Entity\n",
-			   REQUIRED_PATH, REQUIRED_METHOD);
-		send(client_sd, RESPONSE_422, strlen(RESPONSE_422), 0);
-		return (1);
-	}
+		return (send_response(client_sd, RESPONSE_422));
+		
 	todo = calloc(1, sizeof(*todo));
 	todo->id = ids++;
 	todo->desc = strdup(desc);
 	todo->title = strdup(title);
 	if (!root)
 		root = todo;
-	tmp = root;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = todo;
+	else
+	{
+		tmp = root;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = todo;
+	}
 	sprintf(buf2, "{\"" ID "\":%d,\"" TITLE "\":\"%s\",\""
 		DESC "\":\"%s\"}", ids - 1, title, desc);
 	sprintf(buf1, RESPONSE_201 CRLF CONTENT_LENGTH ": %ld" CRLF
