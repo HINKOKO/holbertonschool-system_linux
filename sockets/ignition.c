@@ -18,12 +18,15 @@ int start_n_listen(void)
 	if (sockfd < 0)
 		handle_error("Socket creation: failure");
 	server.sin_family = AF_INET;
-	server.sin_addr.s_addr = htonl(INADDR_ANY);
 	server.sin_port = htons(PORT);
+	server.sin_addr.s_addr = htonl(INADDR_ANY);
+
 	if (bind(sockfd, (struct sockaddr *)&server, sizeof(server)) == -1)
 		handle_error("Bind operation: failure");
+
 	if (listen(sockfd, MAX_PENDING) == -1)
 		handle_error("Listen: failure");
+		
 	printf("Server listening on port %d\n", ntohs(server.sin_port));
 	while (1)
 		accept_msg(sockfd);
