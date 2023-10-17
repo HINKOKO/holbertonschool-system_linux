@@ -33,12 +33,42 @@
 
 ### **3. What are the different socket domains**
 
+<quote>The domain argument specifies a communication domain => this selects the protocol family which will be used for communication. These families are defined in <sys/socket.h></quote>
+
+The linux kernel currently supports (non exhaustive list) <br>
+
+<hr>
+  - AF_INET: Most common domain used for Internet communication (IPv4 Internet protocols), it uses IPv4 addresses.
+  - AF_INET6: all in the name dude!
+  - AF_UNIX: (also know as AF_LOCAL) used for communication between processes on the same system. Do not involve networking and use file systems **paths** for addressing.
+  - AF_PACKET: used to directly tchat with network interfaces
+  - AF_NETLINK: Domain used between kernel space and user space processes.
+  - AF_BLUETOOTH: All in the name RObert !
+  - AF_CAN: Controllet Aera NEtwork, commonly used in automotive and industrial applications.
+
+<hr>
+These were just some commons examples, full list in the **man pages**.
+
 ### **4. How to create a socket, and bind it to an address/port**
 
 A socket can easily be created by using the **socket system call** which got this signature: <br>
+
 ```
 int socket(int domain, int type, int protocol)
 ```
+
 The <i>domain</i> a.k.a as <i>address family</i> is e.g AF_INET for IPv4 or AF_INET6 for, hence, IPv6. (a list of address family understood by Linux Kernel can be found at `man socket (2)`)<br>
 The socket <i>type</i> e.g. **SOCK_STREAM** for **TCP** or **SOCK_DGRAM** for **UDP** <br>
-Finally the socket <i>protocol</i> which is usually **0**, allowing the system to pick for us the appropriate protocol.
+Finally the socket <i>protocol</i> which is usually **0**, allowing the system to pick for us the appropriate protocol. <br>
+
+<hr>
+Once the socket is created, we fill the fields of structure sockaddr_in with the correct parameters:
+- **sin_family** with the domain we picked
+- **sin_addr.s_addr** with **(htonl(INADDR_ANY))** for "host to network long (conversion) of ANY Addresses incoming
+- **sin_port** with the **htons(PORT)** with htons() being a conversion for host-to-network-short and PORT beign the port with want to "bind" to that socket endpoint.<br>
+
+We can then **bind** that opened socket to a specific port of our choice using the system call **bind** <br>
+
+```
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+```
